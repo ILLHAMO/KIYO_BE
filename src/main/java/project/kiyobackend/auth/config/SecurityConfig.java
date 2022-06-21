@@ -75,13 +75,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
-//                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-//                // api로 시작하는 요소들은 USER 이상의 권한 있으면 다 사용 가능
-//                .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode())
-//                // admin 경로는 admin만 사용가능
-//                .antMatchers("/api/**/admin/**").hasAnyAuthority(RoleType.ADMIN.getCode())
-//                .anyRequest().authenticated()
-                  .anyRequest().permitAll()
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                // api로 시작하는 요소들은 USER 이상의 권한 있으면 다 사용 가능
+                .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode())
+                // admin 경로는 admin만 사용가능
+                .antMatchers("/api/**/admin/**").hasAnyAuthority(RoleType.ADMIN.getCode())
+                //.anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
                 // oauth2 로그인 활성화
                 .oauth2Login()

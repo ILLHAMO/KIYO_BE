@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "USER")
 public class User {
+
     @JsonIgnore
     @Id
     @Column(name = "USER_SEQ")
@@ -32,6 +33,8 @@ public class User {
     @Column(name = "USERNAME", length = 100)
     @NotNull
     private String username;
+
+    private String nickname;
 
     @JsonIgnore
     @Column(name = "PASSWORD", length = 128)
