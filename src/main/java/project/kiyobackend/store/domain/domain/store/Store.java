@@ -40,7 +40,7 @@ public class Store {
 
     private int bookmarkCount;
 
-    // TODO : 오픈 시간 개선할 수 있는 부분 찾기
+
     @Column(name = "open_time")
     private String time;
 
