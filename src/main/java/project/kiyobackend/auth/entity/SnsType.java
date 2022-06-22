@@ -4,7 +4,7 @@ import lombok.Getter;
 
 // 일단 구글만 테스트
 @Getter
-public enum ProviderType {
+public enum SnsType {
     GOOGLE,
     NAVER,
     KAKAO,

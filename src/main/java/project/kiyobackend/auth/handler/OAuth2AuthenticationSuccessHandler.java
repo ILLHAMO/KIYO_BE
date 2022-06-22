@@ -9,7 +9,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 import project.kiyobackend.auth.config.properties.AppProperties;
-import project.kiyobackend.auth.entity.ProviderType;
+import project.kiyobackend.auth.entity.SnsType;
 import project.kiyobackend.auth.entity.RoleType;
 import project.kiyobackend.auth.info.OAuth2UserInfo;
 import project.kiyobackend.auth.info.OAuth2UserInfoFactory;
@@ -66,10 +66,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 
         OAuth2AuthenticationToken authToken = (OAuth2AuthenticationToken) authentication;
-        ProviderType providerType = ProviderType.valueOf(authToken.getAuthorizedClientRegistrationId().toUpperCase());
+        SnsType snsType = SnsType.valueOf(authToken.getAuthorizedClientRegistrationId().toUpperCase());
 
         OidcUser user = ((OidcUser) authentication.getPrincipal());
-        OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(providerType, user.getAttributes());
+        OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(snsType, user.getAttributes());
         Collection<? extends GrantedAuthority> authorities = ((OidcUser) authentication.getPrincipal()).getAuthorities();
 
         RoleType roleType = hasAuthority(authorities, RoleType.ADMIN.getCode()) ? RoleType.ADMIN : RoleType.USER;

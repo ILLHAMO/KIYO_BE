@@ -6,42 +6,59 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import project.kiyobackend.auth.entity.ProviderType;
+import project.kiyobackend.QnA.domain.QnA;
+import project.kiyobackend.auth.entity.SnsType;
 import project.kiyobackend.auth.entity.RoleType;
+import project.kiyobackend.review.domain.domain.Review;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "USER")
+@Table(name = "user")
 public class User {
 
+    /*
+    엔티티이기 때문에 기본적인 id값 설정
+     */
     @JsonIgnore
     @Id
-    @Column(name = "USER_SEQ")
+    @Column(name = "user_seq")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userSeq;
 
-    @Column(name = "USER_ID", length = 64, unique = true)
+    /*
+    실제 user 구분에 사용되는 값, OAuth2User의 id값을 사용한다.
+     */
+    @Column(name = "user_id", length = 64, unique = true)
     @NotNull
     private String userId;
 
-    @Column(name = "USERNAME", length = 100)
+    @Column(name = "username", length = 100)
     @NotNull
     private String username;
 
     private String nickname;
 
+    @OneToMany(mappedBy = "user")
+    private List<Review> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<QnA> qnAs = new ArrayList<>();
+
+    // password는 따로 필요 없다.
     @JsonIgnore
-    @Column(name = "PASSWORD", length = 128)
+    @Column(name = "password", length = 128)
     @NotNull
     private String password;
 
-    @Column(name = "EMAIL", length = 512, unique = true)
+    @Column(name = "email", length = 512, unique = true)
     @NotNull
     private String email;
 
@@ -53,10 +70,10 @@ public class User {
     @NotNull
     private String profileImageUrl;
 
-    @Column(name = "PROVIDER_TYPE", length = 20)
+    @Column(name = "SNS_TYPE", length = 20)
     @Enumerated(EnumType.STRING)
     @NotNull
-    private ProviderType providerType;
+    private SnsType snsType;
 
     @Column(name = "ROLE_TYPE", length = 20)
     @Enumerated(EnumType.STRING)
@@ -77,7 +94,7 @@ public class User {
             @NotNull String email,
             @NotNull String emailVerifiedYn,
             @NotNull String profileImageUrl,
-            @NotNull ProviderType providerType,
+            @NotNull SnsType snsType,
             @NotNull RoleType roleType,
             @NotNull LocalDateTime createdAt,
             @NotNull LocalDateTime modifiedAt
@@ -88,7 +105,7 @@ public class User {
         this.email = email != null ? email : "NO_EMAIL";
         this.emailVerifiedYn = emailVerifiedYn;
         this.profileImageUrl = profileImageUrl != null ? profileImageUrl : "";
-        this.providerType = providerType;
+        this.snsType = snsType;
         this.roleType = roleType;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;

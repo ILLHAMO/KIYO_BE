@@ -8,7 +8,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import project.kiyobackend.auth.entity.ProviderType;
+import project.kiyobackend.auth.entity.SnsType;
 import project.kiyobackend.auth.entity.RoleType;
 import project.kiyobackend.auth.entity.UserPrincipal;
 import project.kiyobackend.auth.exception.OAuthProviderMissMatchException;
@@ -32,7 +32,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
-        // 이 과정에서 resource Server에서 사용자 가져옴!!
+        /*
+        userRequest 내부에는 accessToken에 대한 정보 존재
+        이 토큰을 사용해서 super.loadUser 내부에서 사용자에 대한 정보를 받아옴
+        User entity의 userId 값은 OAuth2User 내부의 attributes의 id 값을 사용한다.
+         */
         OAuth2User user = super.loadUser(userRequest);
         try {
             return this.process(userRequest, user);
@@ -45,28 +49,32 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private OAuth2User process(OAuth2UserRequest userRequest, OAuth2User user) {
-        ProviderType providerType = ProviderType.valueOf(userRequest.getClientRegistration().getRegistrationId().toUpperCase());
+        SnsType snsType = SnsType.valueOf(userRequest.getClientRegistration().getRegistrationId().toUpperCase());
 
-        OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(providerType, user.getAttributes());
+        /*
+        이 부분에서 providerType에 따라서 다른 userInfo를 가져온다.
+        KAKAO 로그인을 했다면 OAuth2UserInfo에는 KakaoOAuth2UserInfo가 들어옴
+         */
+        OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(snsType, user.getAttributes());
         User savedUser = userRepository.findByUserId(userInfo.getId());
 
         if (savedUser != null) {
-            if (providerType != savedUser.getProviderType()) {
+            if (snsType != savedUser.getSnsType()) {
                 throw new OAuthProviderMissMatchException(
-                        "Looks like you're signed up with " + providerType +
-                                " account. Please use your " + savedUser.getProviderType() + " account to login."
+                        "Looks like you're signed up with " + snsType +
+                                " account. Please use your " + savedUser.getSnsType() + " account to login."
                 );
             }
             updateUser(savedUser, userInfo);
         } else {
-            savedUser = createUser(userInfo, providerType);
+            savedUser = createUser(userInfo, snsType);
         }
 
         return UserPrincipal.create(savedUser, user.getAttributes());
     }
 
     // 리소스 서버로부터 유저 정보 가져옴 이때 DB에 해당 ID를 가진 사람이 없다면 createUser 획득
-    private User createUser(OAuth2UserInfo userInfo, ProviderType providerType) {
+    private User createUser(OAuth2UserInfo userInfo, SnsType snsType) {
         LocalDateTime now = LocalDateTime.now();
         User user = new User(
                 userInfo.getId(),
@@ -74,7 +82,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 userInfo.getEmail(),
                 "Y",
                 userInfo.getImageUrl(),
-                providerType,
+                snsType,
                 RoleType.USER,
                 now,
                 now

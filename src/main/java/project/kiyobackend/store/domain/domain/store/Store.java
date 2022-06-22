@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import project.kiyobackend.review.domain.domain.Review;
 import project.kiyobackend.store.domain.domain.category.CategoryId;
 import project.kiyobackend.store.domain.domain.convenience.ConvenienceId;
 import project.kiyobackend.store.domain.domain.menu.Menu;
@@ -54,15 +55,19 @@ public class Store {
     @Embedded
     private Comment comment;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(
-            name = "image",
-            joinColumns = @JoinColumn(name = "store_id"))
-    @OrderColumn(name = "image_idx")
-    private List<Image> images = new ArrayList<>();
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    @CollectionTable(
+//            name = "store_image",
+//            joinColumns = @JoinColumn(name = "store_id"))
+//    @OrderColumn(name = "image_idx")
+    @OneToMany(mappedBy = "store",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<StoreImage> storeImages = new ArrayList<>();
 
     @OneToMany(mappedBy = "store")
     private List<Menu> menus;
+
+    @OneToMany(mappedBy = "store")
+    private List<Review> reviews = new ArrayList<>();
 
     private int bookmarkCount;
 
@@ -73,12 +78,12 @@ public class Store {
     private boolean isKids;
 
     @Builder
-    public Store(String name, Address address, String call, Comment comment, List<Image> images, int bookmarkCount, String time, boolean isKids) {
+    public Store(String name, Address address, String call, Comment comment, List<StoreImage> storeImages, int bookmarkCount, String time, boolean isKids) {
         this.name = name;
         this.address = address;
         this.call = call;
         this.comment = comment;
-        this.images = images;
+        this.storeImages = storeImages;
         this.bookmarkCount = bookmarkCount;
         this.time = time;
         this.isKids = isKids;
