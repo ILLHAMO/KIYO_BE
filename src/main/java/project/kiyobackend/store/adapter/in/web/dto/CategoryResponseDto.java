@@ -2,9 +2,7 @@ package project.kiyobackend.store.adapter.in.web.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import project.kiyobackend.store.domain.domain.category.CategoryId;
-
-import javax.persistence.EmbeddedId;
+import project.kiyobackend.category.domain.CategoryId;
 
 @Data
 @AllArgsConstructor

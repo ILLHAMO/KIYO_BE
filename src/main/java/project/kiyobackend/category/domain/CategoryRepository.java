@@ -1,4 +1,4 @@
-package project.kiyobackend.store.domain.domain.category;
+package project.kiyobackend.category.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

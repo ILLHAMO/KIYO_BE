@@ -1,4 +1,4 @@
-package project.kiyobackend.util;
+package project.kiyobackend.util.auth;
 
 import org.springframework.util.SerializationUtils;
 

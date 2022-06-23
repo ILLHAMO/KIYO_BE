@@ -1,14 +1,14 @@
-package project.kiyobackend.store.domain.domain.convenience;
+package project.kiyobackend.convenience.domain;
 
 import lombok.Getter;
-import project.kiyobackend.store.domain.domain.category.CategoryId;
+import project.kiyobackend.util.jpa.JpaBaseEntity;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "convenience")
 @Getter
-public class Convenience {
+public class Convenience extends JpaBaseEntity {
 
     @EmbeddedId
     private ConvenienceId id;

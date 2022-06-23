@@ -2,13 +2,13 @@ package project.kiyobackend.QnA.domain;
 
 import lombok.Getter;
 import project.kiyobackend.user.domain.User;
+import project.kiyobackend.util.jpa.JpaBaseEntity;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @Getter
-public class QnA {
+public class QnA extends JpaBaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,9 +18,7 @@ public class QnA {
 
     private String answer;
 
-    private LocalDate answerCreatedAt;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 }

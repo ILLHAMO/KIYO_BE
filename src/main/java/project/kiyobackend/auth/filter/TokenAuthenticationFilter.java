@@ -7,7 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import project.kiyobackend.auth.token.AuthToken;
 import project.kiyobackend.auth.token.AuthTokenProvider;
-import project.kiyobackend.util.HeaderUtil;
+import project.kiyobackend.util.auth.HeaderUtil;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

@@ -1,4 +1,4 @@
-package project.kiyobackend.store.domain.domain.convenience;
+package project.kiyobackend.convenience.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

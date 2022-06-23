@@ -10,9 +10,9 @@ import project.kiyobackend.QnA.domain.QnA;
 import project.kiyobackend.auth.entity.SnsType;
 import project.kiyobackend.auth.entity.RoleType;
 import project.kiyobackend.review.domain.domain.Review;
+import project.kiyobackend.util.jpa.JpaBaseEntity;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "user")
-public class User {
+public class User extends JpaBaseEntity {
 
     /*
     엔티티이기 때문에 기본적인 id값 설정
@@ -46,10 +46,10 @@ public class User {
 
     private String nickname;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private List<QnA> qnAs = new ArrayList<>();
 
     // password는 따로 필요 없다.
@@ -80,13 +80,13 @@ public class User {
     @NotNull
     private RoleType roleType;
 
-    @Column(name = "CREATED_AT")
-    @NotNull
-    private LocalDateTime createdAt;
-
-    @Column(name = "MODIFIED_AT")
-    @NotNull
-    private LocalDateTime modifiedAt;
+//    @Column(name = "CREATED_AT")
+//    @NotNull
+//    private LocalDateTime createdAt;
+//
+//    @Column(name = "MODIFIED_AT")
+//    @NotNull
+//    private LocalDateTime modifiedAt;
 
     public User(
             @NotNull  String userId,
@@ -95,9 +95,7 @@ public class User {
             @NotNull String emailVerifiedYn,
             @NotNull String profileImageUrl,
             @NotNull SnsType snsType,
-            @NotNull RoleType roleType,
-            @NotNull LocalDateTime createdAt,
-            @NotNull LocalDateTime modifiedAt
+            @NotNull RoleType roleType
     ) {
         this.userId = userId;
         this.username = username;
@@ -107,7 +105,5 @@ public class User {
         this.profileImageUrl = profileImageUrl != null ? profileImageUrl : "";
         this.snsType = snsType;
         this.roleType = roleType;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
     }
 }

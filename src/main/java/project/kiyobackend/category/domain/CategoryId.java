@@ -1,4 +1,4 @@
-package project.kiyobackend.store.domain.domain.category;
+package project.kiyobackend.category.domain;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;

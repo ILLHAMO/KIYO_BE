@@ -5,9 +5,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import project.kiyobackend.review.domain.domain.Review;
-import project.kiyobackend.store.domain.domain.category.CategoryId;
-import project.kiyobackend.store.domain.domain.convenience.ConvenienceId;
+import project.kiyobackend.category.domain.CategoryId;
+import project.kiyobackend.convenience.domain.ConvenienceId;
 import project.kiyobackend.store.domain.domain.menu.Menu;
+import project.kiyobackend.util.jpa.JpaBaseEntity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Store {
+public class Store extends JpaBaseEntity {
 
     // TODO : GeneratedValue 속성 다시 정확히 알아보기
     @Id
@@ -55,18 +56,14 @@ public class Store {
     @Embedded
     private Comment comment;
 
-//    @ElementCollection(fetch = FetchType.EAGER)
-//    @CollectionTable(
-//            name = "store_image",
-//            joinColumns = @JoinColumn(name = "store_id"))
-//    @OrderColumn(name = "image_idx")
-    @OneToMany(mappedBy = "store",cascade = CascadeType.ALL,orphanRemoval = true)
+
+    @OneToMany(mappedBy = "store",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<StoreImage> storeImages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store")
+    @OneToMany(mappedBy = "store",fetch = FetchType.LAZY)
     private List<Menu> menus;
 
-    @OneToMany(mappedBy = "store")
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY)
     private List<Review> reviews = new ArrayList<>();
 
     private int bookmarkCount;

@@ -1,13 +1,14 @@
-package project.kiyobackend.store.domain.domain.category;
+package project.kiyobackend.category.domain;
 
 import lombok.Getter;
+import project.kiyobackend.util.jpa.JpaBaseEntity;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "category")
 @Getter
-public class Category {
+public class Category extends JpaBaseEntity {
 
     @EmbeddedId
     private CategoryId id;

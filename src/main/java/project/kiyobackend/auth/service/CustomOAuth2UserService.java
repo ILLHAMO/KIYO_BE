@@ -75,7 +75,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     // 리소스 서버로부터 유저 정보 가져옴 이때 DB에 해당 ID를 가진 사람이 없다면 createUser 획득
     private User createUser(OAuth2UserInfo userInfo, SnsType snsType) {
-        LocalDateTime now = LocalDateTime.now();
         User user = new User(
                 userInfo.getId(),
                 userInfo.getName(),
@@ -83,9 +82,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 "Y",
                 userInfo.getImageUrl(),
                 snsType,
-                RoleType.USER,
-                now,
-                now
+                RoleType.USER
+
         );
 
         return userRepository.saveAndFlush(user);

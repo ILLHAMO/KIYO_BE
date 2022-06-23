@@ -1,6 +1,4 @@
-package project.kiyobackend.store.domain.domain.convenience;
-
-import project.kiyobackend.store.domain.domain.category.CategoryId;
+package project.kiyobackend.convenience.domain;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
