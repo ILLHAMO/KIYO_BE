@@ -1,4 +1,4 @@
-package project.kiyobackend.user.adapter.in.web;
+package project.kiyobackend.user.adapter.presentation;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;

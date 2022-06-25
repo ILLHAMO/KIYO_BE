@@ -1,14 +1,12 @@
-package project.kiyobackend.store.adapter.in.web.dto;
+package project.kiyobackend.category.presentation.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import project.kiyobackend.category.domain.CategoryId;
 
 @Data
 @AllArgsConstructor
 public class CategoryResponseDto {
 
-    private CategoryId id;
-
+    private Long id;
     private String categoryName;
 }

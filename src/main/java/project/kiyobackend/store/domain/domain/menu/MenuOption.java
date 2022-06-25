@@ -1,12 +1,15 @@
 package project.kiyobackend.store.domain.domain.menu;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import project.kiyobackend.util.jpa.JpaBaseEntity;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MenuOption extends JpaBaseEntity {
 
     @Id
@@ -20,4 +23,9 @@ public class MenuOption extends JpaBaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id")
     private Menu menu;
+
+    public MenuOption(String name)
+    {
+        this.name = name;
+    }
 }

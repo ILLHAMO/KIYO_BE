@@ -1,5 +1,7 @@
 package project.kiyobackend.category.domain;
 
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
@@ -9,6 +11,7 @@ import java.util.Objects;
 
 @Embeddable
 @Access(AccessType.FIELD)
+@EqualsAndHashCode
 public class CategoryId implements Serializable {
 
     @Column(name = "category_id")

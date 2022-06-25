@@ -8,6 +8,7 @@ import project.kiyobackend.review.domain.domain.Review;
 import project.kiyobackend.category.domain.CategoryId;
 import project.kiyobackend.convenience.domain.ConvenienceId;
 import project.kiyobackend.store.domain.domain.menu.Menu;
+import project.kiyobackend.user.domain.User;
 import project.kiyobackend.util.jpa.JpaBaseEntity;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Table(name = "store")
 public class Store extends JpaBaseEntity {
 
     // TODO : GeneratedValue 속성 다시 정확히 알아보기
@@ -34,18 +36,18 @@ public class Store extends JpaBaseEntity {
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "store_category",
             joinColumns = @JoinColumn(name = "store_id"))
-    private Set<CategoryId> categoryIds;
+    private List<Long> categoryIds = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "store_convenience",
             joinColumns = @JoinColumn(name = "store_id"))
-    private Set<ConvenienceId> convenienceIds;
+    private List<Long> convenienceIds = new ArrayList<>();
 
     @Column(name = "store_name")
     private String name;
 
-    @Embedded
-    private Address address;
+//    @Embedded
+ //   private Address address;
 
     @Column(name = "call_number")
     private String call;
@@ -57,33 +59,66 @@ public class Store extends JpaBaseEntity {
     private Comment comment;
 
 
-    @OneToMany(mappedBy = "store",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "store" ,fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     private List<StoreImage> storeImages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store",fetch = FetchType.LAZY)
-    private List<Menu> menus;
+    @OneToMany(mappedBy = "store",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Menu> menus = new ArrayList<>();
 
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY)
     private List<Review> reviews = new ArrayList<>();
 
     private int bookmarkCount;
 
+    private int reviewCount;
 
     @Column(name = "open_time")
     private String time;
 
     private boolean isKids;
 
-    @Builder
-    public Store(String name, Address address, String call, Comment comment, List<StoreImage> storeImages, int bookmarkCount, String time, boolean isKids) {
-        this.name = name;
-        this.address = address;
-        this.call = call;
-        this.comment = comment;
-        this.storeImages = storeImages;
-        this.bookmarkCount = bookmarkCount;
-        this.time = time;
-        this.isKids = isKids;
+    private boolean isAssigned;
+    /**
+     * 생성 메서드, 연관관계 편의 메서드 고려!
+     */
+
+    public void setMenus(List<Menu> menus)
+    {
+        for (Menu menu : menus) {
+            this.menus.add(menu);
+        }
+    }
+
+    public void setStoreImages(List<String> storeImages)
+    {
+        for (String path : storeImages) {
+            StoreImage storeImage = new StoreImage(path);
+            this.storeImages.add(storeImage);
+            storeImage.setStore(this);
+
+        }
+    }
+
+    public Store(String name,  String call, Comment comment, String time, boolean isKids,List<Long> categoryIds, List<Long> convenienceIds) {
+        this.name = name; // 가게 이름
+        this.call = call; // 가게 전화번호 주소는 잠시 삭제
+        this.comment =
+                comment;// 값 타입 생성자에서 생성
+        this.bookmarkCount = 0;
+        this.reviewCount = 0;
+        this.time = time; // 영업 시간
+        this.isKids = isKids; // 키즈존 여부
+        this.isAssigned = false;
+        categoryIds.forEach(c->this.getCategoryIds().add(c));
+        convenienceIds.forEach(cv->this.getConvenienceIds().add(cv));
+    }
+
+    public static Store createStore(String name, String call, Comment comment, String time, boolean isKids,  List<Long> categoryIds, List<Long> convenienceIds, List<Menu> menus, List<String> storeImages)
+    {
+        Store store = new Store(name,call,comment,time,isKids,categoryIds, convenienceIds);
+        store.setMenus(menus);
+        store.setStoreImages(storeImages);
+        return store;
     }
 
 

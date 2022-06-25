@@ -31,93 +31,69 @@ public class AuthController {
 
     private final AppProperties appProperties;
     private final AuthTokenProvider tokenProvider;
-    private final AuthenticationManager authenticationManager;
     private final UserRefreshTokenRepository userRefreshTokenRepository;
 
     private final static long THREE_DAYS_MSEC = 259200000;
     private final static String REFRESH_TOKEN = "refresh_token";
 
-    @PostMapping("/login")
-    public ApiResponse login(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            @RequestBody AuthReqModel authReqModel
-    ) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        authReqModel.getId(),
-                        authReqModel.getPassword()
-                )
-        );
-
-        String userId = authReqModel.getId();
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        Date now = new Date();
-        AuthToken accessToken = tokenProvider.createAuthToken(
-                userId,
-                ((UserPrincipal) authentication.getPrincipal()).getRoleType().getCode(),
-                new Date(now.getTime() + appProperties.getAuth().getTokenExpiry())
-        );
-
-        long refreshTokenExpiry = appProperties.getAuth().getRefreshTokenExpiry();
-        AuthToken refreshToken = tokenProvider.createAuthToken(
-                appProperties.getAuth().getTokenSecret(),
-                new Date(now.getTime() + refreshTokenExpiry)
-        );
-
-        // userId refresh token 으로 DB 확인
-        UserRefreshToken userRefreshToken = userRefreshTokenRepository.findByUserId(userId);
-        if (userRefreshToken == null) {
-            // 없는 경우 새로 등록
-            userRefreshToken = new UserRefreshToken(userId, refreshToken.getToken());
-            userRefreshTokenRepository.saveAndFlush(userRefreshToken);
-        } else {
-            // DB에 refresh 토큰 업데이트
-            userRefreshToken.setRefreshToken(refreshToken.getToken());
-        }
-
-        int cookieMaxAge = (int) refreshTokenExpiry / 60;
-        CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
-        CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
-
-        return ApiResponse.success("token", accessToken.getToken());
-    }
 
     @GetMapping("/refresh")
     public ApiResponse refreshToken (HttpServletRequest request, HttpServletResponse response) {
+
         // access token 확인
         String accessToken = HeaderUtil.getAccessToken(request);
+        // authToken으로 변경
+
         AuthToken authToken = tokenProvider.convertAuthToken(accessToken);
+
+        /*
+        정상적인 토큰인지 판별하는 로직, 밑의 expired 로직을 따로 검사하기 때문에
+        이 로직은 유효 기간 이외의 조건을 판별하는 부분이다.
+         */
         if (!authToken.validate()) {
             return ApiResponse.invalidAccessToken();
         }
 
-        // expired access token 인지 확인
+        /*
+         expired access token 인지 확인
+         만약 아직 만료되지 않았다면 notExpiredTokenYet 반환
+         */
         Claims claims = authToken.getExpiredTokenClaims();
         if (claims == null) {
             return ApiResponse.notExpiredTokenYet();
         }
 
+        // claims으로부터 userId 빼냄
         String userId = claims.getSubject();
         RoleType roleType = RoleType.of(claims.get("role", String.class));
 
-        // refresh token
+        /*
+        쿠키로부터 refreshToken 파싱해낸다.
+         */
         String refreshToken = CookieUtil.getCookie(request, REFRESH_TOKEN)
                 .map(Cookie::getValue)
                 .orElse((null));
         AuthToken authRefreshToken = tokenProvider.convertAuthToken(refreshToken);
 
+        /*
+        refreshToken이 올바른지 체크
+         */
         if (authRefreshToken.validate()) {
             return ApiResponse.invalidRefreshToken();
         }
 
-        // userId refresh token 으로 DB 확인
+        /*
+         userId refresh token 으로 DB 확인
+         즉, 쿠키에 들어있는 refresh Token과 내가 DB에 보관하고 있는 refreshToken이 동일한 것인지 체크한다.
+         */
         UserRefreshToken userRefreshToken = userRefreshTokenRepository.findByUserIdAndRefreshToken(userId, refreshToken);
         if (userRefreshToken == null) {
             return ApiResponse.invalidRefreshToken();
         }
 
+        /**
+         * 여기부터 refreshToken 정상 인증 되었을때 상황, 새로운 accessToken 생성!
+         */
         Date now = new Date();
         AuthToken newAccessToken = tokenProvider.createAuthToken(
                 userId,
@@ -128,6 +104,7 @@ public class AuthController {
         long validTime = authRefreshToken.getTokenClaims().getExpiration().getTime() - now.getTime();
 
         // refresh 토큰 기간이 3일 이하로 남은 경우, refresh 토큰 갱신
+        // refresh 토큰 기간도 주기적으로 업데이트 해줘야 한다!
         if (validTime <= THREE_DAYS_MSEC) {
             // refresh 토큰 설정
             long refreshTokenExpiry = appProperties.getAuth().getRefreshTokenExpiry();
@@ -138,9 +115,13 @@ public class AuthController {
             );
 
             // DB에 refresh 토큰 업데이트
+            // durty checking 가능함으로 값만 변경!
             userRefreshToken.setRefreshToken(authRefreshToken.getToken());
 
             int cookieMaxAge = (int) refreshTokenExpiry / 60;
+            /*
+            현재 들어있는 리프레쉬 토큰 날려버리고, 새로운 리프레쉬 토큰 쿠키에 넣어준다!
+             */
             CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
             CookieUtil.addCookie(response, REFRESH_TOKEN, authRefreshToken.getToken(), cookieMaxAge);
         }

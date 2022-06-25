@@ -3,6 +3,7 @@ package project.kiyobackend.store.domain.domain.store;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import project.kiyobackend.util.jpa.JpaBaseEntity;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Table(name = "store_image")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter
 public class StoreImage extends JpaBaseEntity {
 
     @Id
