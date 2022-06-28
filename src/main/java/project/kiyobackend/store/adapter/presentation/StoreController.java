@@ -1,6 +1,7 @@
 package project.kiyobackend.store.adapter.presentation;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -62,4 +63,17 @@ public class StoreController{
         storeRepository.save(store);
         return "success";
     }
+
+    @GetMapping("/storeGroupby")
+    public List<StoreResponseDto> getStores(StoreSearchCond storeSearchCond,Pageable pageable)
+    {
+        return storeQueryRepository.searchByPageGroupBy(storeSearchCond ,pageable);
+    }
+
+    @GetMapping("/notwork")
+    public Page<StoreResponseDto> notwork(StoreSearchCond storeSearchCond,Pageable pageable)
+    {
+        return storeQueryRepository.searchByPageNotwork(storeSearchCond ,pageable);
+    }
+
 }
