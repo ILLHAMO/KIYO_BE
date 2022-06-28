@@ -8,15 +8,14 @@ import com.querydsl.core.QueryResults;
 import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
 
-import project.kiyobackend.store.domain.domain.store.QStoreImage;
 import project.kiyobackend.store.domain.domain.store.Store;
 import project.kiyobackend.store.domain.domain.store.StoreImage;
 import project.kiyobackend.util.jpa.QueryDslUtil;
-import project.kiyobackend.util.jpa.RepositorySliceHelper;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
@@ -67,20 +66,28 @@ public class StoreQueryRepository {
         return new PageImpl<>(content,pageable,total);
     }
 
-    public Slice<Store> searchBySlice(StoreSearchCond condition, Pageable pageable)
+    public Slice<Store> searchBySlice(Long lastStoreId, StoreSearchCond condition, Pageable pageable)
     {
-
+        List<OrderSpecifier> ORDERS = getAllOrderSpecifiers(pageable);
         List<Store> results = query.selectFrom(store)
                 .where(
+                        ltStoreId(lastStoreId),
                         // Category 중복 필터링
                         eqCategory(condition.getCategoryIds()),
                         // Convenience 중복 필터링
                         eqConvenience(condition.getConvenienceIds())
                 )
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize() + 1)
+                .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new)) //TODO: 따로 정렬 기능 필요없으면 default로 내림차순 걸자
+                .limit(pageable.getPageSize()+1) // 나는 5개 요청해도 쿼리상 +시켜서 6개 들고 오게 함
                 .fetch();
-        return RepositorySliceHelper.toSlice(results,pageable);
+
+        boolean hasNext = false;
+        if(results.size() > pageable.getPageSize())
+        {
+            hasNext = true;
+            results.remove(pageable.getPageSize());
+        }
+        return new SliceImpl<>(results,pageable,hasNext);
     }
 
 
@@ -111,6 +118,13 @@ public class StoreQueryRepository {
             booleanBuilder.and(store.convenienceIds.contains(convenienceId));
         }
         return booleanBuilder;
+    }
+    private BooleanExpression ltStoreId(Long storeId) {
+        if (storeId == null) {
+            return null; // BooleanExpression 자리에 null이 반환되면 조건문에서 자동으로 제거된다
+        }
+
+        return store.id.lt(storeId);
     }
 
 

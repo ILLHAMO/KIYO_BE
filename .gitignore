@@ -20,6 +20,7 @@ bin/
 ### IntelliJ IDEA ###
 
 /src/main/resources/application.yml
+/src/test/resources/
 /src/main/generated
 .idea
 *.iws

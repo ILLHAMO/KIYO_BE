@@ -40,9 +40,9 @@ public class StoreController{
      * slice로 store 조회
      */
     @GetMapping("/getstorebyslice")
-    public Slice<StoreResponseDto> getStoreBySlice(Pageable pageable, StoreSearchCond storeSearchCond)
+    public Slice<StoreResponseDto> getStoreBySlice(@RequestParam(name = "lastStoreId") Long lastStoreId, Pageable pageable, StoreSearchCond storeSearchCond)
     {
-        Slice<Store> search = storeQueryRepository.searchBySlice(storeSearchCond, pageable);
+        Slice<Store> search = storeQueryRepository.searchBySlice(lastStoreId, storeSearchCond, pageable);
         Slice<StoreResponseDto> result = search.map(s -> new StoreResponseDto(s.getId(), s.isKids(), s.getStoreImages(), s.getName(), s.getReviewCount(), s.getBookmarkCount()));
         return result;
     }

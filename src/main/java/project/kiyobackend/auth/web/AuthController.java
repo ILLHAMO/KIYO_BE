@@ -53,12 +53,12 @@ public class AuthController {
         if (!authToken.validate()) {
             return ApiResponse.invalidAccessToken();
         }
-
         /*
          expired access token 인지 확인
          만약 아직 만료되지 않았다면 notExpiredTokenYet 반환
          */
         Claims claims = authToken.getExpiredTokenClaims();
+
         if (claims == null) {
             return ApiResponse.notExpiredTokenYet();
         }
