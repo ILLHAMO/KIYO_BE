@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import project.kiyobackend.auth.common.ApiResponse;
 
 import java.security.Key;
 import java.util.Date;
@@ -65,7 +66,7 @@ public class AuthToken {
         } catch (MalformedJwtException e) {
             log.info("Invalid JWT token.");
         } catch (ExpiredJwtException e) {
-            log.info("Expired JWT token.");
+            throw new project.kiyobackend.auth.exception.ExpiredJwtException("need refresh token");
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT token.");
         } catch (IllegalArgumentException e) {

@@ -80,8 +80,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode())
                 // admin 경로는 admin만 사용가능
                 .antMatchers("/api/**/admin/**").hasAnyAuthority(RoleType.ADMIN.getCode())
-                //.anyRequest().authenticated()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
+               // .anyRequest().permitAll()
                 .and()
                 // oauth2 로그인 활성화
                 .oauth2Login()
