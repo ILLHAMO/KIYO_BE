@@ -62,4 +62,10 @@ public class StoreController{
         storeRepository.save(store);
         return "success";
     }
+
+    @GetMapping("/api/store")
+    public String test()
+    {
+        return "login success";
+    }
 }
