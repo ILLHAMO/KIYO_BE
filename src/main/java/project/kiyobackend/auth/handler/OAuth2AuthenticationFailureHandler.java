@@ -20,6 +20,7 @@ import static project.kiyobackend.auth.repository.OAuth2AuthorizationRequestBase
 @RequiredArgsConstructor
 public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
+    // cookie 관련 저장소
     private final OAuth2AuthorizationRequestBasedOnCookieRepository authorizationRequestRepository;
 
     @Override
