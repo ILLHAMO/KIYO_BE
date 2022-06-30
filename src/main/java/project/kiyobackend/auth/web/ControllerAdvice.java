@@ -13,6 +13,8 @@ public class ControllerAdvice {
     @ExceptionHandler(ExpiredJwtException.class)
     private ResponseEntity<ErrorResponse> handleRefreshException(ExpiredJwtException e)
     {
+        System.out.println("호출!!");
         return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.OK);
     }
+
 }

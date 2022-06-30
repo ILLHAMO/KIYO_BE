@@ -65,8 +65,6 @@ public class AuthToken {
             log.info("Invalid JWT signature.");
         } catch (MalformedJwtException e) {
             log.info("Invalid JWT token.");
-        } catch (ExpiredJwtException e) {
-            throw new project.kiyobackend.auth.exception.ExpiredJwtException("need refresh token");
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT token.");
         } catch (IllegalArgumentException e) {
@@ -74,6 +72,10 @@ public class AuthToken {
         }
         return null;
     }
+
+    /**
+     * 여기서는 ExpiredJwtException이 발생해야만 claim 추출 가능하다!
+     */
     public Claims getExpiredTokenClaims() {
         try {
             Jwts.parserBuilder()
@@ -83,6 +85,7 @@ public class AuthToken {
                     .getBody();
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT token.");
+            log.info("Expired JWT token claim : " + e.getClaims());
             return e.getClaims();
         }
         return null;

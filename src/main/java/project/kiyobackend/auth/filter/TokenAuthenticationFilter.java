@@ -20,7 +20,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
-    // JwtConfig에서 bean 등록 했으므로 자동 주입 된다.
+
     private final AuthTokenProvider tokenProvider;
 
 
@@ -29,6 +29,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
         // http request의 header를 파싱하는 유틸리티 객체
         String tokenStr = HeaderUtil.getAccessToken(request);
+
         AuthToken token = tokenProvider.convertAuthToken(tokenStr);
 
         if (token.validate()) {

@@ -40,23 +40,26 @@ public class AuthController {
     @GetMapping("/refresh")
     public ApiResponse refreshToken (HttpServletRequest request, HttpServletResponse response) {
 
-        // access token 확인
+        /**
+         * access token을 Header의 Authorization에서 파싱
+         */
         String accessToken = HeaderUtil.getAccessToken(request);
-        // authToken으로 변경
 
+        /**
+         * AuthToken 객체로 변환
+         */
         AuthToken authToken = tokenProvider.convertAuthToken(accessToken);
 
-        /*
-        정상적인 토큰인지 판별하는 로직, 밑의 expired 로직을 따로 검사하기 때문에
-        이 로직은 유효 기간 이외의 조건을 판별하는 부분이다.
+        /**
+         * 정상 토큰인지 아닌지 판별,
+         * 만약 refresh로 들어왔는데 validate 하지 않으면, invalidAccessToken이라고 판별
          */
         if (!authToken.validate()) {
             return ApiResponse.invalidAccessToken();
         }
 
-        /*
-         expired access token 인지 확인
-         만약 아직 만료되지 않았다면 notExpiredTokenYet 반환
+        /**
+         * 여기서는 null이 나오면 아무 문제 없는 토큰이기 때문에 문제 발생한다.
          */
         Claims claims = authToken.getExpiredTokenClaims();
         if (claims == null) {
@@ -73,12 +76,13 @@ public class AuthController {
         String refreshToken = CookieUtil.getCookie(request, REFRESH_TOKEN)
                 .map(Cookie::getValue)
                 .orElse((null));
+
         AuthToken authRefreshToken = tokenProvider.convertAuthToken(refreshToken);
 
         /*
         refreshToken이 올바른지 체크
          */
-        if (authRefreshToken.validate()) {
+        if (!authRefreshToken.validate()) {
             return ApiResponse.invalidRefreshToken();
         }
 

@@ -21,6 +21,7 @@ public class TokenAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
         // 예외가 외부로 전파되도록 놔두지 않고 정상 흐름으로 바꿔주는 역할을 하는게 exceptionResolver다.
+        System.out.println("TokenAccessDeniedHandler#handle 호출");
         handlerExceptionResolver.resolveException(request, response, null, accessDeniedException);
     }
 }
