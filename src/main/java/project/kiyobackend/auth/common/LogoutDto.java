@@ -1,13 +1,11 @@
 package project.kiyobackend.auth.common;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Setter
-@Getter
 @AllArgsConstructor
-public class ApiResponseHeader {
-    private int code;
+@Data
+public class LogoutDto {
+    private boolean success;
     private String message;
 }

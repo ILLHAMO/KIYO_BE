@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import project.kiyobackend.auth.exception.TokenValidFailedException;
 
 import java.security.Key;
 import java.util.Arrays;
@@ -19,50 +20,45 @@ import java.util.stream.Collectors;
 public class AuthTokenProvider {
 
     private final Key key;
-    private static final String AUTHORITIES_KEY = "kiyo";
+    private static final String AUTHORITIES_KEY = "role";
 
-    public AuthTokenProvider(String secret)
-    {
+    public AuthTokenProvider(String secret) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public AuthToken createAuthToken(String id, Date expiry)
-    {
-        return new AuthToken(id,expiry,key);
+    public AuthToken createAuthToken(String id, Date expiry) {
+        return new AuthToken(id, expiry, key);
     }
 
-    public AuthToken createAuthToken(String id, String role, Date expiry)
-    {
-        return new AuthToken(id,role,expiry,key);
+    public AuthToken createAuthToken(String id, String role, Date expiry) {
+        return new AuthToken(id, role, expiry, key);
     }
 
-    // TODO : 역할 정확히 알기
-    public AuthToken convertAuthToken(String token)
-    {
-        return new AuthToken(token,key);
+    public AuthToken convertAuthToken(String token) {
+        return new AuthToken(token, key);
     }
 
-    public Authentication getAuthentication(AuthToken authToken)
-    {
+    public Authentication getAuthentication(AuthToken authToken) {
 
-        if(authToken.validate())
-        {
+            // 앞에서 유효성 검사 한번 했기 때문에 따로 안해도 된다.
+            // UserId와 권한 정보 들어있는 claims 빼오는 로직
             Claims claims = authToken.getTokenClaims();
 
-            // 권한들 모두 빼서 SimpleGrantedAuthority로 매핑
+            // 권한 정보 빼오는 로직
             Collection<? extends GrantedAuthority> authorities =
                     Arrays.stream(new String[]{claims.get(AUTHORITIES_KEY).toString()})
-                    .map(SimpleGrantedAuthority::new)
-                    .collect(Collectors.toList());
+                            .map(SimpleGrantedAuthority::new)
+                            .collect(Collectors.toList());
 
-            // 스프링 시큐리티 내부 인증용으로 사용하는 principal 객체
+            // claims의 subject에 userId가 들어있다.
+            log.debug("claims subject := [{}]", claims.getSubject());
+
+            // 유저 id와 권한 정보로 UserDetails 생성
             User principal = new User(claims.getSubject(), "", authorities);
 
+            // 결과물로 Authentication 만들어냄
             return new UsernamePasswordAuthenticationToken(principal, authToken, authorities);
-        }
-        else{
-            // TODO : 일단 일반적인 예외로 설정 차후에 TOKEN 관련 예외 커스터마이징
-            throw new IllegalStateException();
-        }
+
     }
+
 }

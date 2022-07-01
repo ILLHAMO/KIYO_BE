@@ -75,6 +75,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         RoleType roleType = hasAuthority(authorities, RoleType.ADMIN.getCode()) ? RoleType.ADMIN : RoleType.USER;
 
         Date now = new Date();
+        // 인증 성공 후 엑세스 토큰 만들어내는 로직
         AuthToken accessToken = tokenProvider.createAuthToken(
                 userInfo.getId(),
                 roleType.getCode(),
@@ -84,25 +85,33 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         // refresh 토큰 설정
         long refreshTokenExpiry = appProperties.getAuth().getRefreshTokenExpiry();
 
+        // refreshToken은 최소한의 정보만 집어넣음
         AuthToken refreshToken = tokenProvider.createAuthToken(
                 appProperties.getAuth().getTokenSecret(),
                 new Date(now.getTime() + refreshTokenExpiry)
         );
 
-        // DB 저장
+        //1. DB에서 ID로 refreshToken 찾는다.
         UserRefreshToken userRefreshToken = userRefreshTokenRepository.findByUserId(userInfo.getId());
+        //2. 기존 refreshToken 있으면 refreshtoken 값 업데이트
         if (userRefreshToken != null) {
             userRefreshToken.setRefreshToken(refreshToken.getToken());
+            userRefreshTokenRepository.saveAndFlush(userRefreshToken);
         } else {
+            //3. 기존에 없으면 새로 만들어서 저장
             userRefreshToken = new UserRefreshToken(userInfo.getId(), refreshToken.getToken());
             userRefreshTokenRepository.saveAndFlush(userRefreshToken);
         }
 
+        // cookie에 refreshToken 집어넣음
         int cookieMaxAge = (int) refreshTokenExpiry / 60;
 
+        // refresh_token이 존재하면 삭제함
+        // 한번 더 깔끔하게 삭제하고 넣어주자.
         CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
         CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
 
+        // accessToken의 경우 쿼리 파라미터로 집어넣음
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", accessToken.getToken())
                 .build().toUriString();

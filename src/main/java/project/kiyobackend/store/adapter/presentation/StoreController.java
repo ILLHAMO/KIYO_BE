@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class StoreController{
 
     private final StoreRepository storeRepository;
@@ -41,6 +42,7 @@ public class StoreController{
     @GetMapping("/getstorebyslice")
     public Slice<StoreResponseDto> getStoreBySlice(Pageable pageable, StoreSearchCond storeSearchCond)
     {
+
         Slice<Store> search = storeQueryRepository.searchBySlice(storeSearchCond, pageable);
         Slice<StoreResponseDto> result = search.map(s -> new StoreResponseDto(s.getId(), s.isKids(), s.getStoreImages(), s.getName(), s.getReviewCount(), s.getBookmarkCount()));
         return result;
@@ -63,7 +65,7 @@ public class StoreController{
         return "success";
     }
 
-    @GetMapping("/api/store")
+    @GetMapping("/store")
     public String test()
     {
         return "login success";
