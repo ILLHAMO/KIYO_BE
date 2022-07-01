@@ -2,12 +2,12 @@ package project.kiyobackend.auth.web;
 
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import project.kiyobackend.auth.common.ApiResponse;
 import project.kiyobackend.auth.config.properties.AppProperties;
 import project.kiyobackend.auth.entity.AuthReqModel;
 import project.kiyobackend.auth.entity.RoleType;
@@ -38,7 +38,7 @@ public class AuthController {
 
 
     @GetMapping("/refresh")
-    public ApiResponse refreshToken (HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<?> refreshToken (HttpServletRequest request, HttpServletResponse response) {
 
         // access token 확인
         String accessToken = HeaderUtil.getAccessToken(request);

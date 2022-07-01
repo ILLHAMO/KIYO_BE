@@ -44,7 +44,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomOAuth2UserService oAuth2UserService;
     private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
     private final UserRefreshTokenRepository userRefreshTokenRepository;
-
     /*
      * UserDetailsService 설정
      * */
@@ -57,17 +56,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                // cors 정책 적용
+                /**
+                 * cors 정책 적용
+                 */
                 .cors()
                 .and()
                 // JWT를 사용함으로 세션 사용 안함
+                /**
+                 * Session 미적용
+                 */
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 // JWT 사용함으로 아래의 쿠키 세션 로그인 방식 연관 속성 다 disable
+                /**
+                 * csrf 등 jwt 로그인 방식에는 필요없는것들 다 비활성화
+                 */
                 .csrf().disable()
                 .formLogin().disable()
                 .httpBasic().disable()
+                /**
+                 * 예외 처리 구간
+                 */
                 // 예외 발생할때 exception 처리하는 객체들 등록
                 .exceptionHandling()
                 .authenticationEntryPoint(new RestAuthenticationEntryPoint())
@@ -76,14 +86,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                // api로 시작하는 요소들은 USER 이상의 권한 있으면 다 사용 가능
+                /**
+                 * 보완 관련 부분은 다 지움
+                 */
+                .antMatchers("/auth/**","/oauth2/**")
+                .permitAll()
+                /**
+                 * api 경로는 일반 사용자 접근 가능
+                 */
                 .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode())
-                // admin 경로는 admin만 사용가능
+                /**
+                 * admin 경로는 관리자만 접근 가능!
+                 */
                 .antMatchers("/api/**/admin/**").hasAnyAuthority(RoleType.ADMIN.getCode())
-                //.anyRequest().authenticated()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
                 .and()
-                // oauth2 로그인 활성화
+                /**
+                 * 여기부터는 oauth2 로그인 활성화 부분 - 딱히 건들거 없음
+                 */
                 .oauth2Login()
                 .authorizationEndpoint()
                 // 기본 인증 경로 /oauth2/authorization

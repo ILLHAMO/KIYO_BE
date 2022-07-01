@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class StoreController{
 
     // 간단한 CRUD 전용
@@ -29,7 +30,9 @@ public class StoreController{
     @GetMapping("/store")
     public Slice<StoreResponseDto> getStoreBySlice(@RequestParam(name = "lastStoreId") Long lastStoreId, Pageable pageable, StoreSearchCond storeSearchCond)
     {
+
         Slice<Store> search = storeQueryRepository.searchBySlice(lastStoreId, storeSearchCond, pageable);
+
         Slice<StoreResponseDto> result = search.map(s -> new StoreResponseDto(s.getId(), s.isKids(), s.getStoreImages(), s.getName(), s.getReviewCount(), s.getBookmarkCount()));
         return result;
     }
@@ -46,6 +49,14 @@ public class StoreController{
         Store store = Store.createStore(storeRequestDto.getName(), storeRequestDto.getCall(), storeRequestDto.getComment(), storeRequestDto.getTime(), storeRequestDto.isKids(), storeRequestDto.getCategoryIds(), storeRequestDto.getConvenienceIds(), result, storeRequestDto.getImages());
         storeRepository.save(store);
         return "success";
+    }
+
+
+
+    @GetMapping("/store")
+    public String test()
+    {
+        return "login success";
     }
 
 }
