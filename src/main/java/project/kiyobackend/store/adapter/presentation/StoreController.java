@@ -4,6 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import project.kiyobackend.store.adapter.presentation.dto.StoreRequestDto;
 import project.kiyobackend.store.domain.domain.menu.Menu;
@@ -13,6 +16,8 @@ import project.kiyobackend.store.domain.domain.store.StoreRepository;
 import project.kiyobackend.store.query.StoreResponseDto;
 import project.kiyobackend.store.query.StoreQueryRepository;
 import project.kiyobackend.store.query.StoreSearchCond;
+
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,11 +32,14 @@ public class StoreController{
     private final StoreQueryRepository storeQueryRepository;
 
 
-    @GetMapping("/store")
+    @GetMapping("/stores")
     public Slice<StoreResponseDto> getStoreBySlice(@RequestParam(name = "lastStoreId") Long lastStoreId, Pageable pageable, StoreSearchCond storeSearchCond)
     {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails) principal;
+        String username = userDetails.getUsername();
 
-        Slice<Store> search = storeQueryRepository.searchBySlice(lastStoreId, storeSearchCond, pageable);
+        Slice<Store> search = storeQueryRepository.searchBySlice(lastStoreId,username, storeSearchCond, pageable);
 
         Slice<StoreResponseDto> result = search.map(s -> new StoreResponseDto(s.getId(), s.isKids(), s.getStoreImages(), s.getName(), s.getReviewCount(), s.getBookmarkCount()));
         return result;

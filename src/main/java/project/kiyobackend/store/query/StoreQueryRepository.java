@@ -32,10 +32,11 @@ public class StoreQueryRepository {
      * @param pageable   size 정보 들어있음
      * @return store를 Slice 타입으로 반환
      */
-    public Slice<Store> searchBySlice(Long lastStoreId, StoreSearchCond condition, Pageable pageable)
+    public Slice<Store> searchBySlice(Long lastStoreId,String username, StoreSearchCond condition, Pageable pageable)
     {
         List<Store> results = query.selectFrom(store)
                 .where(
+                        // 내가
                         // 이전 페이지 마지막 id값을 사용한 무한 스크롤 최적화
                         ltStoreId(lastStoreId),
                         // Category 중복 필터링
