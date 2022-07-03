@@ -22,19 +22,11 @@ import java.util.Map;
 public class UserPrincipal implements UserDetails, OAuth2User, OidcUser {
 
     private User user;
-    private  String userId;
-    private  String password;
-    private  SnsType snsType;
-    private  RoleType roleType;
     private  Collection<GrantedAuthority> authorities;
     private Map<String, Object> attributes;
 
-    public UserPrincipal(User user, String userId, String password, SnsType snsType, RoleType roleType, Collection<GrantedAuthority> authorities) {
+    public UserPrincipal(User user, Collection<GrantedAuthority> authorities) {
         this.user = user;
-        this.userId = userId;
-        this.password = password;
-        this.snsType = snsType;
-        this.roleType = roleType;
         this.authorities = authorities;
     }
 
@@ -49,19 +41,16 @@ public class UserPrincipal implements UserDetails, OAuth2User, OidcUser {
     }
 
     @Override
+    public String getPassword() {
+        return user.getPassword();
+    }
+
+    @Override
     public String getUsername() {
         return user.getUserId();
     }
 
-//    @Override
-//    public String getName() {
-//        return user.getUserId();
-//    }
-//
-//    @Override
-//    public String getUsername() {
-//        return user.getUserId();
-//    }
+
 
     @Override
     public boolean isAccountNonExpired() {
@@ -101,10 +90,6 @@ public class UserPrincipal implements UserDetails, OAuth2User, OidcUser {
     public static UserPrincipal create(User user) {
         return new UserPrincipal(
                 user,
-                user.getUserId(),
-                user.getPassword(),
-                user.getSnsType(),
-                RoleType.USER,
                 Collections.singletonList(new SimpleGrantedAuthority(RoleType.USER.getCode()))
         );
     }

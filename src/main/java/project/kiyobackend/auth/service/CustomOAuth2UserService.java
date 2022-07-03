@@ -17,7 +17,6 @@ import project.kiyobackend.auth.info.OAuth2UserInfoFactory;
 import project.kiyobackend.user.domain.User;
 import project.kiyobackend.user.domain.UserRepository;
 
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
