@@ -65,6 +65,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 
+        // authentication 기존에 받은거
         OAuth2AuthenticationToken authToken = (OAuth2AuthenticationToken) authentication;
         SnsType snsType = SnsType.valueOf(authToken.getAuthorizedClientRegistrationId().toUpperCase());
 
@@ -81,6 +82,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 roleType.getCode(),
                 new Date(now.getTime() + appProperties.getAuth().getTokenExpiry())
         );
+
+        // 뭐 그냥 더 보안적으로 훌륭하게 만들어놨나보네...
 
         // refresh 토큰 설정
         long refreshTokenExpiry = appProperties.getAuth().getRefreshTokenExpiry();
@@ -108,7 +111,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         // refresh_token이 존재하면 삭제함
         // 한번 더 깔끔하게 삭제하고 넣어주자.
-        CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
+      //  CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
         CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
 
         // accessToken의 경우 쿼리 파라미터로 집어넣음

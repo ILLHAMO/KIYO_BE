@@ -17,10 +17,14 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        // 실제 저장소에서 사용자를 찾는다.
         User user = userRepository.findByUserId(username);
+        // 사용자가 없다면 예외 발생
         if (user == null) {
             throw new UsernameNotFoundException("Can not find username.");
         }
+        // UserDetails를 구현한 UserPrincipal 사용
         return UserPrincipal.create(user);
     }
 }

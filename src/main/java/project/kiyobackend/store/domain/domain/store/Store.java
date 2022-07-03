@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import project.kiyobackend.bookmark.domain.BookMark;
 import project.kiyobackend.review.domain.domain.Review;
 import project.kiyobackend.category.domain.CategoryId;
 import project.kiyobackend.convenience.domain.ConvenienceId;
@@ -68,6 +69,9 @@ public class Store extends JpaBaseEntity {
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY)
     private List<Review> reviews = new ArrayList<>();
 
+    @OneToMany(mappedBy = "store",fetch = FetchType.LAZY)
+    private List<BookMark> bookMarks = new ArrayList<>();
+
     private int bookmarkCount;
 
     private int reviewCount;
@@ -76,6 +80,8 @@ public class Store extends JpaBaseEntity {
     private String time;
 
     private boolean isKids;
+
+    private boolean isBooked  = false;
 
     private boolean isAssigned;
     /**
@@ -97,6 +103,11 @@ public class Store extends JpaBaseEntity {
             storeImage.setStore(this);
 
         }
+    }
+
+    public void setIsBooked(boolean check)
+    {
+        this.isBooked = check;
     }
 
     public Store(String name,  String call, Comment comment, String time, boolean isKids,List<Long> categoryIds, List<Long> convenienceIds) {

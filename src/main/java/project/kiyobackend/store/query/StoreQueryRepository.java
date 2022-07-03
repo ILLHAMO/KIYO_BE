@@ -26,13 +26,11 @@ public class StoreQueryRepository {
     }
 
     /**
-     * Slice를 사용하면 count 쿼리를 생략함으로써 성능 최적화 가능
-     * @param lastStoreId 페이징 최적화 기법, 이전에 조회한 id중 가장 마지막을 제공하고 그 다음 id 부터 다시 조회
-     * @param condition  카테고리, 서비스 필터링 동적 쿼리
-     * @param pageable   size 정보 들어있음
-     * @return store를 Slice 타입으로 반환
+     * 기능 1. 페이징 기능, 마지막 가게 정보를 기준으로 Slice 조회 한다.
+     * 기능 2. 동적 쿼리 기능, 카테고리 별로 동적 쿼리 가능하다.
+     * 기능 3. 사용자가 좋아요 누른 가게는 조회 시에 마크해준다.
      */
-    public Slice<Store> searchBySlice(Long lastStoreId,String username, StoreSearchCond condition, Pageable pageable)
+    public Slice<Store> searchBySlice(Long lastStoreId, StoreSearchCond condition, Pageable pageable)
     {
         List<Store> results = query.selectFrom(store)
                 .where(
@@ -99,6 +97,7 @@ public class StoreQueryRepository {
 
         return store.id.lt(storeId);
     }
+
 
 
 

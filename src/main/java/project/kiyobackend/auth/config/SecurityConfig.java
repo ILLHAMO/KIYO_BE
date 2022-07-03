@@ -106,7 +106,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                  */
                 .oauth2Login()
                 .authorizationEndpoint()
-                // 기본 인증 경로 /oauth2/authorization
+                // 기본 인가 경로 /oauth2/authorization
                 .baseUri("/oauth2/authorization")
                 .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())
                 .and()
@@ -195,4 +195,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         corsConfigSource.registerCorsConfiguration("/**", corsConfig);
         return corsConfigSource;
     }
+
+
 }

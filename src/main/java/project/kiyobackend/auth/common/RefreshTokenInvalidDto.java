@@ -9,4 +9,6 @@ public class RefreshTokenInvalidDto {
     private int code;
     private boolean success;
     private String message;
+
+
 }

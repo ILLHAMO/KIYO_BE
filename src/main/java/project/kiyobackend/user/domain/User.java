@@ -9,6 +9,7 @@ import lombok.Setter;
 import project.kiyobackend.QnA.domain.QnA;
 import project.kiyobackend.auth.entity.SnsType;
 import project.kiyobackend.auth.entity.RoleType;
+import project.kiyobackend.bookmark.domain.BookMark;
 import project.kiyobackend.review.domain.domain.Review;
 import project.kiyobackend.util.jpa.JpaBaseEntity;
 
@@ -51,6 +52,10 @@ public class User extends JpaBaseEntity {
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private List<QnA> qnAs = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    private List<BookMark> bookMarks = new ArrayList<>();
+
 
     // password는 따로 필요 없다.
     @JsonIgnore
