@@ -9,7 +9,8 @@ name: KIYO
 
 on:
   push:
-    branches: develop
+    branches: 
+      - develop
 
 jobs:
   build:
