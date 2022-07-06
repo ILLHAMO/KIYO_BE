@@ -23,7 +23,15 @@ jobs:
       with:
        distribution: 'temurin'
        java-version: '11'
-        
+    
+    - name: Setup MySQL
+      uses: samin/mysql-action@v1
+      with:
+        character set server: 'utf8' 
+        mysql database: 'kiyodb' 
+        mysql user: 'root'
+        mysql password: 4321
+
     - name : make application.yml
       if: contains(github.ref,'develop')
       run: | 
