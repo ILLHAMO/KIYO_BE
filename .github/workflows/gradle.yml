@@ -26,7 +26,6 @@ jobs:
           mysql password: 4321
 
       - name : make application.yml
-        if: contains(github.ref,'develop')
         run: |
           cd ./src/test/resources
           touch ./application.yml
