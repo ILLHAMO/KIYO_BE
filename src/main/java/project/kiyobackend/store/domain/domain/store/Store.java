@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import project.kiyobackend.bookmark.domain.BookMark;
 import project.kiyobackend.review.domain.domain.Review;
 import project.kiyobackend.category.domain.CategoryId;
 import project.kiyobackend.convenience.domain.ConvenienceId;
@@ -68,6 +69,9 @@ public class Store extends JpaBaseEntity {
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY)
     private List<Review> reviews = new ArrayList<>();
 
+    @OneToMany(mappedBy = "store",fetch = FetchType.LAZY)
+    private List<BookMark> bookMarks = new ArrayList<>();
+
     private int bookmarkCount;
 
     private int reviewCount;
@@ -76,6 +80,8 @@ public class Store extends JpaBaseEntity {
     private String time;
 
     private boolean isKids;
+
+    private boolean isBooked  = false;
 
     private boolean isAssigned;
     /**
@@ -99,6 +105,11 @@ public class Store extends JpaBaseEntity {
         }
     }
 
+    public void setIsBooked(boolean check)
+    {
+        this.isBooked = check;
+    }
+
     public Store(String name,  String call, Comment comment, String time, boolean isKids,List<Long> categoryIds, List<Long> convenienceIds) {
         this.name = name; // 가게 이름
         this.call = call; // 가게 전화번호 주소는 잠시 삭제
@@ -119,6 +130,20 @@ public class Store extends JpaBaseEntity {
         store.setMenus(menus);
         store.setStoreImages(storeImages);
         return store;
+    }
+
+    public void addBookmarkCount()
+    {
+        this.bookmarkCount+=1;
+    }
+
+    public void minusBookmarkCount()
+    {
+        if(bookmarkCount < 1)
+        {
+            throw new IllegalArgumentException("북마크 개수가 0보다 작습니다.");
+        }
+        this.bookmarkCount -= 1;
     }
 
 

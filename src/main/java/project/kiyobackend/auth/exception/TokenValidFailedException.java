@@ -1,14 +1,12 @@
 package project.kiyobackend.auth.exception;
 
-public class TokenValidFailedException extends RuntimeException{
+public class TokenValidFailedException extends RuntimeException {
 
-    public TokenValidFailedException()
-    {
-        super("토큰 생성에 실패했습니다.");
+    public TokenValidFailedException() {
+        super("Failed to generate Token.");
     }
 
-    private TokenValidFailedException(String message)
-    {
+    private TokenValidFailedException(String message) {
         super(message);
     }
 }

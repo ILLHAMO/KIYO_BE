@@ -1,9 +1,6 @@
 package project.kiyobackend.auth.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,19 +15,32 @@ import java.util.Collections;
 import java.util.Map;
 
 
-// TODO : OidcUser 공부!
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class UserPrincipal implements UserDetails, OAuth2User, OidcUser {
 
-    private final String userId;
-    private final String password;
-    private final SnsType snsType;
-    private final RoleType roleType;
-    private final Collection<GrantedAuthority> authorities;
+    private User user;
+    private  Collection<GrantedAuthority> authorities;
     private Map<String, Object> attributes;
+
+    public UserPrincipal(User user, Collection<GrantedAuthority> authorities) {
+        this.user = user;
+        this.authorities = authorities;
+    }
+
+    public static UserPrincipal create(User user) {
+        return new UserPrincipal(
+                user,
+                Collections.singletonList(new SimpleGrantedAuthority(RoleType.USER.getCode()))
+        );
+    }
+    public static UserPrincipal create(User user, Map<String, Object> attributes) {
+        UserPrincipal userPrincipal = create(user);
+        userPrincipal.setAttributes(attributes);
+
+        return userPrincipal;
+    }
 
     @Override
     public Map<String, Object> getAttributes() {
@@ -43,14 +53,16 @@ public class UserPrincipal implements UserDetails, OAuth2User, OidcUser {
     }
 
     @Override
-    public String getName() {
-        return userId;
+    public String getPassword() {
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return userId;
+        return user.getUserId();
     }
+
+
 
     @Override
     public boolean isAccountNonExpired() {
@@ -87,21 +99,11 @@ public class UserPrincipal implements UserDetails, OAuth2User, OidcUser {
         return null;
     }
 
-    public static UserPrincipal create(User user) {
-        return new UserPrincipal(
-                user.getUserId(),
-                user.getPassword(),
-                user.getSnsType(),
-                RoleType.USER,
-                Collections.singletonList(new SimpleGrantedAuthority(RoleType.USER.getCode()))
-        );
+
+
+
+    @Override
+    public String getName() {
+        return user.getUserId();
     }
-    public static UserPrincipal create(User user, Map<String, Object> attributes) {
-        UserPrincipal userPrincipal = create(user);
-        userPrincipal.setAttributes(attributes);
-
-        return userPrincipal;
-    }
-
-
 }

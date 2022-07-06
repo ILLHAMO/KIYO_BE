@@ -1,65 +1,72 @@
 package project.kiyobackend.store.adapter.presentation;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import project.kiyobackend.convenience.domain.ConvenienceRepository;
+import org.springframework.web.multipart.MultipartFile;
+import project.kiyobackend.auth.entity.CurrentUser;
+import project.kiyobackend.bookmark.domain.BookMark;
 import project.kiyobackend.store.adapter.presentation.dto.StoreRequestDto;
-import project.kiyobackend.store.domain.domain.menu.Menu;
-import project.kiyobackend.store.domain.domain.menu.MenuOption;
+import project.kiyobackend.store.application.StoreService;
 import project.kiyobackend.store.domain.domain.store.Store;
-import project.kiyobackend.store.domain.domain.store.StoreRepository;
 import project.kiyobackend.store.query.StoreResponseDto;
-import project.kiyobackend.store.query.StoreQueryRepository;
 import project.kiyobackend.store.query.StoreSearchCond;
-
+import project.kiyobackend.user.domain.User;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
+import java.util.Optional;
 
+
+@Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class StoreController{
 
-    private final StoreRepository storeRepository;
-    private final StoreQueryRepository storeQueryRepository;
+    private final StoreService storeService;
 
-    /**
-     * page로 store 조회
-     */
-    @GetMapping("/getstorebypage")
-    public Page<StoreResponseDto> getStoreByPage( Pageable pageable,StoreSearchCond storeSearchCond)
+    @GetMapping("/stores")
+    public Slice<StoreResponseDto> getStoreBySlice(@CurrentUser User currentUser ,   @RequestParam(name = "lastStoreId") Long lastStoreId, Pageable pageable, StoreSearchCond storeSearchCond)
     {
-        Page<Store> search = storeQueryRepository.searchByPage(storeSearchCond, pageable);
-        return search.map(s->new StoreResponseDto(s.getId(),s.isKids(),s.getStoreImages(),s.getName(),s.getReviewCount(),s.getBookmarkCount()));
+
+        Slice<Store> search = storeService.getStore(lastStoreId,storeSearchCond,pageable);
+
+        List<BookMark> bookMarks = currentUser.getBookMarks();
+
+        checkCurrentUserBookmarked(search,bookMarks);
+
+        return search.map(s -> new StoreResponseDto(s.getId(),
+                s.isKids(),
+                s.getStoreImages(),
+                s.getName(),
+                s.getReviewCount(),
+                s.getBookmarkCount(),
+                s.isBooked()));
     }
 
-    /**
-     * slice로 store 조회
-     */
-    @GetMapping("/getstorebyslice")
-    public Slice<StoreResponseDto> getStoreBySlice(Pageable pageable, StoreSearchCond storeSearchCond)
+    @PostMapping(value = "/store")
+    public Long saveStore(
+            @RequestPart(name = "meta_data") StoreRequestDto storeRequestDto,
+            @RequestPart(name = "multipartFiles") List<MultipartFile> multipartFiles )
     {
-        Slice<Store> search = storeQueryRepository.searchBySlice(storeSearchCond, pageable);
-        Slice<StoreResponseDto> result = search.map(s -> new StoreResponseDto(s.getId(), s.isKids(), s.getStoreImages(), s.getName(), s.getReviewCount(), s.getBookmarkCount()));
-        return result;
+        return storeService.saveStore(multipartFiles,storeRequestDto);
     }
 
-    /**
-     * store 생성
-     */
-    @PostMapping("/store")
-    public String saveStore(@RequestBody StoreRequestDto storeRequestDto)
+    public void checkCurrentUserBookmarked(Slice<Store> search,List<BookMark> bookMarks)
     {
-        List<Menu> result = storeRequestDto.getMenus().stream().map(m ->
-                new Menu(m.getName()
-                        , m.getMenuOptions().stream().map(mo -> new MenuOption(mo.getName()))
-                        .collect(Collectors.toList())
-                )
-        ).collect(Collectors.toList());
-        Store store = Store.createStore(storeRequestDto.getName(), storeRequestDto.getCall(), storeRequestDto.getComment(), storeRequestDto.getTime(), storeRequestDto.isKids(), storeRequestDto.getCategoryIds(), storeRequestDto.getConvenienceIds(), result, storeRequestDto.getImages());
-        storeRepository.save(store);
-        return "success";
+        if(!bookMarks.isEmpty())
+        {
+            for(BookMark bookMark : bookMarks)
+            {
+                Long storeId = bookMark.getStore().getId();
+                Optional<Store> storeOpt = search.getContent().stream().filter(
+                        store -> Objects.equals(store.getId(), storeId)
+                ).findFirst();
+                storeOpt.ifPresent(store -> store.setIsBooked(true));
+            }
+        }
     }
 }
