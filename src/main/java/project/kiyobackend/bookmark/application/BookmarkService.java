@@ -48,6 +48,5 @@ public class BookmarkService {
             return true;
         }
         return false;
-
     }
 }
