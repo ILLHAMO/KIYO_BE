@@ -2,6 +2,7 @@ package project.kiyobackend.category.presentation;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import project.kiyobackend.category.domain.Category;
 import project.kiyobackend.category.domain.CategoryRepository;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class CategoryController {
 
     private final CategoryRepository categoryRepository;
