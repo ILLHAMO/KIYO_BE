@@ -62,9 +62,12 @@ public class StoreControllerTest {
                     Arrays.asList(1L, 2L),
                     Arrays.asList(3L, 4L)));
         }
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal principal = (UserPrincipal)authentication.getPrincipal();
+        // 현재 사용자 정보
         User user = principal.getUser();
+
         for(int j = 0; j < 30; j++)
         {
             bookmarkService.addLike(user,2L*j+1l);
@@ -88,10 +91,6 @@ public class StoreControllerTest {
               .contentType(MediaType.APPLICATION_JSON))
               .andExpect(MockMvcResultMatchers.status().isOk())
               .andDo(MockMvcResultHandlers.print());
-
   }
-
-
-
 
 }

@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import project.kiyobackend.auth.entity.CurrentUser;
 import project.kiyobackend.bookmark.domain.BookMark;
 import project.kiyobackend.store.adapter.presentation.dto.StoreRequestDto;
@@ -27,7 +29,7 @@ public class StoreController{
     private final StoreService storeService;
 
     @GetMapping("/stores")
-    public Slice<StoreResponseDto> getStoreBySlice(@CurrentUser User currentUser , @RequestParam(name = "lastStoreId") Long lastStoreId, Pageable pageable, StoreSearchCond storeSearchCond)
+    public Slice<StoreResponseDto> getStoreBySlice(@CurrentUser User currentUser ,   @RequestParam(name = "lastStoreId") Long lastStoreId, Pageable pageable, StoreSearchCond storeSearchCond)
     {
 
         Slice<Store> search = storeService.getStore(lastStoreId,storeSearchCond,pageable);
@@ -45,10 +47,12 @@ public class StoreController{
                 s.isBooked()));
     }
 
-    @PostMapping("/store")
-    public Long saveStore(@RequestBody StoreRequestDto storeRequestDto)
+    @PostMapping(value = "/store")
+    public Long saveStore(
+            @RequestPart(name = "meta_data") StoreRequestDto storeRequestDto,
+            @RequestPart(name = "multipartFiles") List<MultipartFile> multipartFiles )
     {
-        return storeService.saveStore(storeRequestDto);
+        return storeService.saveStore(multipartFiles,storeRequestDto);
     }
 
     public void checkCurrentUserBookmarked(Slice<Store> search,List<BookMark> bookMarks)

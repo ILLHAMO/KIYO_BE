@@ -37,7 +37,7 @@ public class User extends JpaBaseEntity {
     /*
     실제 user 구분에 사용되는 값, OAuth2User의 id값을 사용한다.
      */
-    @Column(name = "user_id", length = 64, unique = true)
+    @Column(name = "user_id", length = 64)
     private String userId;
 
     @Column(name = "username", length = 100)
