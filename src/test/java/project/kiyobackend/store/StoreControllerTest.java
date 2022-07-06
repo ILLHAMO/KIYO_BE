@@ -53,15 +53,15 @@ public class StoreControllerTest {
                 .apply(SecurityMockMvcConfigurers.springSecurity())
                 .build();
 
-//        for(int i = 0; i < 100; i++)
-//        {
-//            storeRepository.save(new Store("상점"+i,
-//                    "010-2757-2345",
-//                    new Comment("simple", "detail"),
-//                    "20:00", true,
-//                    Arrays.asList(1L, 2L),
-//                    Arrays.asList(3L, 4L)));
-//        }
+        for(int i = 0; i < 100; i++)
+        {
+            storeRepository.save(new Store("상점"+i,
+                    "010-2757-2345",
+                    new Comment("simple", "detail"),
+                    "20:00", true,
+                    Arrays.asList(1L, 2L),
+                    Arrays.asList(3L, 4L)));
+        }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal principal = (UserPrincipal)authentication.getPrincipal();

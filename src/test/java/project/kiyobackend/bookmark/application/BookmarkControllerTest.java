@@ -47,18 +47,18 @@ class BookmarkControllerTest {
                 .build();
 
         // 테스트용 상점 정보
-//        storeRepository.save(new Store("상점1",
-//                "010-2757-2345",
-//                new Comment("simple", "detail"),
-//                "20:00", true,
-//                Arrays.asList(1L, 2L),
-//                Arrays.asList(3L, 4L)));
-//        storeRepository.save(new Store("상점2",
-//                "010-2757-2345",
-//                new Comment("simple", "detail"),
-//                "20:00", true,
-//                Arrays.asList(1L, 2L),
-//                Arrays.asList(3L, 4L)));
+        storeRepository.save(new Store("상점1",
+                "010-2757-2345",
+                new Comment("simple", "detail"),
+                "20:00", true,
+                Arrays.asList(1L, 2L),
+                Arrays.asList(3L, 4L)));
+        storeRepository.save(new Store("상점2",
+                "010-2757-2345",
+                new Comment("simple", "detail"),
+                "20:00", true,
+                Arrays.asList(1L, 2L),
+                Arrays.asList(3L, 4L)));
 
 
     }

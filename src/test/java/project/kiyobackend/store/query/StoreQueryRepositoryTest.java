@@ -37,15 +37,15 @@ class StoreQueryRepositoryTest {
         }
     }
 
-//    @BeforeEach
-//    public void addStore()
-//    {
-//        for(int i = 0; i < 100; i++)
-//        {
-//            storeRepository.save(new Store("jemin"+i,"1234",new Comment("hello","hi"),"2020",
-//                    true, List.of(1L,2L),List.of(3L,4L)));
-//        }
-//    }
+    @BeforeEach
+    public void addStore()
+    {
+        for(int i = 0; i < 100; i++)
+        {
+            storeRepository.save(new Store("jemin"+i,"1234",new Comment("hello","hi"),"2020",
+                    true, List.of(1L,2L),List.of(3L,4L)));
+        }
+    }
 
 
 
