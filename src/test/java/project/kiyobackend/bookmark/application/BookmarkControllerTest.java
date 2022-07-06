@@ -46,7 +46,7 @@ class BookmarkControllerTest {
                 .webAppContextSetup(context)
                 .apply(SecurityMockMvcConfigurers.springSecurity())
                 .build();
-        // 테스트용 상점 정보
+
         storeRepository.save(new Store("상점1",
                 "010-2757-2345",
                 new Comment("simple", "detail"),
