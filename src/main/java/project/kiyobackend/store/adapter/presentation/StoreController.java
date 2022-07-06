@@ -34,13 +34,14 @@ public class StoreController{
 
         Slice<Store> search = storeService.getStore(lastStoreId,storeSearchCond,pageable);
 
-        List<BookMark> bookMarks = currentUser.getBookMarks();
+      //  List<BookMark> bookMarks = currentUser.getBookMarks();
 
-        checkCurrentUserBookmarked(search,bookMarks);
+     //   checkCurrentUserBookmarked(search,bookMarks);
 
         return search.map(s -> new StoreResponseDto(s.getId(),
                 s.isKids(),
                 s.getStoreImages(),
+                s.getAddress(),
                 s.getName(),
                 s.getReviewCount(),
                 s.getBookmarkCount(),
@@ -49,7 +50,7 @@ public class StoreController{
 
     @PostMapping(value = "/store")
     public Long saveStore(
-            @RequestPart(name = "meta_data") StoreRequestDto storeRequestDto,
+            @RequestPart(name = "meta_data",required = false) StoreRequestDto storeRequestDto,
             @RequestPart(name = "multipartFiles") List<MultipartFile> multipartFiles )
     {
         return storeService.saveStore(multipartFiles,storeRequestDto);

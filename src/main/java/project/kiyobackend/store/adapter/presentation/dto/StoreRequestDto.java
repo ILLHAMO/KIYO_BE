@@ -17,6 +17,7 @@ public class StoreRequestDto implements Serializable {
     private String call;
     private boolean kids;
     private String time;
+    private String address;
     private Comment comment;
     private List<MenuRequestDto> menus;
     private List<Long> categoryIds;
