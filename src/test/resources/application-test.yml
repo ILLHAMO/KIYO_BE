@@ -1,4 +1,16 @@
-decorator:
+spring:
   datasource:
-    p6spy:
-      enable-logging: false
+    url: jdbc:mysql://localhost:3306/kiyodb?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: 4321
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+      defer-datasource-initialization: true
+      hibernate:
+        ddl-auto: create
+      properties:
+        format_sql: true
+        hibernate:
+          default_batch_fetch_size: 100
+          format_sql: true
+          dialect : org.hibernate.dialect.MySQL5Dialect
