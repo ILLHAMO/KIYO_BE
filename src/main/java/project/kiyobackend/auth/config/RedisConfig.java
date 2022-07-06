@@ -13,18 +13,22 @@ import project.kiyobackend.auth.entity.Token;
 public class RedisConfig {
 
     @Bean
-    public RedisConnectionFactory redisConnectionFactory() {
+    public RedisConnectionFactory redisConnectionFactory()
+    {
         LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory();
         return lettuceConnectionFactory;
     }
+
     @Bean
-    public RedisTemplate<String, Object> redisTemplate() {
+    public RedisTemplate<String, Object> redisTemplate()
+    {
+        // key ,value 쌍으로 저장하기 위한 작업
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
 
-        //객체를 json 형태로 깨지지 않고 받기 위한 직렬화 작업
         redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(Token.class));
         return redisTemplate;
     }
+
 }

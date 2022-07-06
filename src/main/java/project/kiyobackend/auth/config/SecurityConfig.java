@@ -95,6 +95,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                  * api 경로는 일반 사용자 접근 가능
                  */
                 .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode())
+                //
                 /**
                  * admin 경로는 관리자만 접근 가능!
                  */

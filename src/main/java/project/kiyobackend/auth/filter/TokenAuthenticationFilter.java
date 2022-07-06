@@ -28,9 +28,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private final AuthTokenProvider tokenProvider;
 
     @Override
-    protected void doFilterInternal(
-            HttpServletRequest request,
-            HttpServletResponse response,
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
             FilterChain filterChain)  throws ServletException, IOException {
 
         // 클라이언트가 보내준 토큰 찾아온다.
@@ -39,15 +37,12 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         // 객체로 변환해준다.
         AuthToken token = tokenProvider.convertAuthToken(tokenStr);
 
-
-        // 만약에 아무런 문제 없다면?
         if (token.validate()) {
-            // 권한 정보 얻어서
+
             Authentication authentication = tokenProvider.getAuthentication(token);
-            // SecurityContextHolder에 저장해주면 됨, 나중에 authentication에서 userId 파싱해서 사용하면 됨
+
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-
         filterChain.doFilter(request, response);
     }
 

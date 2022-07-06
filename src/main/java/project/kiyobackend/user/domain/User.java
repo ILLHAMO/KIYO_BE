@@ -38,11 +38,9 @@ public class User extends JpaBaseEntity {
     실제 user 구분에 사용되는 값, OAuth2User의 id값을 사용한다.
      */
     @Column(name = "user_id", length = 64, unique = true)
-    @NotNull
     private String userId;
 
     @Column(name = "username", length = 100)
-    @NotNull
     private String username;
 
     private String nickname;
@@ -60,47 +58,33 @@ public class User extends JpaBaseEntity {
     // password는 따로 필요 없다.
     @JsonIgnore
     @Column(name = "password", length = 128)
-    @NotNull
     private String password;
 
     @Column(name = "email", length = 512, unique = true)
-    @NotNull
     private String email;
 
     @Column(name = "EMAIL_VERIFIED_YN", length = 1)
-    @NotNull
     private String emailVerifiedYn;
 
     @Column(name = "PROFILE_IMAGE_URL", length = 512)
-    @NotNull
     private String profileImageUrl;
 
     @Column(name = "SNS_TYPE", length = 20)
     @Enumerated(EnumType.STRING)
-    @NotNull
     private SnsType snsType;
 
     @Column(name = "ROLE_TYPE", length = 20)
     @Enumerated(EnumType.STRING)
-    @NotNull
     private RoleType roleType;
 
-//    @Column(name = "CREATED_AT")
-//    @NotNull
-//    private LocalDateTime createdAt;
-//
-//    @Column(name = "MODIFIED_AT")
-//    @NotNull
-//    private LocalDateTime modifiedAt;
-
     public User(
-            @NotNull  String userId,
-            @NotNull String username,
-            @NotNull String email,
-            @NotNull String emailVerifiedYn,
-            @NotNull String profileImageUrl,
-            @NotNull SnsType snsType,
-            @NotNull RoleType roleType
+              String userId,
+             String username,
+             String email,
+             String emailVerifiedYn,
+             String profileImageUrl,
+             SnsType snsType,
+             RoleType roleType
     ) {
         this.userId = userId;
         this.username = username;

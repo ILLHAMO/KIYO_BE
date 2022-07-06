@@ -132,5 +132,19 @@ public class Store extends JpaBaseEntity {
         return store;
     }
 
+    public void addBookmarkCount()
+    {
+        this.bookmarkCount+=1;
+    }
+
+    public void minusBookmarkCount()
+    {
+        if(bookmarkCount < 1)
+        {
+            throw new IllegalArgumentException("북마크 개수가 0보다 작습니다.");
+        }
+        this.bookmarkCount -= 1;
+    }
+
 
 }

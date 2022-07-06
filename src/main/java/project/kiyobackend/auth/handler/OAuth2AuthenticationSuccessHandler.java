@@ -83,8 +83,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 new Date(now.getTime() + appProperties.getAuth().getTokenExpiry())
         );
 
-        // 뭐 그냥 더 보안적으로 훌륭하게 만들어놨나보네...
-
         // refresh 토큰 설정
         long refreshTokenExpiry = appProperties.getAuth().getRefreshTokenExpiry();
 

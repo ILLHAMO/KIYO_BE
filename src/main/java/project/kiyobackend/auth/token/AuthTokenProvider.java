@@ -31,8 +31,10 @@ public class AuthTokenProvider {
     private final CustomUserDetailsService userDetailsService;
 
     public AuthTokenProvider(CustomUserDetailsService userDetailsService,String secret) {
+
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
         this.userDetailsService = userDetailsService;
+
     }
 
     public AuthToken createAuthToken(String id, Date expiry) {
@@ -48,10 +50,11 @@ public class AuthTokenProvider {
     }
 
     public Authentication getAuthentication(AuthToken authToken) {
-
         UserDetails userDetails = userDetailsService.loadUserByUsername(authToken.getTokenClaims().getSubject());
         return new UsernamePasswordAuthenticationToken(userDetails, authToken, userDetails.getAuthorities());
 
     }
 
+
 }
+

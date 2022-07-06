@@ -17,49 +17,37 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BookmarkService {
 
-    private final UserRepository userRepository;
     private final StoreRepository storeRepository;
     private final BookmarkRepository bookmarkRepository;
 
-    public boolean addLike(String userId, Long storeId)
+    public boolean addLike(User user, Long storeId)
     {
+        // 상점중에서 해당 id로 조회
         Store store = storeRepository.findById(storeId).orElseThrow(() -> new IllegalArgumentException());
-        User user = userRepository.findByUserId(userId);
 
-        // 만약 아직 등록되지 않았다면 추가 가능하다
-        if(isNotRegisteredLike(store,user))
+        Optional<BookMark> bookMark = bookmarkRepository.findByUserAndStore(user, store);
+
+        if(bookMark.isEmpty())
         {
              bookmarkRepository.save(new BookMark(user,store));
+             store.addBookmarkCount();
              return true;
         }
         return false;
 
     }
 
-    public boolean removeLike(String userId, Long storeId)
+    public boolean removeLike(User user, Long storeId)
     {
         Store store = storeRepository.findById(storeId).orElseThrow(() -> new IllegalArgumentException());
-        User user = userRepository.findByUserId(userId);
-
         Optional<BookMark> bookMark = bookmarkRepository.findByUserAndStore(user, store);
         if(bookMark.isPresent())
         {
             bookmarkRepository.delete(bookMark.get());
+            store.minusBookmarkCount();
             return true;
         }
         return false;
 
-    }
-
-
-    // 아직 북마크 등록이 안된게 맞는지 체크하는 로직
-    private boolean isNotRegisteredLike(Store store, User user)
-    {
-        return bookmarkRepository.findByUserAndStore(user,store).isEmpty();
-    }
-
-    private boolean isRegisteredLike(Store store, User user)
-    {
-        return bookmarkRepository.findByUserAndStore(user,store).isPresent();
     }
 }

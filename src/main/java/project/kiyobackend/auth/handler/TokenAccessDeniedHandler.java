@@ -22,7 +22,6 @@ public class TokenAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
 
         // 스프링 시큐리티 인가 예외들이 오는 곳이다.
-
         handlerExceptionResolver.resolveException(request, response, null, accessDeniedException);
     }
 }

@@ -73,8 +73,10 @@ public class AuthController {
                     .map(Cookie::getValue)
                     .orElse((null));
 
+            //1-2. 토큰 객체로 변환
             AuthToken authRefreshToken = tokenProvider.convertAuthToken(refreshToken);
 
+            // 만약 refreshtoken이 정상이 아니라면 재 로그인 필요
             if (!authRefreshToken.validate()) {
                 return ResponseEntity.ok(new RefreshTokenInvalidDto(401,false,"재로그인 필요"));// invalid refreshToken 나오면 로그아웃
             }
@@ -91,8 +93,11 @@ public class AuthController {
             //1-4. refreshToken 엔티티 내부에는 userId 존재
             //1-5. 지금 토큰 발행하려는 사람의 정보 얻어옴
             String userId = byRefreshToken.get().getUserId();
+
             User byUserId = userRepository.findByUserId(userId);
+
             System.out.println("userId : " + byUserId.getUserId());
+
             RoleType roleType = byUserId.getRoleType();
 
             //2. 새로운 accessToken 만들어냄
@@ -105,6 +110,7 @@ public class AuthController {
             );
 
             long validTime = authRefreshToken.getTokenClaims().getExpiration().getTime() - now.getTime();
+
             if (validTime <= THREE_DAYS_MSEC) {
                 // refresh 토큰 설정
                 long refreshTokenExpiry = appProperties.getAuth().getRefreshTokenExpiry();

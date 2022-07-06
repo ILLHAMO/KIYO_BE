@@ -15,7 +15,6 @@ import java.util.Collections;
 import java.util.Map;
 
 
-// TODO : OidcUser 공부!
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,6 +27,19 @@ public class UserPrincipal implements UserDetails, OAuth2User, OidcUser {
     public UserPrincipal(User user, Collection<GrantedAuthority> authorities) {
         this.user = user;
         this.authorities = authorities;
+    }
+
+    public static UserPrincipal create(User user) {
+        return new UserPrincipal(
+                user,
+                Collections.singletonList(new SimpleGrantedAuthority(RoleType.USER.getCode()))
+        );
+    }
+    public static UserPrincipal create(User user, Map<String, Object> attributes) {
+        UserPrincipal userPrincipal = create(user);
+        userPrincipal.setAttributes(attributes);
+
+        return userPrincipal;
     }
 
     @Override
@@ -87,18 +99,7 @@ public class UserPrincipal implements UserDetails, OAuth2User, OidcUser {
         return null;
     }
 
-    public static UserPrincipal create(User user) {
-        return new UserPrincipal(
-                user,
-                Collections.singletonList(new SimpleGrantedAuthority(RoleType.USER.getCode()))
-        );
-    }
-    public static UserPrincipal create(User user, Map<String, Object> attributes) {
-        UserPrincipal userPrincipal = create(user);
-        userPrincipal.setAttributes(attributes);
 
-        return userPrincipal;
-    }
 
 
     @Override
