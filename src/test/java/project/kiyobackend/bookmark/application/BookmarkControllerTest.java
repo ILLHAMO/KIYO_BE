@@ -19,6 +19,7 @@ import project.kiyobackend.store.domain.domain.store.Comment;
 import project.kiyobackend.store.domain.domain.store.Store;
 import project.kiyobackend.store.domain.domain.store.StoreRepository;
 
+import project.kiyobackend.user.domain.User;
 import project.kiyobackend.user.domain.UserRepository;
 
 
@@ -45,7 +46,6 @@ class BookmarkControllerTest {
                 .webAppContextSetup(context)
                 .apply(SecurityMockMvcConfigurers.springSecurity())
                 .build();
-
         // 테스트용 상점 정보
         storeRepository.save(new Store("상점1",
                 "010-2757-2345",
