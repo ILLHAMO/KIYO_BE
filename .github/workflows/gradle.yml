@@ -17,11 +17,10 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
       - name: Setup MySQL
-        uses: mirromutth/mysql-action@v1.1
+        uses: samin/mysql-action@v1
         with:
-          container port: 3306
-          mysql version: '5.7'
-          mysql database: kiyodb
+          character set server: 'utf8'
+          mysql database: 'kiyodb'
           mysql user: 'root'
           mysql password: '4321'
 
