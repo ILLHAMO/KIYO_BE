@@ -81,17 +81,17 @@ class BookmarkControllerTest {
 
     }
 
-    @Test
-    @DisplayName("북마크 등록 실패 테스트")
-    @WithAuthUser(userId = "jemin")
-    @Transactional
-    void bookmark_fail_test() throws Exception
-    {
-        // given
-        mvc.perform(MockMvcRequestBuilders.post("/api/bookmark/1"))
-                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
-
-    }
+//    @Test
+//    @DisplayName("북마크 등록 실패 테스트")
+//    @WithAuthUser(userId = "jemin")
+//    @Transactional
+//    void bookmark_fail_test() throws Exception
+//    {
+//        // given
+//        mvc.perform(MockMvcRequestBuilders.post("/api/bookmark/1"))
+//                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
+//
+//    }
 
 
 
