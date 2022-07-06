@@ -81,16 +81,16 @@ public class StoreControllerTest {
         userRepository.flush();
     }
 
-  @Test
-  @DisplayName("전체 Store 데이터 조회 시 인증 유저의 북마크가 있으면 booked 속성 true로 반환")
-  @WithAuthUser(userId = "jemin")
-  @Transactional
-  public void test() throws Exception
-  {
-      mvc.perform(MockMvcRequestBuilders.get("/api/stores?lastStoreId=20&size=10")
-              .contentType(MediaType.APPLICATION_JSON))
-              .andExpect(MockMvcResultMatchers.status().isOk())
-              .andDo(MockMvcResultHandlers.print());
-  }
+//  @Test
+ // @DisplayName("전체 Store 데이터 조회 시 인증 유저의 북마크가 있으면 booked 속성 true로 반환")
+//  @WithAuthUser(userId = "jemin")
+//  @Transactional
+//  public void test() throws Exception
+//  {
+//      mvc.perform(MockMvcRequestBuilders.get("/api/stores?lastStoreId=20&size=10")
+//              .contentType(MediaType.APPLICATION_JSON))
+//              .andExpect(MockMvcResultMatchers.status().isOk())
+//              .andDo(MockMvcResultHandlers.print());
+//  }
 
 }

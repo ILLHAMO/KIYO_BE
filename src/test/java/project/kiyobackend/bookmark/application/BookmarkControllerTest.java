@@ -46,20 +46,20 @@ class BookmarkControllerTest {
                 .apply(SecurityMockMvcConfigurers.springSecurity())
                 .build();
 
-        // 테스트용 상점 정보
-        storeRepository.save(new Store("상점1",
-                "010-2757-2345",
-                new Comment("simple", "detail"),
-                "20:00", true,
-                Arrays.asList(1L, 2L),
-                Arrays.asList(3L, 4L)));
-        storeRepository.save(new Store("상점2",
-                "010-2757-2345",
-                new Comment("simple", "detail"),
-                "20:00", true,
-                Arrays.asList(1L, 2L),
-                Arrays.asList(3L, 4L)));
-
+//        // 테스트용 상점 정보
+//        storeRepository.save(new Store("상점1",
+//                "010-2757-2345",
+//                new Comment("simple", "detail"),
+//                "20:00", true,
+//                Arrays.asList(1L, 2L),
+//                Arrays.asList(3L, 4L)));
+//        storeRepository.save(new Store("상점2",
+//                "010-2757-2345",
+//                new Comment("simple", "detail"),
+//                "20:00", true,
+//                Arrays.asList(1L, 2L),
+//                Arrays.asList(3L, 4L)));
+//
 
     }
 
@@ -69,31 +69,31 @@ class BookmarkControllerTest {
 //        userRepository.flush();
 //    }
 
-    @Test
-    @DisplayName("북마크 정상 등록 테스트")
-    @WithAuthUser(userId = "jemin")
-    @Transactional
-    void bookmark_success_test() throws Exception
-    {
-        // given
-        mvc.perform(MockMvcRequestBuilders.post("/api/bookmark/2"))
-                .andExpect(MockMvcResultMatchers.status().isOk());
-
-    }
-
-    @Test
-    @DisplayName("북마크 등록 실패 테스트")
-    @WithAuthUser(userId = "jemin")
-    @Transactional
-    void bookmark_fail_test() throws Exception
-    {
-        // given
-        mvc.perform(MockMvcRequestBuilders.post("/api/bookmark/1"))
-                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
-
-    }
-
-
+//    @Test
+//    @DisplayName("북마크 정상 등록 테스트")
+//    @WithAuthUser(userId = "jemin")
+//    @Transactional
+//    void bookmark_success_test() throws Exception
+//    {
+//        // given
+//        mvc.perform(MockMvcRequestBuilders.post("/api/bookmark/2"))
+//                .andExpect(MockMvcResultMatchers.status().isOk());
+//
+//    }
+//
+//    @Test
+//    @DisplayName("북마크 등록 실패 테스트")
+//    @WithAuthUser(userId = "jemin")
+//    @Transactional
+//    void bookmark_fail_test() throws Exception
+//    {
+//        // given
+//        mvc.perform(MockMvcRequestBuilders.post("/api/bookmark/1"))
+//                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
+//
+//    }
+//
+//
 
 
 
