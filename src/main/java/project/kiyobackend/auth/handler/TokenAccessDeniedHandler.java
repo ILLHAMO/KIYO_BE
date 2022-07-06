@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-// 만약 인증에 문제 생기면 여기로 온다.
+
 @Component
 @RequiredArgsConstructor
 public class TokenAccessDeniedHandler implements AccessDeniedHandler {
@@ -20,7 +20,8 @@ public class TokenAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
-        // 예외가 외부로 전파되도록 놔두지 않고 정상 흐름으로 바꿔주는 역할을 하는게 exceptionResolver다.
+
+        // 스프링 시큐리티 인가 예외들이 오는 곳이다.
         handlerExceptionResolver.resolveException(request, response, null, accessDeniedException);
     }
 }

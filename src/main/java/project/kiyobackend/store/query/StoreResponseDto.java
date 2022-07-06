@@ -16,15 +16,17 @@ public class StoreResponseDto {
     private List<ImageDto> images;
     private int reviewCount;
     private int bookmarkCount;
+    private boolean isBooked;
 
     @QueryProjection
-    public StoreResponseDto(Long id, boolean kids, List<StoreImage> images, String name, int reviewCount, int bookmarkCount) {
+    public StoreResponseDto(Long id, boolean kids, List<StoreImage> images, String name, int reviewCount, int bookmarkCount,boolean isBooked) {
         this.id = id;
         this.kids = kids;
         this.name = name;
         this.images = getImagePath(images);
         this.reviewCount = reviewCount;
         this.bookmarkCount = bookmarkCount;
+        this.isBooked = isBooked;
     }
 
     public List<ImageDto> getImagePath(List<StoreImage> images)
