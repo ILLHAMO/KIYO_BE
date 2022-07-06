@@ -7,10 +7,7 @@
 
 name: KIYO
 
-on:
-  push:
-    branches: 
-      [ feature/#5_main ]
+on: push
 
 jobs:
   build:
