@@ -4,6 +4,7 @@ import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 import project.kiyobackend.store.domain.domain.store.StoreImage;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 

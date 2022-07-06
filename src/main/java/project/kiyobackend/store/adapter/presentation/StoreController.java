@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import project.kiyobackend.auth.entity.CurrentUser;
@@ -29,14 +28,13 @@ public class StoreController{
     private final StoreService storeService;
 
     @GetMapping("/stores")
-    public Slice<StoreResponseDto> getStoreBySlice(@CurrentUser User currentUser ,   @RequestParam(name = "lastStoreId") Long lastStoreId, Pageable pageable, StoreSearchCond storeSearchCond)
+    public Slice<StoreResponseDto> getStoreBySlice(@CurrentUser User currentUser , @RequestParam(name = "lastStoreId",required = false)  Long lastStoreId, Pageable pageable, StoreSearchCond storeSearchCond)
     {
-
         Slice<Store> search = storeService.getStore(lastStoreId,storeSearchCond,pageable);
 
-        List<BookMark> bookMarks = currentUser.getBookMarks();
+     //  List<BookMark> bookMarks = currentUser.getBookMarks();
 
-        checkCurrentUserBookmarked(search,bookMarks);
+      //      checkCurrentUserBookmarked(search,bookMarks);
 
         return search.map(s -> new StoreResponseDto(s.getId(),
                 s.isKids(),
