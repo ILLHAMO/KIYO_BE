@@ -17,13 +17,13 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
       - name: Setup MySQL
-          uses: mirromutth/mysql-action@v1.1
-          with:
-            container port: 3306
-            mysql version: '5.7'
-            mysql database: kiyodb
-            mysql user: 'root'
-            mysql password: '4321'
+        uses: mirromutth/mysql-action@v1.1
+        with:
+          container port: 3306
+          mysql version: '5.7'
+          mysql database: kiyodb
+          mysql user: 'root'
+          mysql password: '4321'
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
