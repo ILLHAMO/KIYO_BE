@@ -47,10 +47,9 @@ jobs:
       - name: Show Current Time
         run: echo "CurrentTime=${{steps.current-time.outputs.formattedTime}}"
         shell: bash
-    #   - name: Test with Gradle # test application build
-    #     run: ./gradlew test
+
       - name: Generate deployment package # (1)
-          run: |
+        run: |
             mkdir -p deploy
             cp build/libs/*.jar deploy/application.jar
             cp Procfile deploy/Procfile
