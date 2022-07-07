@@ -22,7 +22,7 @@ public class AdminCategoryController {
         return "success";
     }
 
-    // 카테고리 삭제
+
     @DeleteMapping("/admin/categories/{categoryId}")
     public String deleteCategory(@PathVariable Long categoryId)
     {
