@@ -15,7 +15,6 @@ public class AdminCategoryController {
 
     private final CategoryRepository categoryRepository;
 
-    // 카테고리 추가
     @PostMapping("/admin/categories")
     public String saveCategory(@RequestBody CategoryRequestDto categoryRequestDto)
     {
