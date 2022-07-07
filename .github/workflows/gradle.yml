@@ -20,11 +20,23 @@ jobs:
           java-version: 11 
 
       - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+        run: chmod +x ./gradlew
+        shell: bash
 
       - name: Build with Gradle # 실제 application build(-x 옵션을 통해 test는 제외)
         run: ./gradlew build -x test
-
+        shell: bash
+      
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2
+        id: current-time
+        with:
+          format: YYYY-MM-DDTHH-mm-ss
+          utcOffset: "+9:00"
+          
+      - name: Show Current Time
+        run: echo "CurrentTime=${{steps.current-time.outputs.formattedTime}}"
+        shell: bash 
    #   - name: Test with Gradle # test application build
    #     run: ./gradlew test
 
