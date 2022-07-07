@@ -6,7 +6,9 @@ on:
     branches:
       - 'master'
       - 'develop'
-
+env:
+  S3_BUCKET_NAME: kiyobackend
+  PROJECT_NAME: kiyo
 jobs:
   build:
     runs-on: ubuntu-latest # 실행 환경 지정
