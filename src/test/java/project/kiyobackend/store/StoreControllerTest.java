@@ -1,36 +1,9 @@
 package project.kiyobackend.store;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
-import org.springframework.test.web.servlet.MockMvc;
-
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
-import project.kiyobackend.auth.entity.UserPrincipal;
-import project.kiyobackend.bookmark.application.BookmarkService;
-import project.kiyobackend.common.WithAuthUser;
-import project.kiyobackend.store.domain.domain.store.Comment;
-import project.kiyobackend.store.domain.domain.store.Store;
-import project.kiyobackend.store.domain.domain.store.StoreRepository;
-import project.kiyobackend.user.domain.User;
-import project.kiyobackend.user.domain.UserRepository;
-
-import java.util.Arrays;
 
 
-@SpringBootTest
+
+//@SpringBootTest
 public class StoreControllerTest {
 
 //    @Autowired

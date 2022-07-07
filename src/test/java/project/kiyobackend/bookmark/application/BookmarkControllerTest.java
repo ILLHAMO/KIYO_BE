@@ -1,32 +1,9 @@
 package project.kiyobackend.bookmark.application;
 
-import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
-
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
-
-import project.kiyobackend.common.WithAuthUser;
-import project.kiyobackend.store.domain.domain.store.Comment;
-import project.kiyobackend.store.domain.domain.store.Store;
-import project.kiyobackend.store.domain.domain.store.StoreRepository;
-
-import project.kiyobackend.user.domain.User;
-import project.kiyobackend.user.domain.UserRepository;
 
 
-import java.util.Arrays;
 
-
-@SpringBootTest
+//@SpringBootTest
 class BookmarkControllerTest {
 //
 //    @Autowired
