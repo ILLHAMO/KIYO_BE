@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-REPOSITORY=/home/ec2-user/kiyo/
+REPOSITORY=/home/ec2-user/kiyo
 cd $REPOSITORY
 
 APP_NAME=kiyo
@@ -11,6 +11,8 @@ CURRENT_PID=$(pgrep -f $APP_NAME)
 
 if [ -z $CURRENT_PID ]
 then
+  echo  "> 종료할 것 없음"
+else
   echo "> kill -9 $CURRENT_PID"
   kill -15 $CURRENT_PID
   sleep 5
