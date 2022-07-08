@@ -19,6 +19,6 @@ else
 fi
 
 echo "> $JAR_PATH 배포"
-nohup java -jar $JAR_PATH > /home/ec2-user/nohup.out 2>&1 &
+nohup java -jar -Dspring.config.location=/home/ec2-user/kiyo/src/main/resources/application.yml $JAR_PATH > /home/ec2-user/nohup.out 2>&1 &
 echo "> finished"
 exit 0
