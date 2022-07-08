@@ -74,7 +74,7 @@ public class StoreService {
                 )
         ).collect(Collectors.toList());
 
-        Store store = Store.createStore(storeRequestDto.getName(), storeRequestDto.getCall(), storeRequestDto.getComment(), storeRequestDto.getTime(), storeRequestDto.isKids(), storeRequestDto.getCategoryIds(), storeRequestDto.getConvenienceIds(), result, fileNameList);
+        Store store = Store.createStore(storeRequestDto.getName(), storeRequestDto.getCall(), storeRequestDto.getComment(), storeRequestDto.getTime(),storeRequestDto.getAddress(), storeRequestDto.isKids(), storeRequestDto.getCategoryIds(), storeRequestDto.getConvenienceIds(), result, fileNameList);
         storeRepository.save(store);
         return store.getId();
     }

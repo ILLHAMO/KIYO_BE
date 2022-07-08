@@ -81,6 +81,8 @@ public class Store extends JpaBaseEntity {
 
     private boolean isKids;
 
+    private String address;
+
     private boolean isBooked  = false;
 
     private boolean isAssigned;
@@ -110,11 +112,12 @@ public class Store extends JpaBaseEntity {
         this.isBooked = check;
     }
 
-    public Store(String name,  String call, Comment comment, String time, boolean isKids,List<Long> categoryIds, List<Long> convenienceIds) {
+    public Store(String name,  String call, Comment comment, String time, String address, boolean isKids,List<Long> categoryIds, List<Long> convenienceIds) {
         this.name = name; // 가게 이름
         this.call = call; // 가게 전화번호 주소는 잠시 삭제
         this.comment =
                 comment;// 값 타입 생성자에서 생성
+        this.address = address;
         this.bookmarkCount = 0;
         this.reviewCount = 0;
         this.time = time; // 영업 시간
@@ -124,9 +127,9 @@ public class Store extends JpaBaseEntity {
         convenienceIds.forEach(cv->this.getConvenienceIds().add(cv));
     }
 
-    public static Store createStore(String name, String call, Comment comment, String time, boolean isKids,  List<Long> categoryIds, List<Long> convenienceIds, List<Menu> menus, List<String> storeImages)
+    public static Store createStore(String name, String call, Comment comment, String time,String address, boolean isKids,  List<Long> categoryIds, List<Long> convenienceIds, List<Menu> menus, List<String> storeImages)
     {
-        Store store = new Store(name,call,comment,time,isKids,categoryIds, convenienceIds);
+        Store store = new Store(name,call,comment,time,address,isKids,categoryIds, convenienceIds);
         store.setMenus(menus);
         store.setStoreImages(storeImages);
         return store;

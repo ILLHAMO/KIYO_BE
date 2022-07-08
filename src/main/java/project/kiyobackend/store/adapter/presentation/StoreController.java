@@ -40,6 +40,7 @@ public class StoreController{
                 s.isKids(),
                 s.getStoreImages(),
                 s.getName(),
+                s.getAddress(),
                 s.getReviewCount(),
                 s.getBookmarkCount(),
                 s.isBooked()));
