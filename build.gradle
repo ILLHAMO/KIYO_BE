@@ -9,6 +9,10 @@ jacoco {
     toolVersion = '0.8.5'
 }
 
+jar{
+    enabled = false
+}
+
 jacocoTestReport {
     reports {
         html.enabled true
