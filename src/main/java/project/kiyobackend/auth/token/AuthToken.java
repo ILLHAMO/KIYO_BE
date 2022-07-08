@@ -6,12 +6,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 
+import java.io.Serializable;
 import java.security.Key;
 import java.util.Date;
 
 @Slf4j
 @RequiredArgsConstructor
-public class AuthToken {
+public class AuthToken implements Serializable {
 
     @Getter
     private final String token;
