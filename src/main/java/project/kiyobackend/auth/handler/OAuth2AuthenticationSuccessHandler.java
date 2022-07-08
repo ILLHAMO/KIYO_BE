@@ -59,12 +59,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
-
     @SneakyThrows
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         Optional<String> redirectUri = CookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue);
-
+        System.out.println(redirectUri.get());
         if(redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get())) {
 
             throw new IllegalArgumentException("Sorry! We've got an Unauthorized Redirect URI and can't proceed with the authentication");
@@ -99,12 +98,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 new Date(now.getTime() + refreshTokenExpiry)
         );
 
-        Token tokenObject = new Token(accessToken.getToken());
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        String token = objectMapper.writeValueAsString(tokenObject);
-        response.setContentType("application/json");
-        request.setAttribute("token",tokenObject);
 
         //1. DB에서 ID로 refreshToken 찾는다.
         UserRefreshToken userRefreshToken = userRefreshTokenRepository.findByUserId(userInfo.getId());
@@ -158,8 +151,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .anyMatch(authorizedRedirectUri -> {
                     // Only validate host and port. Let the clients use different paths if they want to
                     URI authorizedURI = URI.create(authorizedRedirectUri);
+
                     if(authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
-                            && authorizedURI.getPort() == clientRedirectUri.getPort()) {
+
+                    ) {
                         return true;
                     }
                     return false;
