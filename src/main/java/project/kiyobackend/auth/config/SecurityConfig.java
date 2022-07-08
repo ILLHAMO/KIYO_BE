@@ -89,7 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 /**
                  * 보완 관련 부분은 다 지움
                  */
-                .antMatchers("/auth/**","/oauth2/**","/authorization/**")
+                .antMatchers("/auth/**","/oauth2/**")
                 .permitAll()
                 /**
                  * api 경로는 일반 사용자 접근 가능
@@ -109,7 +109,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .oauth2Login()
                 .authorizationEndpoint()
                 // 기본 인가 경로 /oauth2/authorization
-                .baseUri("/authorization/*/")
+                .baseUri("/authorization/*")
                 .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())
                 .and()
                 // 리다이렉트 될때
