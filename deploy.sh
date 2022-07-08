@@ -4,7 +4,7 @@ REPOSITORY=/home/ec2-user/kiyo
 cd $REPOSITORY
 
 APP_NAME=kiyo
-JAR_NAME=$(ls $REPOSITORY/build/libs/ | grep '.jar' | tail -n 1)
+JAR_NAME=$(ls $REPOSITORY/build/libs/ | grep 'kiyobackend-0.0.1-SNAPSHOT.jar' | tail -n 1)
 JAR_PATH=$REPOSITORY/build/libs/$JAR_NAME
 
 CURRENT_PID=$(pgrep -f $APP_NAME)
