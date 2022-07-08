@@ -110,7 +110,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .oauth2Login()
                 .authorizationEndpoint()
                 // 기본 인가 경로 /oauth2/authorization
-                .baseUri("/*/authorization")
+                .baseUri("/*/authorization/*")
                 .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())
                 .and()
                 // 리다이렉트 될때
