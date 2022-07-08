@@ -89,7 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 /**
                  * 보완 관련 부분은 다 지움
                  */
-                .antMatchers("/auth/**","/oauth2/**")
+                .antMatchers("/auth/**","/oauth2/**","/authorization/**")
                 .permitAll()
                 /**
                  * api 경로는 일반 사용자 접근 가능
