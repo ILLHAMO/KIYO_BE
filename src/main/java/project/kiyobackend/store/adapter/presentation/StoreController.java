@@ -11,7 +11,7 @@ import project.kiyobackend.bookmark.domain.BookMark;
 import project.kiyobackend.store.adapter.presentation.dto.StoreRequestDto;
 import project.kiyobackend.store.application.StoreService;
 import project.kiyobackend.store.domain.domain.store.Store;
-import project.kiyobackend.store.query.StoreResponseDto;
+import project.kiyobackend.store.query.dto.StoreResponseDto;
 import project.kiyobackend.store.query.StoreSearchCond;
 import project.kiyobackend.user.domain.User;
 import java.util.List;

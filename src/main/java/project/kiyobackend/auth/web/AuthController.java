@@ -19,8 +19,8 @@ import project.kiyobackend.auth.token.AuthTokenProvider;
 import project.kiyobackend.auth.token.UserRefreshToken;
 import project.kiyobackend.user.domain.User;
 import project.kiyobackend.user.domain.UserRepository;
-import project.kiyobackend.util.auth.CookieUtil;
-import project.kiyobackend.util.auth.HeaderUtil;
+import project.kiyobackend.common.util.auth.CookieUtil;
+import project.kiyobackend.common.util.auth.HeaderUtil;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

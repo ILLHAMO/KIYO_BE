@@ -1,7 +1,7 @@
 package project.kiyobackend.convenience.domain;
 
 import lombok.Getter;
-import project.kiyobackend.util.jpa.JpaBaseEntity;
+import project.kiyobackend.common.util.jpa.JpaBaseEntity;
 
 import javax.persistence.*;
 

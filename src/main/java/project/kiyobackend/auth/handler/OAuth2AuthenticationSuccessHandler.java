@@ -1,7 +1,5 @@
 package project.kiyobackend.auth.handler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nimbusds.oauth2.sdk.util.JSONUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.security.core.Authentication;
@@ -21,7 +19,7 @@ import project.kiyobackend.auth.repository.UserRefreshTokenRepository;
 import project.kiyobackend.auth.token.AuthToken;
 import project.kiyobackend.auth.token.AuthTokenProvider;
 import project.kiyobackend.auth.token.UserRefreshToken;
-import project.kiyobackend.util.auth.CookieUtil;
+import project.kiyobackend.common.util.auth.CookieUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;

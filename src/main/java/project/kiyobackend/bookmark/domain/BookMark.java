@@ -1,12 +1,11 @@
 package project.kiyobackend.bookmark.domain;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import project.kiyobackend.store.domain.domain.store.Store;
 import project.kiyobackend.user.domain.User;
-import project.kiyobackend.util.jpa.JpaBaseEntity;
+import project.kiyobackend.common.util.jpa.JpaBaseEntity;
 
 import javax.persistence.*;
 

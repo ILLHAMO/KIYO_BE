@@ -1,10 +1,10 @@
-package project.kiyobackend.store.query;
+package project.kiyobackend.store.query.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 import project.kiyobackend.store.domain.domain.store.StoreImage;
+import project.kiyobackend.store.query.dto.ImageDto;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -1,21 +1,16 @@
 package project.kiyobackend.store.domain.domain.store;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import project.kiyobackend.bookmark.domain.BookMark;
 import project.kiyobackend.review.domain.domain.Review;
-import project.kiyobackend.category.domain.CategoryId;
-import project.kiyobackend.convenience.domain.ConvenienceId;
 import project.kiyobackend.store.domain.domain.menu.Menu;
-import project.kiyobackend.user.domain.User;
-import project.kiyobackend.util.jpa.JpaBaseEntity;
+import project.kiyobackend.common.util.jpa.JpaBaseEntity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
