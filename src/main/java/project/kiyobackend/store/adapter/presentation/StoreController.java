@@ -32,9 +32,11 @@ public class StoreController{
     {
         Slice<Store> search = storeService.getStore(lastStoreId,storeSearchCond,pageable);
 
-     //  List<BookMark> bookMarks = currentUser.getBookMarks();
-
-      //      checkCurrentUserBookmarked(search,bookMarks);
+        if(currentUser != null)
+        {
+            List<BookMark> bookMarks = currentUser.getBookMarks();
+            checkCurrentUserBookmarked(search,bookMarks);
+        }
 
         return search.map(s -> new StoreResponseDto(s.getId(),
                 s.isKids(),

@@ -27,6 +27,7 @@ public class BookmarkService {
 
         Optional<BookMark> bookMark = bookmarkRepository.findByUserAndStore(user, store);
 
+
         if(bookMark.isEmpty())
         {
              bookmarkRepository.save(new BookMark(user,store));

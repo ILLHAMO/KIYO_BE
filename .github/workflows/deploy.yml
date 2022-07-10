@@ -22,6 +22,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
+
       - name: Copy secret
         env:
           OCCUPY_SECRET : ${{secrets.OCCUPY_SECRET}}

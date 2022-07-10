@@ -55,8 +55,7 @@ public class AuthController {
         CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
         return ResponseEntity.ok(new LogoutDto(true,"로그아웃 성공"));
     }
-
-
+    
     @GetMapping("/refresh")
     public ResponseEntity<?> refreshToken (HttpServletRequest request, HttpServletResponse response) {
 

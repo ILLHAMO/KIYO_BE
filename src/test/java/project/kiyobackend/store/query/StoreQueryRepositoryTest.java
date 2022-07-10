@@ -2,12 +2,11 @@ package project.kiyobackend.store.query;
 
 
 
-
 //@DataJpaTest
 //@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class StoreQueryRepositoryTest {
-//
-//
+
+
 //    @Autowired StoreRepository storeRepository;
 //    @Autowired StoreQueryRepository storeQueryRepository;
 //
@@ -24,30 +23,28 @@ class StoreQueryRepositoryTest {
 //    @BeforeEach
 //    public void addStore()
 //    {
-//        for(int i = 0; i < 100; i++)
+//        for(int i = 0; i < 10; i++)
 //        {
-//            storeRepository.save(new Store("jemin"+i,"1234",new Comment("hello","hi"),"2020",
-//                    true, List.of(1L,2L),List.of(3L,4L)));
+//            storeRepository.save(new Store(
+//                    "jemin"+i,
+//                    "1234",
+//                    new Comment("hello","hi")
+//                    ,"2020","창원시 상남동",
+//                    true, List.of(1L,2L), List.of(3L,4L)));
 //        }
 //    }
-//
-//
 //
 //    @Test
 //    @DisplayName("마지막 페이지가 아니라면 hasNext가 true로 표시된다.")
 //    void is_not_final()
 //    {
 //        //given
-//        PageRequest pageRequest = PageRequest.of(0, 3);
+//        PageRequest pageRequest = PageRequest.ofSize(3);
 //        StoreSearchCond storeSearchCond = new StoreSearchCond();
 //        // when
-//        Slice<Store> stores = storeQueryRepository.searchBySlice(5L, storeSearchCond, pageRequest);
+//        Slice<Store> stores = storeQueryRepository.searchBySlice(7L, storeSearchCond, pageRequest);
 //        // then
-//        Assertions.assertThat(stores.hasNext()).isTrue();
-//
-//        // id값이 4L인 데이터부터 조회 해옴
-//        Assertions.assertThat(stores.getContent().get(2).getId()).isEqualTo(2L);
-//
+//        Assertions.assertThat(stores.isLast()).isFalse();
 //    }
 //
 //    @Test
@@ -55,14 +52,13 @@ class StoreQueryRepositoryTest {
 //    void is_final()
 //    {
 //        //given
-//        PageRequest pageRequest = PageRequest.of(0, 6);
+//        PageRequest pageRequest = PageRequest.ofSize(4);
 //        StoreSearchCond storeSearchCond = new StoreSearchCond();
 //        // when
-//        Slice<Store> stores = storeQueryRepository.searchBySlice(3L, storeSearchCond, pageRequest);
+//        Slice<Store> stores = storeQueryRepository.searchBySlice(5L, storeSearchCond, pageRequest);
 //        // then
-//        Assertions.assertThat(stores.hasNext()).isFalse();
-//        // id값이 2L인 데이터부터 조회 해옴
-//        Assertions.assertThat(stores.getContent().get(0).getId()).isEqualTo(2L);
+//        Assertions.assertThat(stores.isLast()).isTrue();
+//
 //
 //    }
 
