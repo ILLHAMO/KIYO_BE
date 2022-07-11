@@ -14,6 +14,7 @@ import project.kiyobackend.auth.entity.UserPrincipal;
 import project.kiyobackend.auth.exception.OAuthProviderMissMatchException;
 import project.kiyobackend.auth.info.OAuth2UserInfo;
 import project.kiyobackend.auth.info.OAuth2UserInfoFactory;
+import project.kiyobackend.exception.user.NotExistUserException;
 import project.kiyobackend.user.domain.User;
 import project.kiyobackend.user.domain.UserRepository;
 
@@ -55,7 +56,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         KAKAO 로그인을 했다면 OAuth2UserInfo에는 KakaoOAuth2UserInfo가 들어옴
          */
         OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(snsType, user.getAttributes());
-        User savedUser = userRepository.findByUserId(userInfo.getId());
+        User savedUser = userRepository.findByUserId(userInfo.getId()).orElseThrow(NotExistUserException::new);
 
         if (savedUser != null) {
             if (snsType != savedUser.getSnsType()) {

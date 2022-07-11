@@ -1,4 +1,4 @@
-package project.kiyobackend.store.query.dto;
+package project.kiyobackend.store.adapter.presentation.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

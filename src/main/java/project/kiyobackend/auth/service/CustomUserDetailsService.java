@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import project.kiyobackend.auth.entity.UserPrincipal;
+import project.kiyobackend.exception.user.NotExistUserException;
 import project.kiyobackend.user.domain.User;
 import project.kiyobackend.user.domain.UserRepository;
 
@@ -18,11 +19,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = userRepository.findByUserId(username);
+        User user = userRepository.findByUserId(username).orElseThrow(NotExistUserException::new);
 
-        if (user == null) {
-            throw new UsernameNotFoundException("Can not find username.");
-        }
+//        if (user == null) {
+//            throw new UsernameNotFoundException("Can not find username.");
+//        }
 
         return UserPrincipal.create(user);
     }

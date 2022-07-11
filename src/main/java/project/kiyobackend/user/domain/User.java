@@ -8,7 +8,7 @@ import lombok.Setter;
 import project.kiyobackend.QnA.domain.QnA;
 import project.kiyobackend.auth.entity.SnsType;
 import project.kiyobackend.auth.entity.RoleType;
-import project.kiyobackend.bookmark.domain.BookMark;
+import project.kiyobackend.store.domain.domain.bookmark.BookMark;
 import project.kiyobackend.review.domain.domain.Review;
 import project.kiyobackend.common.util.jpa.JpaBaseEntity;
 

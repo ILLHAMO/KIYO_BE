@@ -1,15 +1,14 @@
-package project.kiyobackend.store.query.dto;
+package project.kiyobackend.store.adapter.presentation.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 import project.kiyobackend.store.domain.domain.store.StoreImage;
-import project.kiyobackend.store.query.dto.ImageDto;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
-public class StoreResponseDto {
+public class StoreResponse {
 
     private Long id;
     private boolean kids;
@@ -21,7 +20,7 @@ public class StoreResponseDto {
     private boolean isBooked;
 
     @QueryProjection
-    public StoreResponseDto(Long id, boolean kids, List<StoreImage> images, String name, String address, int reviewCount, int bookmarkCount,boolean isBooked) {
+    public StoreResponse(Long id, boolean kids, List<StoreImage> images, String name, String address, int reviewCount, int bookmarkCount, boolean isBooked) {
         this.id = id;
         this.kids = kids;
         this.name = name;

@@ -28,7 +28,7 @@ jacocoTestCoverageVerification {
             limit {
                 counter = 'BRANCH'
                 value = 'COVEREDRATIO'
-                minimum = 0.00
+                minimum = 0.10
             }
             excludes = [
                     'Q*.class'
@@ -81,6 +81,7 @@ dependencies {
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.6'
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
+
 }
 
 test {

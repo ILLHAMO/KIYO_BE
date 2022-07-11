@@ -11,17 +11,18 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import project.kiyobackend.store.adapter.infrastructure.AWSS3UploadService;
 import project.kiyobackend.store.adapter.presentation.dto.StoreRequestDto;
+import project.kiyobackend.store.domain.domain.bookmark.BookMark;
 import project.kiyobackend.store.domain.domain.menu.Menu;
 import project.kiyobackend.store.domain.domain.menu.MenuOption;
 import project.kiyobackend.store.domain.domain.store.Store;
 import project.kiyobackend.store.domain.domain.store.StoreRepository;
 import project.kiyobackend.store.query.StoreQueryRepository;
 import project.kiyobackend.store.query.StoreSearchCond;
+import project.kiyobackend.user.domain.User;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -36,9 +37,18 @@ public class StoreService {
     private final AWSS3UploadService uploadService;
 
 
-    public Slice<Store> getStore(Long lastStoreId, StoreSearchCond storeSearchCond, Pageable pageable)
+    public Slice<Store> getStore(User currentUser,Long lastStoreId, StoreSearchCond storeSearchCond, Pageable pageable)
     {
-       return storeQueryRepository.searchBySlice(lastStoreId, storeSearchCond, pageable);
+        Slice<Store> stores = storeQueryRepository.searchBySlice(lastStoreId, storeSearchCond, pageable);
+
+        if(currentUser != null)
+        {
+            List<BookMark> bookMarks = currentUser.getBookMarks();
+            checkCurrentUserBookmarked(stores,bookMarks);
+        }
+
+        return stores;
+
     }
 
     @Transactional
@@ -105,6 +115,21 @@ public class StoreService {
             return fileName.substring(fileName.lastIndexOf("."));
         } catch (StringIndexOutOfBoundsException e) {
             throw new IllegalArgumentException("잘못된 형식 입니다.");
+        }
+    }
+
+    public void checkCurrentUserBookmarked(Slice<Store> search,List<BookMark> bookMarks)
+    {
+        if(!bookMarks.isEmpty())
+        {
+            for(BookMark bookMark : bookMarks)
+            {
+                Long storeId = bookMark.getStore().getId();
+                Optional<Store> storeOpt = search.getContent().stream().filter(
+                        store -> Objects.equals(store.getId(), storeId)
+                ).findFirst();
+                storeOpt.ifPresent(store -> store.setIsBooked(true));
+            }
         }
     }
     

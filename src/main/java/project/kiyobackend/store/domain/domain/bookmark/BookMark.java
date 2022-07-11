@@ -1,6 +1,7 @@
-package project.kiyobackend.bookmark.domain;
+package project.kiyobackend.store.domain.domain.bookmark;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import project.kiyobackend.store.domain.domain.store.Store;
@@ -13,6 +14,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "bookmark_table")
+@EqualsAndHashCode
 public class BookMark extends JpaBaseEntity {
 
     @Id
@@ -30,7 +32,6 @@ public class BookMark extends JpaBaseEntity {
     public void setStore(Store store)
     {
         this.store = store;
-        store.getBookMarks().add(this);
     }
 
     public BookMark(User user, Store store) {
