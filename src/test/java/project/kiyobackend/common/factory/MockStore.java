@@ -13,6 +13,7 @@ import project.kiyobackend.user.domain.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.LongStream;
 
 public class MockStore {
 
@@ -28,8 +29,8 @@ public class MockStore {
 
     public static class Builder {
         private Long id;
-        private List<Long> categoryIds = List.of(1L,2L);
-        private List<Long> convenienceIds = List.of(1L,2L);
+        private List<Long> categoryIds = new ArrayList<>();
+        private List<Long> convenienceIds = new ArrayList<>();
         private String name = "puradak";
         private String call = "010-2222-1111";
         private Comment comment = new Comment("simple","detail");
@@ -48,6 +49,18 @@ public class MockStore {
         public Builder id(Long id)
         {
             this.id = id;
+            return this;
+        }
+
+        public Builder categoryIds(List<Long> categoryIds)
+        {
+            this.categoryIds = categoryIds;
+            return this;
+        }
+
+        public Builder convenienceIds(List<Long> convenienceIds)
+        {
+            this.convenienceIds = convenienceIds;
             return this;
         }
 

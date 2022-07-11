@@ -23,7 +23,6 @@ import project.kiyobackend.user.domain.User;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 @ExtendWith(MockitoExtension.class)
 class StoreServiceTest {

@@ -28,7 +28,7 @@ public class Store extends JpaBaseEntity {
     프론트에서 조회할때도 1,2,3,4,5 이런 형태로 숫자 분리 로직 짤 예정
     또한 카테고리만 가져오는 쿼리 짤 때, 굳이 연관된 엔티티를 지연 로딩으로라도 가져 올 필요X
      */
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "store_category",
             joinColumns = @JoinColumn(name = "store_id"))
     private List<Long> categoryIds = new ArrayList<>();
