@@ -1,11 +1,7 @@
 package project.kiyobackend.store.application;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
@@ -15,18 +11,18 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import project.kiyobackend.store.adapter.infrastructure.AWSS3UploadService;
 import project.kiyobackend.store.adapter.presentation.dto.StoreRequestDto;
+import project.kiyobackend.store.domain.domain.bookmark.BookMark;
 import project.kiyobackend.store.domain.domain.menu.Menu;
 import project.kiyobackend.store.domain.domain.menu.MenuOption;
 import project.kiyobackend.store.domain.domain.store.Store;
 import project.kiyobackend.store.domain.domain.store.StoreRepository;
 import project.kiyobackend.store.query.StoreQueryRepository;
 import project.kiyobackend.store.query.StoreSearchCond;
+import project.kiyobackend.user.domain.User;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -35,22 +31,62 @@ import java.util.stream.Collectors;
 public class StoreService {
 
     private final StoreQueryRepository storeQueryRepository;
+
     private final StoreRepository storeRepository;
+
     private final AWSS3UploadService uploadService;
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
 
-    private final AmazonS3 amazonS3;
 
-    public Slice<Store> getStore(Long lastStoreId, StoreSearchCond storeSearchCond, Pageable pageable)
+    public Slice<Store> getStore(User currentUser,Long lastStoreId, StoreSearchCond storeSearchCond, Pageable pageable)
     {
-       return storeQueryRepository.searchBySlice(lastStoreId, storeSearchCond, pageable);
+        Slice<Store> stores = storeQueryRepository.searchBySlice(lastStoreId, storeSearchCond, pageable);
+
+        if(currentUser != null)
+        {
+            List<BookMark> bookMarks = currentUser.getBookMarks();
+            checkCurrentUserBookmarked(stores,bookMarks);
+        }
+
+        return stores;
+
     }
 
     @Transactional
     public Long saveStore(List<MultipartFile> multipartFiles, StoreRequestDto storeRequestDto)
     {
-        System.out.println(multipartFiles.get(0).getOriginalFilename());
+        List<String> fileNameList = getMultipartFileNames(multipartFiles);
+
+        List<Menu> menus = convertMenuDtoToMenuEntity(storeRequestDto);
+
+        Store store = Store.createStore(storeRequestDto.getName(),
+                storeRequestDto.getCall(),
+                storeRequestDto.getComment(),
+                storeRequestDto.getTime(),storeRequestDto.getAddress(),
+                storeRequestDto.isKids(),
+                storeRequestDto.getCategoryIds(),
+                storeRequestDto.getConvenienceIds(),
+                menus,
+                fileNameList);
+
+        storeRepository.save(store);
+
+        return store.getId();
+    }
+
+
+    private List<Menu> convertMenuDtoToMenuEntity(StoreRequestDto storeRequestDto) {
+        List<Menu> result = storeRequestDto.getMenus().stream().map(m ->
+                new Menu(m.getName()
+                        , m.getMenuOptions().stream().map(mo -> new MenuOption(mo.getName()))
+                        .collect(Collectors.toList())
+                )
+
+        ).collect(Collectors.toList());
+        return result;
+    }
+
+
+    private List<String> getMultipartFileNames(List<MultipartFile> multipartFiles) {
         List<String> fileNameList = new ArrayList<>();
 
         multipartFiles.forEach(file->{
@@ -66,28 +102,34 @@ public class StoreService {
             }
             fileNameList.add(uploadService.getFileUrl(fileName));
         });
-
-        List<Menu> result = storeRequestDto.getMenus().stream().map(m ->
-                new Menu(m.getName()
-                        , m.getMenuOptions().stream().map(mo -> new MenuOption(mo.getName()))
-                        .collect(Collectors.toList())
-                )
-        ).collect(Collectors.toList());
-
-        Store store = Store.createStore(storeRequestDto.getName(), storeRequestDto.getCall(), storeRequestDto.getComment(), storeRequestDto.getTime(),storeRequestDto.getAddress(), storeRequestDto.isKids(), storeRequestDto.getCategoryIds(), storeRequestDto.getConvenienceIds(), result, fileNameList);
-        storeRepository.save(store);
-        return store.getId();
+        return fileNameList;
     }
 
-    private String createFileName(String fileName) { // 먼저 파일 업로드 시, 파일명을 난수화하기 위해 random으로 돌립니다.
+    private String createFileName(String fileName) {
         return UUID.randomUUID().toString().concat(getFileExtension(fileName));
     }
 
-    private String getFileExtension(String fileName) { // file 형식이 잘못된 경우를 확인하기 위해 만들어진 로직이며, 파일 타입과 상관없이 업로드할 수 있게 하기 위해 .의 존재 유무만 판단하였습니다.
+    // file 형식이 잘못된 경우를 확인하기 위해 만들어진 로직이며, 파일 타입과 상관없이 업로드할 수 있게 하기 위해 .의 존재 유무만 판단하였습니다.
+    private String getFileExtension(String fileName) {
         try {
             return fileName.substring(fileName.lastIndexOf("."));
         } catch (StringIndexOutOfBoundsException e) {
             throw new IllegalArgumentException("잘못된 형식 입니다.");
+        }
+    }
+
+    public void checkCurrentUserBookmarked(Slice<Store> search,List<BookMark> bookMarks)
+    {
+        if(!bookMarks.isEmpty())
+        {
+            for(BookMark bookMark : bookMarks)
+            {
+                Long storeId = bookMark.getStore().getId();
+                Optional<Store> storeOpt = search.getContent().stream().filter(
+                        store -> Objects.equals(store.getId(), storeId)
+                ).findFirst();
+                storeOpt.ifPresent(store -> store.setIsBooked(true));
+            }
         }
     }
     

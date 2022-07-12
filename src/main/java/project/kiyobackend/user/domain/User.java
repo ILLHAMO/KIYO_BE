@@ -1,7 +1,6 @@
 package project.kiyobackend.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,9 +8,9 @@ import lombok.Setter;
 import project.kiyobackend.QnA.domain.QnA;
 import project.kiyobackend.auth.entity.SnsType;
 import project.kiyobackend.auth.entity.RoleType;
-import project.kiyobackend.bookmark.domain.BookMark;
+import project.kiyobackend.store.domain.domain.bookmark.BookMark;
 import project.kiyobackend.review.domain.domain.Review;
-import project.kiyobackend.util.jpa.JpaBaseEntity;
+import project.kiyobackend.common.util.jpa.JpaBaseEntity;
 
 import javax.persistence.*;
 import java.util.ArrayList;

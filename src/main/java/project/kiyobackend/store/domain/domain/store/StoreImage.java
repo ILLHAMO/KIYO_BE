@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import project.kiyobackend.util.jpa.JpaBaseEntity;
+import project.kiyobackend.common.util.jpa.JpaBaseEntity;
 
 import javax.persistence.*;
 

@@ -17,10 +17,11 @@ import project.kiyobackend.auth.repository.UserRefreshTokenRepository;
 import project.kiyobackend.auth.token.AuthToken;
 import project.kiyobackend.auth.token.AuthTokenProvider;
 import project.kiyobackend.auth.token.UserRefreshToken;
+import project.kiyobackend.exception.user.NotExistUserException;
 import project.kiyobackend.user.domain.User;
 import project.kiyobackend.user.domain.UserRepository;
-import project.kiyobackend.util.auth.CookieUtil;
-import project.kiyobackend.util.auth.HeaderUtil;
+import project.kiyobackend.common.util.auth.CookieUtil;
+import project.kiyobackend.common.util.auth.HeaderUtil;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -55,8 +56,7 @@ public class AuthController {
         CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
         return ResponseEntity.ok(new LogoutDto(true,"로그아웃 성공"));
     }
-
-
+    
     @GetMapping("/refresh")
     public ResponseEntity<?> refreshToken (HttpServletRequest request, HttpServletResponse response) {
 
@@ -94,7 +94,7 @@ public class AuthController {
             //1-5. 지금 토큰 발행하려는 사람의 정보 얻어옴
             String userId = byRefreshToken.get().getUserId();
 
-            User byUserId = userRepository.findByUserId(userId);
+            User byUserId = userRepository.findByUserId(userId).orElseThrow(NotExistUserException::new);
 
             System.out.println("userId : " + byUserId.getUserId());
 

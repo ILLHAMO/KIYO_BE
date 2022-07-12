@@ -1,4 +1,4 @@
-package project.kiyobackend.util.auth;
+package project.kiyobackend.common.util.auth;
 
 import javax.servlet.http.HttpServletRequest;
 

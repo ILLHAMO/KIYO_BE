@@ -59,6 +59,7 @@ public class StoreQueryRepository {
     }
 
 
+    // 카테고리 필터링
     private BooleanBuilder eqCategory(List<Long> categoryIds)
     {
         if(categoryIds == null)
@@ -73,7 +74,7 @@ public class StoreQueryRepository {
         return booleanBuilder;
     }
 
-
+    // 편의 기능 필터링
     private BooleanBuilder eqConvenience(List<Long> convenienceIds)
     {
         if(convenienceIds == null)
@@ -89,59 +90,13 @@ public class StoreQueryRepository {
         return booleanBuilder;
     }
 
-
+    // 무한 스크롤 구현 시 첫페이지는 null로 조건이 들어오는 케이스
     private BooleanExpression ltStoreId(Long storeId) {
         if (storeId == null) {
-            return null; // BooleanExpression 자리에 null이 반환되면 조건문에서 자동으로 제거된다
+            return null;
         }
 
         return store.id.lt(storeId);
     }
-
-
-
-
-//    public List<StoreResponseDto> searchByPageGroupBy(StoreSearchCond condition, Pageable pageable)
-//    {
-//        List<OrderSpecifier> ORDERS = getAllOrderSpecifiers(pageable);
-//        Map<Store, List<StoreImage>> transform = query.from(store)
-//                .leftJoin(store.storeImages, storeImage)
-//                .where(
-//                        // Category 중복 필터링
-//                        eqCategory(condition.getCategoryIds()),
-//                        // Convenience 중복 필터링
-//                        eqConvenience(condition.getConvenienceIds())
-//                )
-//                .transform(groupBy(store).as(GroupBy.list(storeImage)));
-//
-//        return transform.entrySet().stream()
-//                .map(entry-> new StoreResponseDto(entry.getKey().getId(),entry.getKey().isKids(),entry.getValue(),entry.getKey().getName(),entry.getKey().getReviewCount(),entry.getKey().getBookmarkCount()))
-//                .collect(Collectors.toList());
-//    }
-//
-//    public Page<StoreResponseDto> searchByPageNotwork(StoreSearchCond condition, Pageable pageable)
-//    {
-//        List<OrderSpecifier> ORDERS = getAllOrderSpecifiers(pageable);
-//        QueryResults<StoreResponseDto> results = query
-//                .select(new QStoreResponseDto(store.id, store.isKids, store.storeImages, store.name, store.reviewCount, store.bookmarkCount))
-//                .from(store)
-//                .where(
-//                        // Category 중복 필터링
-//                        eqCategory(condition.getCategoryIds()),
-//                        // Convenience 중복 필터링
-//                        eqConvenience(condition.getConvenienceIds())
-//                )
-//                .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
-//                .offset(pageable.getOffset())
-//                .limit(pageable.getPageSize())
-//                .fetchResults();
-//
-//        List<StoreResponseDto> content = results.getResults();
-//        long total = results.getTotal();
-//        return new PageImpl<>(content,pageable,total);
-//
-//    }
-
-
 
 }

@@ -6,7 +6,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 import project.kiyobackend.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
-import project.kiyobackend.util.auth.CookieUtil;
+import project.kiyobackend.common.util.auth.CookieUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;

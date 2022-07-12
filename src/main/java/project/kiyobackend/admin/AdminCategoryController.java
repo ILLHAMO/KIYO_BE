@@ -1,6 +1,9 @@
 package project.kiyobackend.admin;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import project.kiyobackend.category.domain.Category;
 import project.kiyobackend.category.domain.CategoryRepository;
@@ -10,10 +13,11 @@ import java.util.Optional;
 
 
 @RestController
-@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AdminCategoryController {
 
-    private final CategoryRepository categoryRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @PostMapping("/admin/categories")
     public String saveCategory(@RequestBody CategoryRequestDto categoryRequestDto)

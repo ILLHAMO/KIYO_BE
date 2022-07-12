@@ -1,8 +1,7 @@
 package project.kiyobackend.category.domain;
 
 import lombok.Getter;
-import org.yaml.snakeyaml.events.Event;
-import project.kiyobackend.util.jpa.JpaBaseEntity;
+import project.kiyobackend.common.util.jpa.JpaBaseEntity;
 
 import javax.persistence.*;
 
