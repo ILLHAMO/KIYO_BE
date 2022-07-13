@@ -31,7 +31,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
      */
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-
         /*
         userRequest 내부에는 accessToken에 대한 정보 존재
         이 토큰을 사용해서 super.loadUser 내부에서 사용자에 대한 정보를 받아옴
@@ -56,7 +55,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         KAKAO 로그인을 했다면 OAuth2UserInfo에는 KakaoOAuth2UserInfo가 들어옴
          */
         OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(snsType, user.getAttributes());
-        User savedUser = userRepository.findByUserId(userInfo.getId()).orElseThrow(NotExistUserException::new);
+        User savedUser = userRepository.findByUserId(userInfo.getId()).orElse(null);
 
         if (savedUser != null) {
             if (snsType != savedUser.getSnsType()) {
