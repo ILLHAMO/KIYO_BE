@@ -1,5 +1,5 @@
 spring:
-  jpa:
+   jpa:
     hibernate:
       ddl-auto: create
     properties:
