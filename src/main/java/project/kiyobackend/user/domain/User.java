@@ -44,10 +44,10 @@ public class User extends JpaBaseEntity {
 
     private String nickname;
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private List<QnA> qnAs = new ArrayList<>();
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
