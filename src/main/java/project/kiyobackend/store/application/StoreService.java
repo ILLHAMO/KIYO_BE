@@ -46,7 +46,11 @@ public class StoreService {
         if(currentUser != null)
         {
             List<BookMark> bookMarks = currentUser.getBookMarks();
-            checkCurrentUserBookmarked(stores,bookMarks);
+            if(bookMarks != null)
+            {
+                checkCurrentUserBookmarked(stores,bookMarks);
+            }
+
         }
 
         return stores;

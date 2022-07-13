@@ -50,7 +50,7 @@ public class User extends JpaBaseEntity {
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private List<QnA> qnAs = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
     private List<BookMark> bookMarks = new ArrayList<>();
 
 
