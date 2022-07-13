@@ -18,8 +18,7 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
-/src/main/resources/
-/src/main/resources/data.sql
+/src/main/resources/application.yml
 /src/main/generated
 .idea
 *.iws

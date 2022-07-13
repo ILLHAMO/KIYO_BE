@@ -2,6 +2,7 @@ package project.kiyobackend.store.adapter.presentation.dto;
 
 import org.springframework.data.domain.Slice;
 import project.kiyobackend.store.application.dto.BookmarkResponseDto;
+import project.kiyobackend.store.application.dto.StoreDetailResponseDto;
 import project.kiyobackend.store.domain.domain.store.Store;
 
 public class StoreAssembler {
@@ -24,4 +25,6 @@ public class StoreAssembler {
                 s.getBookmarkCount(),
                 s.isBooked()));
     }
+
+
 }

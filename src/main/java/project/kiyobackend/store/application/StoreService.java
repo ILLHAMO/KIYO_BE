@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import project.kiyobackend.exception.store.NotExistStoreException;
 import project.kiyobackend.store.adapter.infrastructure.AWSS3UploadService;
 import project.kiyobackend.store.adapter.presentation.dto.StoreRequestDto;
+import project.kiyobackend.store.application.dto.StoreDetailResponseDto;
 import project.kiyobackend.store.domain.domain.bookmark.BookMark;
 import project.kiyobackend.store.domain.domain.menu.Menu;
 import project.kiyobackend.store.domain.domain.menu.MenuOption;
@@ -50,6 +52,17 @@ public class StoreService {
         return stores;
 
     }
+
+    public Store getStoreById(Long storeId)
+    {
+        return storeRepository.findById(storeId).orElseThrow(NotExistStoreException::new);
+    }
+
+//    public StoreDetailResponseDto getStoreDetailInfo(Long storeId)
+//    {
+//        Store store = storeRepository.findById(storeId).orElseThrow(NotExistStoreException::new);
+//
+//    }
 
     @Transactional
     public Long saveStore(List<MultipartFile> multipartFiles, StoreRequestDto storeRequestDto)
