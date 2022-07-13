@@ -21,6 +21,7 @@ import project.kiyobackend.store.domain.domain.store.StoreRepository;
 import project.kiyobackend.store.query.StoreQueryRepository;
 import project.kiyobackend.store.query.StoreSearchCond;
 import project.kiyobackend.user.domain.User;
+import project.kiyobackend.user.domain.UserRepository;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,19 +39,16 @@ public class StoreService {
 
     private final AWSS3UploadService uploadService;
 
+    private final UserRepository userRepository;
 
     public Slice<Store> getStore(User currentUser,Long lastStoreId, StoreSearchCond storeSearchCond, Pageable pageable)
     {
         Slice<Store> stores = storeQueryRepository.searchBySlice(lastStoreId, storeSearchCond, pageable);
-
-        if(currentUser != null)
+        Optional<User> findUser = userRepository.findByUserId(currentUser.getUserId());
+        if(findUser.isPresent())
         {
-            List<BookMark> bookMarks = currentUser.getBookMarks();
-            if(bookMarks != null)
-            {
-                checkCurrentUserBookmarked(stores,bookMarks);
-            }
-
+            List<BookMark> bookMarks = findUser.get().getBookMarks();
+            checkCurrentUserBookmarked(stores,bookMarks);
         }
 
         return stores;
