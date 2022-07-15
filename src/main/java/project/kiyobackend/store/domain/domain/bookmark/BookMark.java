@@ -9,12 +9,12 @@ import project.kiyobackend.user.domain.User;
 import project.kiyobackend.common.util.jpa.JpaBaseEntity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "bookmark_table")
-@EqualsAndHashCode
 public class BookMark extends JpaBaseEntity {
 
     @Id
@@ -45,6 +45,23 @@ public class BookMark extends JpaBaseEntity {
         user.getBookMarks().add(this);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        BookMark bookMark = (BookMark) o;
+        return Objects.equals(store, bookMark.getStore()) &&
+                Objects.equals(user, bookMark.getUser());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(store, user);
+    }
 
 
 }
