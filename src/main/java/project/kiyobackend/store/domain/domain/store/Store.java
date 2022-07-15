@@ -47,9 +47,6 @@ public class Store extends JpaBaseEntity {
     @Column(name = "call_number")
     private String call;
 
-    /*
-    컬렉션으로 넣을 필요 없이, 상점 하나당 simpleComment, detailComment 하나만 있으면 되므로 바로 store 테이블에 넣음
-     */
     @Embedded
     private Comment comment;
 
@@ -63,10 +60,12 @@ public class Store extends JpaBaseEntity {
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY)
     private List<Review> reviews = new ArrayList<>();
 
+    // cascadeType.All 하면 개별 repository가 전혀 필요없다.
+    // Persist는 save 필요없고, remove는 remove 필요없다.
     @OneToMany(mappedBy = "store",fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BookMark> bookMarks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store") // 일단은 생성 주기 다름,
+    @OneToMany(mappedBy = "store",fetch = FetchType.LAZY,cascade = CascadeType.ALL) // 일단은 생성 주기 다름,
     private List<TagStore> tagStores = new ArrayList<>();
 
     private int bookmarkCount;

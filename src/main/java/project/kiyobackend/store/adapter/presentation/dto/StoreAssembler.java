@@ -22,7 +22,7 @@ public class StoreAssembler {
                 s.getName(),
                 s.getAddress(),
                 s.getReviewCount(),
-                s.getBookmarkCount(),
+                s.getBookmarkCounts(),
                 s.isBooked()));
     }
 
