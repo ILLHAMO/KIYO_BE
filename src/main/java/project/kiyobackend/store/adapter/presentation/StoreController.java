@@ -23,6 +23,7 @@ import project.kiyobackend.user.domain.User;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -47,18 +48,19 @@ public class StoreController{
     }
 
     @GetMapping("/store/{id}")
-    public ResponseEntity<StoreDetailResponse> getDetailStoreInfo(@PathVariable Long id)
+    public ResponseEntity<StoreDetailResponse> getDetailStoreInfo(@CurrentUser User currentUser, @PathVariable Long id)
     {
-        Store findStore = storeService.getStoreById(id);
+        Store findStore = storeService.getStoreById(currentUser, id);
         StoreDetailResponse result = StoreDetailResponse.builder().name(findStore.getName()).kids(findStore.isKids())
                 .isBooked(findStore.isBooked())
                 .simpleComment(findStore.getComment().getSimpleComment())
-                .tag("tag")
+                .tags(findStore.getTagStores().stream().map(ts -> ts.getTag()).collect(Collectors.toList()))
                 .address(findStore.getAddress())
                 .time(findStore.getTime())
                 .detailComment(findStore.getComment().getDetailComment())
                 .addressMap("address_map")
                 .images(findStore.getStoreImages())
+                .convenienceIds(findStore.getConvenienceIds())
                 .menus(findStore.getMenus())
                 .reviews(findStore.getReviews())
                 .build();
@@ -73,6 +75,8 @@ public class StoreController{
     {
         return storeService.saveStore(multipartFiles,storeRequestDto);
     }
+
+
 
     @PutMapping("/store/{id}/bookmark")
     public ResponseEntity<BookmarkResponse> addBookmark(@PathVariable Long id, @CurrentUser User user)

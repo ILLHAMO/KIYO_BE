@@ -55,9 +55,16 @@ public class StoreService {
 
     }
 
-    public Store getStoreById(Long storeId)
+    public Store getStoreById(User currentUser , Long storeId)
     {
-        return storeRepository.findById(storeId).orElseThrow(NotExistStoreException::new);
+        Store store = storeQueryRepository.getStoreDetail(storeId);
+        Optional<User> findUser = userRepository.findByUserId(currentUser.getUserId());
+        if(store != null)
+        {
+            List<BookMark> bookMarks = findUser.get().getBookMarks();
+            checkCurrentUserBookmarkedForDetail(store,bookMarks);
+        }
+        return store;
     }
 
 //    public StoreDetailResponseDto getStoreDetailInfo(Long storeId)
@@ -144,6 +151,24 @@ public class StoreService {
                         store -> Objects.equals(store.getId(), storeId)
                 ).findFirst();
                 storeOpt.ifPresent(store -> store.setIsBooked(true));
+            }
+        }
+    }
+
+    public void checkCurrentUserBookmarkedForDetail(Store store,List<BookMark> bookMarks)
+    {
+        if(!bookMarks.isEmpty())
+        {
+            // 해당 유저의 북마크 들 중
+            for(BookMark bookMark : bookMarks)
+            {
+                Long storeId = bookMark.getStore().getId();
+                if (store.getId().equals(storeId))
+                {
+                    store.setIsBooked(true);
+                    return;
+                }
+
             }
         }
     }

@@ -5,11 +5,18 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
+import project.kiyobackend.review.domain.domain.QReview;
+import project.kiyobackend.store.domain.domain.menu.QMenu;
+import project.kiyobackend.store.domain.domain.menu.QMenuOption;
+import project.kiyobackend.store.domain.domain.store.QStoreImage;
 import project.kiyobackend.store.domain.domain.store.Store;
 import javax.persistence.EntityManager;
 import java.util.List;
-import static project.kiyobackend.store.domain.domain.store.QStore.store;
 
+import static project.kiyobackend.review.domain.domain.QReview.*;
+import static project.kiyobackend.store.domain.domain.menu.QMenu.*;
+import static project.kiyobackend.store.domain.domain.store.QStore.store;
+import static project.kiyobackend.store.domain.domain.store.QStoreImage.*;
 
 
 @Repository
@@ -56,6 +63,16 @@ public class StoreQueryRepository {
         }
 
         return new SliceImpl<>(results,pageable,hasNext);
+    }
+
+    public Store getStoreDetail(Long storeId)
+    {
+        return query.selectFrom(store)
+                    .leftJoin(store.storeImages, storeImage)
+                    .fetchJoin()
+                    .where(store.id.eq(storeId))
+                    .distinct()
+                    .fetchOne();
     }
 
 

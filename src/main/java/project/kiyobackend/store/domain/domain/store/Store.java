@@ -5,6 +5,8 @@ import project.kiyobackend.store.domain.domain.bookmark.BookMark;
 import project.kiyobackend.review.domain.domain.Review;
 import project.kiyobackend.store.domain.domain.menu.Menu;
 import project.kiyobackend.common.util.jpa.JpaBaseEntity;
+import project.kiyobackend.store.domain.domain.tag.Tag;
+import project.kiyobackend.store.domain.domain.tag.TagStore;
 import project.kiyobackend.user.domain.User;
 
 import javax.persistence.*;
@@ -61,8 +63,11 @@ public class Store extends JpaBaseEntity {
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY)
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store",fetch = FetchType.LAZY,cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "store",fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BookMark> bookMarks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "store") // 일단은 생성 주기 다름,
+    private List<TagStore> tagStores = new ArrayList<>();
 
     private int bookmarkCount;
 
@@ -96,6 +101,7 @@ public class Store extends JpaBaseEntity {
     public void removeBookmark(User user) {
         BookMark bookMark = new BookMark(user,this);
         this.bookMarks.remove(bookMark);
+
     }
 
     public void setMenus(List<Menu> menus)
