@@ -196,8 +196,8 @@ values ( 1,"맛있어요","HIGH",1,1 ),
        ( 2,"맛없어요","LOW",1,1 ),
        (3,"괜찮아요","MIDDLE",2,1);
 
-INSERT INTO review_image (review_image_id,image_path,review_id)
-values ( 1,"www.s3.host",1 ),
-       (2,"www.s3.host",1);
+-- INSERT INTO review_image (review_image_id,image_path,review_id)
+-- values ( 1,"www.s3.host",1 ),
+--        (2,"www.s3.host",1);
 
 
