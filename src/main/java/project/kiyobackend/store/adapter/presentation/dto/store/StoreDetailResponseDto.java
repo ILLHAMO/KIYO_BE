@@ -1,9 +1,13 @@
-package project.kiyobackend.store.adapter.presentation.dto;
+package project.kiyobackend.store.adapter.presentation.dto.store;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import project.kiyobackend.review.domain.domain.Review;
+import project.kiyobackend.store.adapter.presentation.dto.ImageDto;
+import project.kiyobackend.store.adapter.presentation.dto.menu.MenuOptionResponseDto;
+import project.kiyobackend.store.adapter.presentation.dto.menu.MenuResponseDto;
+import project.kiyobackend.store.adapter.presentation.dto.review.ReviewImageDto;
+import project.kiyobackend.store.adapter.presentation.dto.review.ReviewResponseDto;
 import project.kiyobackend.store.domain.domain.menu.Menu;
 import project.kiyobackend.store.domain.domain.store.StoreImage;
 import project.kiyobackend.store.domain.domain.tag.Tag;
@@ -13,8 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
-public class StoreDetailResponse {
-
+public class StoreDetailResponseDto {
     private String name;
     private boolean kids;
     private boolean isBooked;
@@ -30,7 +33,7 @@ public class StoreDetailResponse {
     private List<ReviewResponseDto> reviewResponses;
 
     @Builder
-    public StoreDetailResponse(String name, boolean kids, boolean isBooked, String simpleComment, List<Tag> tags, String address, String time, String detailComment, String addressMap, List<StoreImage> images, List<Long> convenienceIds, List<Menu> menus, List<Review> reviews) {
+    public StoreDetailResponseDto(String name, boolean kids, boolean isBooked, String simpleComment, List<Tag> tags, String address, String time, String detailComment, String addressMap, List<StoreImage> images, List<Long> convenienceIds, List<Menu> menus, List<Review> reviews) {
         this.name = name;
         this.kids = kids;
         this.isBooked = isBooked;
@@ -43,9 +46,9 @@ public class StoreDetailResponse {
         this.images = images.stream().map(i -> new ImageDto(i.getId(),i.getPath())).collect(Collectors.toList());
         this.convenienceIds = convenienceIds;
         this.menuResponses = menus.stream().map(m-> new MenuResponseDto(m.getId(),m.getName(),m.getMenuOptions().stream().map(mo->new MenuOptionResponseDto(mo.getId(),mo.getName())).collect(Collectors.toList())
-                )).collect(Collectors.toList());
-        this.reviewResponses = reviews.stream().map(r-> new ReviewResponseDto(r.getId(),r.getUser().getUserId(),r.getScore(),
+        )).collect(Collectors.toList());
+        this.reviewResponses = reviews.stream().map(r-> new ReviewResponseDto(r.getId(),r.getUser().getUserId(),r.getScore(),false,
                 r.getReviewImages().stream().map(ri -> new ReviewImageDto(ri.getId(),ri.getPath())).collect(Collectors.toList())
-                )).collect(Collectors.toList());
+        )).collect(Collectors.toList());
     }
 }

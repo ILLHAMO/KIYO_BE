@@ -1,4 +1,4 @@
-package project.kiyobackend.store.adapter.presentation.dto;
+package project.kiyobackend.store.adapter.presentation.dto.menu;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

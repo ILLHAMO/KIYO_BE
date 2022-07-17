@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-import project.kiyobackend.exception.store.NotExistStoreException;
+import project.kiyobackend.review.domain.domain.Review;
 import project.kiyobackend.store.adapter.infrastructure.AWSS3UploadService;
-import project.kiyobackend.store.adapter.presentation.dto.StoreRequestDto;
-import project.kiyobackend.store.application.dto.StoreDetailResponseDto;
+import project.kiyobackend.store.adapter.presentation.dto.StoreAssembler;
+import project.kiyobackend.store.adapter.presentation.dto.review.ReviewResponseDto;
+import project.kiyobackend.store.adapter.presentation.dto.store.StoreDetailResponseDto;
+import project.kiyobackend.store.adapter.presentation.dto.store.StoreRequestDto;
 import project.kiyobackend.store.domain.domain.bookmark.BookMark;
 import project.kiyobackend.store.domain.domain.menu.Menu;
 import project.kiyobackend.store.domain.domain.menu.MenuOption;
@@ -55,23 +57,25 @@ public class StoreService {
 
     }
 
-    public Store getStoreById(User currentUser , Long storeId)
+    public StoreDetailResponseDto getStoreById(User user , Long storeId)
     {
         Store store = storeQueryRepository.getStoreDetail(storeId);
-        Optional<User> findUser = userRepository.findByUserId(currentUser.getUserId());
+        Optional<User> findUser = userRepository.findByUserId(user.getUserId());
         if(store != null)
         {
             List<BookMark> bookMarks = findUser.get().getBookMarks();
             checkCurrentUserBookmarkedForDetail(store,bookMarks);
         }
-        return store;
+        StoreDetailResponseDto storeDetailResponseDto = StoreAssembler.storeDetailResponseDto(store);
+        List<ReviewResponseDto> reviewResponses = storeDetailResponseDto.getReviewResponses();
+        for (ReviewResponseDto reviewRespons : reviewResponses) {
+            if(reviewRespons.getReviewerName().equals(findUser.get().getUserId()))
+            {
+                reviewRespons.setCurrentUserReview(true);
+            }
+        }
+        return storeDetailResponseDto;
     }
-
-//    public StoreDetailResponseDto getStoreDetailInfo(Long storeId)
-//    {
-//        Store store = storeRepository.findById(storeId).orElseThrow(NotExistStoreException::new);
-//
-//    }
 
     @Transactional
     public Long saveStore(List<MultipartFile> multipartFiles, StoreRequestDto storeRequestDto)

@@ -13,17 +13,18 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import project.kiyobackend.auth.entity.CurrentUser;
 import project.kiyobackend.store.adapter.presentation.dto.*;
+import project.kiyobackend.store.adapter.presentation.dto.store.StoreDetailResponse;
+import project.kiyobackend.store.adapter.presentation.dto.store.StoreDetailResponseDto;
+import project.kiyobackend.store.adapter.presentation.dto.store.StoreRequestDto;
+import project.kiyobackend.store.adapter.presentation.dto.store.StoreResponse;
 import project.kiyobackend.store.application.BookmarkService;
 import project.kiyobackend.store.application.dto.BookmarkResponseDto;
-import project.kiyobackend.store.domain.domain.bookmark.BookMark;
 import project.kiyobackend.store.application.StoreService;
 import project.kiyobackend.store.domain.domain.store.Store;
 import project.kiyobackend.store.query.StoreSearchCond;
+import project.kiyobackend.user.application.UserService;
 import project.kiyobackend.user.domain.User;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -36,6 +37,7 @@ public class StoreController{
     private final StoreService storeService;
     private final BookmarkService bookmarkService;
 
+
     @Operation(summary = "가게 목록 페이징 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "successful operation")
@@ -47,27 +49,20 @@ public class StoreController{
         return StoreAssembler.storeResponseDto(search);
     }
 
+
+    // TODO : 상세 페이지에서 본인의 리뷰는 삭제 및 수정 가능
+    // TODO : 자주 변경되는 것이므로, 엔티티에 필드로 넣기 보다는 DTO 만들때 넣어주자, 북마크 여부도 똑같이 수정
+    @Operation(summary = "상세 페이지 조회")
     @GetMapping("/store/{id}")
     public ResponseEntity<StoreDetailResponse> getDetailStoreInfo(@CurrentUser User currentUser, @PathVariable Long id)
     {
-        Store findStore = storeService.getStoreById(currentUser, id);
-        StoreDetailResponse result = StoreDetailResponse.builder().name(findStore.getName()).kids(findStore.isKids())
-                .isBooked(findStore.isBooked())
-                .simpleComment(findStore.getComment().getSimpleComment())
-                .tags(findStore.getTagStores().stream().map(ts -> ts.getTag()).collect(Collectors.toList()))
-                .address(findStore.getAddress())
-                .time(findStore.getTime())
-                .detailComment(findStore.getComment().getDetailComment())
-                .addressMap("address_map")
-                .images(findStore.getStoreImages())
-                .convenienceIds(findStore.getConvenienceIds())
-                .menus(findStore.getMenus())
-                .reviews(findStore.getReviews())
-                .build();
+        StoreDetailResponseDto storeDetailResponseDto = storeService.getStoreById(currentUser, id);
+        StoreDetailResponse result = StoreAssembler.storeDetailResponse(storeDetailResponseDto);
         return ResponseEntity.ok(result);
-
     }
 
+
+    @Operation(summary = "가게 등록")
     @PostMapping(value = "/store")
     public Long saveStore(
             @RequestPart(name = "meta_data") StoreRequestDto storeRequestDto,
@@ -76,8 +71,7 @@ public class StoreController{
         return storeService.saveStore(multipartFiles,storeRequestDto);
     }
 
-
-
+    @Operation(summary = "북마크 추가")
     @PutMapping("/store/{id}/bookmark")
     public ResponseEntity<BookmarkResponse> addBookmark(@PathVariable Long id, @CurrentUser User user)
     {
@@ -86,6 +80,8 @@ public class StoreController{
         return ResponseEntity.ok(bookmarkResponse);
     }
 
+
+    @Operation(summary = "북마크 삭제")
     @DeleteMapping("/store/{id}/bookmark")
     public ResponseEntity<BookmarkResponse> removeBookmark(@PathVariable Long id,@CurrentUser User user)
     {

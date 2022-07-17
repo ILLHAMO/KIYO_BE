@@ -5,16 +5,9 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
-import project.kiyobackend.review.domain.domain.QReview;
-import project.kiyobackend.store.domain.domain.menu.QMenu;
-import project.kiyobackend.store.domain.domain.menu.QMenuOption;
-import project.kiyobackend.store.domain.domain.store.QStoreImage;
 import project.kiyobackend.store.domain.domain.store.Store;
 import javax.persistence.EntityManager;
 import java.util.List;
-
-import static project.kiyobackend.review.domain.domain.QReview.*;
-import static project.kiyobackend.store.domain.domain.menu.QMenu.*;
 import static project.kiyobackend.store.domain.domain.store.QStore.store;
 import static project.kiyobackend.store.domain.domain.store.QStoreImage.*;
 
@@ -37,6 +30,7 @@ public class StoreQueryRepository {
      * 기능 2. 동적 쿼리 기능, 카테고리 별로 동적 쿼리 가능하다.
      * 기능 3. 사용자가 좋아요 누른 가게는 조회 시에 마크해준다.
      */
+    // TODO : 블로그 작성
     public Slice<Store> searchBySlice(Long lastStoreId, StoreSearchCond condition, Pageable pageable)
     {
         List<Store> results = query.selectFrom(store)
@@ -65,6 +59,7 @@ public class StoreQueryRepository {
         return new SliceImpl<>(results,pageable,hasNext);
     }
 
+    // TODO : 블로그 작성
     public Store getStoreDetail(Long storeId)
     {
         return query.selectFrom(store)

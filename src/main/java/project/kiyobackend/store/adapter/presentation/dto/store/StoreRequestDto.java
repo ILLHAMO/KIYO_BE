@@ -1,12 +1,12 @@
-package project.kiyobackend.store.adapter.presentation.dto;
+package project.kiyobackend.store.adapter.presentation.dto.store;
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import project.kiyobackend.store.adapter.presentation.dto.menu.MenuRequestDto;
 import project.kiyobackend.store.domain.domain.store.Comment;
 
 import java.io.Serializable;
-import java.security.ProtectionDomain;
 import java.util.List;
 
 @Data

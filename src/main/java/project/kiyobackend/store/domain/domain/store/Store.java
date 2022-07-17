@@ -43,7 +43,6 @@ public class Store extends JpaBaseEntity {
     @Column(name = "store_name")
     private String name;
 
-
     @Column(name = "call_number")
     private String call;
 
@@ -78,6 +77,8 @@ public class Store extends JpaBaseEntity {
     private boolean isKids;
 
     private String address;
+
+    private String addressMap;
 
     private boolean isBooked  = false;
 
