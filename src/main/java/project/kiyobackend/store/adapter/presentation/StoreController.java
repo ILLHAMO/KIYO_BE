@@ -1,5 +1,6 @@
 package project.kiyobackend.store.adapter.presentation;
 
+import com.amazonaws.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -43,10 +44,10 @@ public class StoreController{
             @ApiResponse(responseCode = "200",description = "successful operation")
     })
     @GetMapping("/stores")
-    public Slice<StoreResponse> getStoreBySlice(@CurrentUser User currentUser , @RequestParam(name = "lastStoreId", required = false)  Long lastStoreId, Pageable pageable, StoreSearchCond storeSearchCond)
+    public ResponseEntity<Slice<StoreResponse>> getStoreBySlice(@CurrentUser User currentUser , @RequestParam(name = "lastStoreId", required = false)  Long lastStoreId, Pageable pageable, StoreSearchCond storeSearchCond)
     {
         Slice<Store> search = storeService.getStore(currentUser,lastStoreId,storeSearchCond,pageable);
-        return StoreAssembler.storeResponseDto(search);
+        return ResponseEntity.ok(StoreAssembler.storeResponseDto(search));
     }
 
 
@@ -56,7 +57,7 @@ public class StoreController{
     @GetMapping("/store/{id}")
     public ResponseEntity<StoreDetailResponse> getDetailStoreInfo(@CurrentUser User currentUser, @PathVariable Long id)
     {
-        StoreDetailResponseDto storeDetailResponseDto = storeService.getStoreById(currentUser, id);
+        StoreDetailResponseDto storeDetailResponseDto = storeService.getStoreDetail(currentUser.getUserId(), id);
         StoreDetailResponse result = StoreAssembler.storeDetailResponse(storeDetailResponseDto);
         return ResponseEntity.ok(result);
     }

@@ -1,6 +1,8 @@
 package project.kiyobackend.common.factory;
 
+import org.mockito.Mock;
 import project.kiyobackend.category.domain.CategoryId;
+import project.kiyobackend.review.domain.domain.Review;
 import project.kiyobackend.store.domain.domain.store.Store;
 import project.kiyobackend.user.domain.User;
 
@@ -22,6 +24,14 @@ public class StoreFactory {
         return MockStore.builder()
                 .id(storeId)
                 .build();
+    }
+
+    public static Store createStore(Long storeId, List<Review> reviews)
+    {
+        Store store = MockStore.builder()
+                .id(storeId)
+                .build();
+        return store;
     }
 
     public static Store createStoreByCategoryId(List<Long> categoryIds)

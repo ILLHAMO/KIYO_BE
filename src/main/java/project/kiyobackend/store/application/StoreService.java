@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-import project.kiyobackend.review.domain.domain.Review;
+import project.kiyobackend.exception.store.NotExistStoreException;
 import project.kiyobackend.store.adapter.infrastructure.AWSS3UploadService;
 import project.kiyobackend.store.adapter.presentation.dto.StoreAssembler;
 import project.kiyobackend.store.adapter.presentation.dto.review.ReviewResponseDto;
@@ -57,23 +57,22 @@ public class StoreService {
 
     }
 
-    public StoreDetailResponseDto getStoreById(User user , Long storeId)
+    public StoreDetailResponseDto getStoreDetail(String userId , Long storeId)
     {
+
         Store store = storeQueryRepository.getStoreDetail(storeId);
-        Optional<User> findUser = userRepository.findByUserId(user.getUserId());
-        if(store != null)
+        Optional<User> findUser = userRepository.findByUserId(userId);
+
+        if(store == null)
         {
-            List<BookMark> bookMarks = findUser.get().getBookMarks();
-            checkCurrentUserBookmarkedForDetail(store,bookMarks);
+           throw new NotExistStoreException();
         }
+
+        checkCurrentUserBookmarkedForDetail(store,findUser.get().getBookMarks());
+
         StoreDetailResponseDto storeDetailResponseDto = StoreAssembler.storeDetailResponseDto(store);
-        List<ReviewResponseDto> reviewResponses = storeDetailResponseDto.getReviewResponses();
-        for (ReviewResponseDto reviewRespons : reviewResponses) {
-            if(reviewRespons.getReviewerName().equals(findUser.get().getUserId()))
-            {
-                reviewRespons.setCurrentUserReview(true);
-            }
-        }
+        checkCurrentUserReviewed(findUser, storeDetailResponseDto.getReviewResponses());
+
         return storeDetailResponseDto;
     }
 
@@ -173,6 +172,15 @@ public class StoreService {
                     return;
                 }
 
+            }
+        }
+    }
+
+    private void checkCurrentUserReviewed(Optional<User> findUser, List<ReviewResponseDto> reviewResponses) {
+        for (ReviewResponseDto reviewRespons : reviewResponses) {
+            if(reviewRespons.getReviewerName().equals(findUser.get().getUserId()))
+            {
+                reviewRespons.setCurrentUserReview(true);
             }
         }
     }

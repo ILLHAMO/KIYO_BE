@@ -1,6 +1,6 @@
 package project.kiyobackend.review.domain.domain;
 
-import lombok.Getter;
+import lombok.*;
 import project.kiyobackend.store.domain.domain.store.Store;
 import project.kiyobackend.user.domain.User;
 import project.kiyobackend.common.util.jpa.JpaBaseEntity;
@@ -12,6 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "review")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Review extends JpaBaseEntity {
 
     @Id
@@ -34,4 +35,14 @@ public class Review extends JpaBaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
     private Store store;
+
+    @Builder
+    public Review(Long id, String content, Score score, List<ReviewImage> reviewImages, User user, Store store) {
+        this.id = id;
+        this.content = content;
+        this.score = score;
+        this.reviewImages = reviewImages;
+        this.user = user;
+        this.store = store;
+    }
 }

@@ -64,6 +64,12 @@ public class MockStore {
             return this;
         }
 
+        public Builder reviews(List<Review> review)
+        {
+            this.reviews = review;
+            return this;
+        }
+
         public Store build()
         {
             return new Store(id,name,call,comment,time,address,isKids,categoryIds,convenienceIds);
