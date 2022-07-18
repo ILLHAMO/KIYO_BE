@@ -10,11 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import project.kiyobackend.exception.store.NotExistStoreException;
+import project.kiyobackend.exception.user.NotExistUserException;
 import project.kiyobackend.store.adapter.infrastructure.AWSS3UploadService;
 import project.kiyobackend.store.adapter.presentation.dto.StoreAssembler;
 import project.kiyobackend.store.adapter.presentation.dto.review.ReviewResponseDto;
 import project.kiyobackend.store.adapter.presentation.dto.store.StoreDetailResponseDto;
 import project.kiyobackend.store.adapter.presentation.dto.store.StoreRequestDto;
+import project.kiyobackend.store.application.dto.UserBookmarkResponseDto;
 import project.kiyobackend.store.domain.domain.bookmark.BookMark;
 import project.kiyobackend.store.domain.domain.menu.Menu;
 import project.kiyobackend.store.domain.domain.menu.MenuOption;
@@ -61,19 +63,26 @@ public class StoreService {
     {
 
         Store store = storeQueryRepository.getStoreDetail(storeId);
-        Optional<User> findUser = userRepository.findByUserId(userId);
-
+        User user = userRepository.findByUserId(userId).orElseThrow(NotExistUserException::new);
         if(store == null)
         {
            throw new NotExistStoreException();
         }
 
-        checkCurrentUserBookmarkedForDetail(store,findUser.get().getBookMarks());
+        checkCurrentUserBookmarkedForDetail(store,user.getBookMarks());
 
         StoreDetailResponseDto storeDetailResponseDto = StoreAssembler.storeDetailResponseDto(store);
-        checkCurrentUserReviewed(findUser, storeDetailResponseDto.getReviewResponses());
+        checkCurrentUserReviewed(user, storeDetailResponseDto.getReviewResponses());
 
         return storeDetailResponseDto;
+    }
+
+    public Slice<UserBookmarkResponseDto> getBookmarkedStore(User currentUser, Long lastStoreId, Pageable pageable)
+    {
+        User user = userRepository.findByUserId(currentUser.getUserId()).orElseThrow(NotExistUserException::new);
+        Slice<Store> bookmarkedStore = storeQueryRepository.getBookmarkedStore(user.getUserId(), lastStoreId, pageable);
+        return StoreAssembler.userBookmarkResponseDto(bookmarkedStore);
+
     }
 
     @Transactional
@@ -176,9 +185,9 @@ public class StoreService {
         }
     }
 
-    private void checkCurrentUserReviewed(Optional<User> findUser, List<ReviewResponseDto> reviewResponses) {
+    private void checkCurrentUserReviewed(User user, List<ReviewResponseDto> reviewResponses) {
         for (ReviewResponseDto reviewRespons : reviewResponses) {
-            if(reviewRespons.getReviewerName().equals(findUser.get().getUserId()))
+            if(reviewRespons.getReviewerName().equals(user.getNickname()))
             {
                 reviewRespons.setCurrentUserReview(true);
             }

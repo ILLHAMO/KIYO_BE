@@ -12,6 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import project.kiyobackend.auth.config.properties.AppProperties;
 import project.kiyobackend.auth.entity.SnsType;
 import project.kiyobackend.auth.entity.RoleType;
+import project.kiyobackend.auth.entity.UserPrincipal;
 import project.kiyobackend.auth.info.OAuth2UserInfo;
 import project.kiyobackend.auth.info.OAuth2UserInfoFactory;
 import project.kiyobackend.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
@@ -20,6 +21,7 @@ import project.kiyobackend.auth.token.AuthToken;
 import project.kiyobackend.auth.token.AuthTokenProvider;
 import project.kiyobackend.auth.token.UserRefreshToken;
 import project.kiyobackend.common.util.auth.CookieUtil;
+import project.kiyobackend.user.domain.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -52,7 +54,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             return;
         }
 
-
         clearAuthenticationAttributes(request, response);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
@@ -61,7 +62,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         Optional<String> redirectUri = CookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue);
-        System.out.println(redirectUri.get());
+
         if(redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get())) {
 
             throw new IllegalArgumentException("Sorry! We've got an Unauthorized Redirect URI and can't proceed with the authentication");
@@ -116,11 +117,14 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         // 한번 더 깔끔하게 삭제하고 넣어주자.
       //  CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
         CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
-
+        UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
+        String nickname = principal.getUser().getNickname();
+        System.out.println("nickname : " + nickname);
         // accessToken의 경우 쿼리 파라미터로 집어넣음
         System.out.println(accessToken.getToken());
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", accessToken.getToken())
+                .queryParam("nickname",nickname)
                 .build().toUriString();
     }
 

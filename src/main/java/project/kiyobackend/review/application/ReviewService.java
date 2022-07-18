@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import project.kiyobackend.exception.review.NotExistReviewException;
 import project.kiyobackend.exception.store.NotExistStoreException;
 import project.kiyobackend.review.application.dto.ReviewRequestDto;
 import project.kiyobackend.review.domain.domain.Review;
@@ -44,6 +45,13 @@ public class ReviewService {
         Review review = Review.createReview(user, store, reviewRequestDto.getScore(), reviewRequestDto.getContent(), fileNameList);
         Review result = reviewRepository.save(review);
         return result.getId();
+    }
+
+    @Transactional
+    public void deleteReview(Long reviewId)
+    {
+        Review review = reviewRepository.findById(reviewId).orElseThrow(NotExistReviewException::new);
+        reviewRepository.delete(review);
     }
 
     private List<String> getMultipartFileNames(List<MultipartFile> multipartFiles) {

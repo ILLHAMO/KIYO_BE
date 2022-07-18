@@ -194,10 +194,14 @@ values ( 1,'https://kiyoimage.s3.ap-northeast-2.amazonaws.com/181b7593-e5b2-4acd
 insert into review (review_id,content,score,user_seq,store_id)
 values ( 1,"맛있어요","HIGH",1,1 ),
        ( 2,"맛없어요","LOW",1,1 ),
-       (3,"괜찮아요","MIDDLE",2,1);
+       ( 3,"음","LOW",2,1);
 
 -- INSERT INTO review_image (review_image_id,image_path,review_id)
 -- values ( 1,"www.s3.host",1 ),
 --        (2,"www.s3.host",1);
 
+insert into bookmark_table (id,store_id,user_seq)
+values ( 1,20,1 ),
+       ( 2,19,1),
+       ( 3,18,1);
 

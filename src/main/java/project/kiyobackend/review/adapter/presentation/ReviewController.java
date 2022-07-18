@@ -22,7 +22,7 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @Operation(summary = "리뷰")
+    @Operation(summary = "리뷰 등록")
     @PostMapping(value = "/review/store/{storeId}")
     public ResponseEntity<ReviewResponse> saveReview(
             @RequestPart(name = "meta_data") ReviewRequest reviewRequest,
@@ -33,5 +33,13 @@ public class ReviewController {
         System.out.println("reviewRequest" + reviewRequest.getContent());
         Long result = reviewService.saveReview(user.getUserId(), storeId, multipartFiles, ReviewAssembler.reviewRequestDto(reviewRequest));
         return ResponseEntity.ok(new ReviewResponse(result));
+    }
+
+    @Operation(summary = "리뷰 삭제")
+    @DeleteMapping("/review/{reviewId}")
+    public ResponseEntity<String> deleteReview(@PathVariable Long reviewId)
+    {
+        reviewService.deleteReview(reviewId);
+        return ResponseEntity.ok("delete success");
     }
 }
