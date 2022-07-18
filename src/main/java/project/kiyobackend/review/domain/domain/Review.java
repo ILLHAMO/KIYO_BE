@@ -2,6 +2,7 @@ package project.kiyobackend.review.domain.domain;
 
 import lombok.*;
 import project.kiyobackend.store.domain.domain.store.Store;
+import project.kiyobackend.store.domain.domain.store.StoreImage;
 import project.kiyobackend.user.domain.User;
 import project.kiyobackend.common.util.jpa.JpaBaseEntity;
 
@@ -36,13 +37,43 @@ public class Review extends JpaBaseEntity {
     @JoinColumn(name = "store_id")
     private Store store;
 
+    private void setUser(User user)
+    {
+        this.user = user;
+        user.getReviews().add(this);
+    }
+
+    private void setStore(Store store)
+    {
+        this.store = store;
+        store.getReviews().add(this);
+    }
+
+    private void setReviewImages(List<String> reviewImagesPath)
+    {
+        for (String path : reviewImagesPath) {
+            ReviewImage reviewImage = new ReviewImage(path);
+            this.reviewImages.add(reviewImage);
+            reviewImage.setReview(this);
+
+        }
+    }
+
     @Builder
-    public Review(Long id, String content, Score score, List<ReviewImage> reviewImages, User user, Store store) {
+    public Review(Long id, String content, Score score, User user, Store store) {
         this.id = id;
         this.content = content;
         this.score = score;
-        this.reviewImages = reviewImages;
         this.user = user;
         this.store = store;
+    }
+
+    public static Review createReview(User user, Store store,Score score,String content, List<String> fileNameList)
+    {
+        Review review = Review.builder().score(score).content(content).build();
+        review.setUser(user);
+        review.setStore(store);
+        review.setReviewImages(fileNameList);
+        return review;
     }
 }

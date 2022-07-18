@@ -34,4 +34,9 @@ public class ReviewImage extends JpaBaseEntity {
     {
         this.path = path;
     }
+
+    public void setReview(Review review)
+    {
+        this.review =review;
+    }
 }

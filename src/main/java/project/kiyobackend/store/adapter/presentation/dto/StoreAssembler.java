@@ -4,9 +4,12 @@ import org.springframework.data.domain.Slice;
 import project.kiyobackend.store.adapter.presentation.dto.store.StoreDetailResponse;
 import project.kiyobackend.store.adapter.presentation.dto.store.StoreDetailResponseDto;
 import project.kiyobackend.store.adapter.presentation.dto.store.StoreResponse;
+import project.kiyobackend.store.adapter.presentation.dto.store.UserBookmarkResponse;
 import project.kiyobackend.store.application.dto.BookmarkResponseDto;
+import project.kiyobackend.store.application.dto.UserBookmarkResponseDto;
 import project.kiyobackend.store.domain.domain.store.Store;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class StoreAssembler {
@@ -63,5 +66,32 @@ public class StoreAssembler {
                 .menus(findStore.getMenus())
                 .reviews(findStore.getReviews())
                 .build();
+    }
+
+    public static Slice<UserBookmarkResponseDto> userBookmarkResponseDto(Slice<Store> store)
+    {
+        return store.
+                map(b ->
+                        new UserBookmarkResponseDto(b.getId(),
+                                b.isKids(),
+                                b.getStoreImages(),
+                                b.getName(),
+                                b.getAddress(),
+                                b.getReviewCount(),
+                                b.getBookmarkCounts()));
+    }
+
+
+    public static Slice<UserBookmarkResponse> userBookmarkResponse(Slice<UserBookmarkResponseDto> store)
+    {
+        return store.map(u ->
+                new UserBookmarkResponse(u.getId(),
+                        u.isKids(),
+                        u.getImages(),
+                        u.getName(),
+                        u.getAddress(),
+                        u.getReviewCount(),
+                        u.getBookmarkCount(),
+                        u.isBooked()));
     }
 }

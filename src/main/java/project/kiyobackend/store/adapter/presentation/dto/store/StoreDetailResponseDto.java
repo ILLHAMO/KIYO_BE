@@ -1,7 +1,9 @@
 package project.kiyobackend.store.adapter.presentation.dto.store;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import project.kiyobackend.review.domain.domain.Review;
 import project.kiyobackend.store.adapter.presentation.dto.ImageDto;
 import project.kiyobackend.store.adapter.presentation.dto.menu.MenuOptionResponseDto;
@@ -17,6 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StoreDetailResponseDto {
     private String name;
     private boolean kids;
@@ -47,7 +50,8 @@ public class StoreDetailResponseDto {
         this.convenienceIds = convenienceIds;
         this.menuResponses = menus.stream().map(m-> new MenuResponseDto(m.getId(),m.getName(),m.getMenuOptions().stream().map(mo->new MenuOptionResponseDto(mo.getId(),mo.getName())).collect(Collectors.toList())
         )).collect(Collectors.toList());
-        this.reviewResponses = reviews.stream().map(r-> new ReviewResponseDto(r.getId(),r.getUser().getUserId(),r.getScore(),false,
+        // TODO : UserId => User Nickname으로 변경
+        this.reviewResponses = reviews.stream().map(r-> new ReviewResponseDto(r.getId(),r.getUser().getNickname(),r.getScore(),false,
                 r.getReviewImages().stream().map(ri -> new ReviewImageDto(ri.getId(),ri.getPath())).collect(Collectors.toList())
         )).collect(Collectors.toList());
     }

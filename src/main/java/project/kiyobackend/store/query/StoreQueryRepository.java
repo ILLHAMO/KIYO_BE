@@ -5,9 +5,12 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
+import project.kiyobackend.store.domain.domain.bookmark.QBookMark;
 import project.kiyobackend.store.domain.domain.store.Store;
 import javax.persistence.EntityManager;
 import java.util.List;
+
+import static project.kiyobackend.store.domain.domain.bookmark.QBookMark.*;
 import static project.kiyobackend.store.domain.domain.store.QStore.store;
 import static project.kiyobackend.store.domain.domain.store.QStoreImage.*;
 
@@ -58,6 +61,31 @@ public class StoreQueryRepository {
 
         return new SliceImpl<>(results,pageable,hasNext);
     }
+
+    public Slice<Store> getBookmarkedStore(String userId, Long lastStoreId, Pageable pageable)
+    {
+        List<Store> results = query
+                .selectFrom(store)
+                .leftJoin(store.bookMarks, bookMark)
+                .where(
+                        ltStoreId(lastStoreId),
+                        bookMark.user.userId.eq(userId)
+                )
+                .orderBy(store.id.desc())
+                .limit(pageable.getPageSize() + 1)
+                .fetch();
+
+        boolean hasNext = false;
+
+        if(results.size() > pageable.getPageSize())
+        {
+            hasNext = true;
+            results.remove(pageable.getPageSize());
+        }
+
+        return new SliceImpl<>(results,pageable,hasNext);
+    }
+
 
     // TODO : 블로그 작성
     public Store getStoreDetail(Long storeId)
