@@ -103,6 +103,7 @@ public class StoreService {
                 storeRequestDto.getCall(),
                 storeRequestDto.getComment(),
                 storeRequestDto.getTime(),storeRequestDto.getAddress(),
+                storeRequestDto.getAddressMap(),
                 storeRequestDto.isKids(),
                 storeRequestDto.getCategoryIds(),
                 storeRequestDto.getConvenienceIds(),

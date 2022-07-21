@@ -19,6 +19,8 @@ import project.kiyobackend.auth.repository.UserRefreshTokenRepository;
 import project.kiyobackend.auth.token.AuthToken;
 import project.kiyobackend.auth.token.AuthTokenProvider;
 import project.kiyobackend.auth.token.UserRefreshToken;
+import project.kiyobackend.auth.web.dto.LoginRequestDto;
+import project.kiyobackend.auth.web.dto.LoginResponseDto;
 import project.kiyobackend.exception.user.NotExistUserException;
 import project.kiyobackend.user.domain.User;
 import project.kiyobackend.user.domain.UserRepository;
@@ -59,6 +61,19 @@ public class AuthController {
         // 쿠키 날려버리고
         CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
         return ResponseEntity.ok(new LogoutDto(true,"로그아웃 성공"));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto)
+    {
+        User user = userRepository.findByUserId(loginRequestDto.getUserId()).orElseThrow(NotExistUserException::new);
+                Date now = new Date();
+        AuthToken newAccessToken = tokenProvider.createAuthToken(
+                user.getUserId(),
+                user.getRoleType().getCode(),
+                new Date(now.getTime() + appProperties.getAuth().getTokenExpiry())
+        );
+        return ResponseEntity.ok(new LoginResponseDto(newAccessToken.getToken()));
     }
 
     @Operation(summary = "리프레시 토큰 재발급")
