@@ -28,7 +28,7 @@ public class MockUser {
         private String userId;
         private String username = "jemin";
         private String email = "jemin3161@naver.com";
-        private String nickname = "nickname";
+        private String nickname = "jemini";
         private List<Review> reviews = new ArrayList<Review>();
         private List<QnA> qnAS = new ArrayList<QnA>();
         private String password = "hanyang";

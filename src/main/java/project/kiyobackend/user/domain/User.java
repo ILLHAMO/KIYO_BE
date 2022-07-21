@@ -76,6 +76,11 @@ public class User extends JpaBaseEntity {
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
 
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "store_user",
+            joinColumns = @JoinColumn(name = "user_seq"))
+    private List<Long> assignedStoreList = new ArrayList<>();
+
     public User(
               String userId,
              String username,

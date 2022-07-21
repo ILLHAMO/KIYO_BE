@@ -56,6 +56,11 @@ public class StoreService {
         }
 
         return stores;
+    }
+
+    public void getStoreCurrentUserAssigned(List<Long> assignedList)
+    {
+        List<Store> storeCurrentUserAssigned = storeQueryRepository.getStoreCurrentUserAssigned(assignedList);
 
     }
 
@@ -86,8 +91,10 @@ public class StoreService {
     }
 
     @Transactional
-    public Long saveStore(List<MultipartFile> multipartFiles, StoreRequestDto storeRequestDto)
+    public Long saveStore(User currentUser, List<MultipartFile> multipartFiles, StoreRequestDto storeRequestDto)
     {
+        User user = userRepository.findByUserId(currentUser.getUserId()).orElseThrow(NotExistUserException::new);
+
         List<String> fileNameList = getMultipartFileNames(multipartFiles);
 
         List<Menu> menus = convertMenuDtoToMenuEntity(storeRequestDto);
@@ -100,11 +107,12 @@ public class StoreService {
                 storeRequestDto.getCategoryIds(),
                 storeRequestDto.getConvenienceIds(),
                 menus,
-                fileNameList);
+                fileNameList,user.getUserSeq());
 
-        storeRepository.save(store);
+        Store saveStore = storeRepository.save(store);
+        user.getAssignedStoreList().add(saveStore.getId());
 
-        return store.getId();
+        return saveStore.getId();
     }
 
 
@@ -186,6 +194,7 @@ public class StoreService {
     }
 
     private void checkCurrentUserReviewed(User user, List<ReviewResponseDto> reviewResponses) {
+
         for (ReviewResponseDto reviewRespons : reviewResponses) {
             if(reviewRespons.getReviewerName().equals(user.getNickname()))
             {

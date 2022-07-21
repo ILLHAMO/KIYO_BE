@@ -98,6 +98,14 @@ public class StoreQueryRepository {
                     .fetchOne();
     }
 
+    public List<Store> getStoreCurrentUserAssigned(List<Long> storeIds)
+    {
+        return query.selectFrom(store)
+                    .where(store.id.in(storeIds))
+                    .fetch();
+
+    }
+
 
     // 카테고리 필터링
     private BooleanBuilder eqCategory(List<Long> categoryIds)

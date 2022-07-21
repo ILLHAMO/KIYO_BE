@@ -28,7 +28,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@Tag(name = "store controller",description = "Store API")
+@Tag(name = "STORE API",description = "가게 관련 API")
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class StoreController{
@@ -60,10 +60,11 @@ public class StoreController{
     @Operation(summary = "가게 등록")
     @PostMapping(value = "/store")
     public Long saveStore(
+            @CurrentUser User user,
             @RequestPart(name = "meta_data") StoreRequestDto storeRequestDto,
             @RequestPart(name = "multipartFiles") List<MultipartFile> multipartFiles )
     {
-        return storeService.saveStore(multipartFiles,storeRequestDto);
+        return storeService.saveStore(user,multipartFiles,storeRequestDto);
     }
 
 

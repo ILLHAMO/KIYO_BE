@@ -1,4 +1,4 @@
-package project.kiyobackend.user.adapter.presentation.dto;
+package project.kiyobackend.store.adapter.presentation.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserSignupNicknameRequest {
-    @Schema(example = "kiyo")
-    private String nickname;
+public class TagResponseDto {
+    @Schema(example = "햄버거")
+    private String name;
 }

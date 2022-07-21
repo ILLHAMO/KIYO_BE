@@ -1,6 +1,8 @@
 package project.kiyobackend.auth.web;
 
 import io.jsonwebtoken.Claims;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 
@@ -30,6 +32,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @RestController
+@Tag(name = "AUTH API",description = "인증 관련 API")
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
@@ -41,6 +44,7 @@ public class AuthController {
     private final static long THREE_DAYS_MSEC = 259200000;
     private final static String REFRESH_TOKEN = "refresh_token";
 
+    @Operation(summary = "사용자 로그아웃")
     @DeleteMapping("/logout")
     public ResponseEntity<LogoutDto> logout(HttpServletRequest request, HttpServletResponse response)
     {
@@ -56,7 +60,8 @@ public class AuthController {
         CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
         return ResponseEntity.ok(new LogoutDto(true,"로그아웃 성공"));
     }
-    
+
+    @Operation(summary = "리프레시 토큰 재발급")
     @GetMapping("/refresh")
     public ResponseEntity<?> refreshToken (HttpServletRequest request, HttpServletResponse response) {
 

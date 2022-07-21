@@ -18,4 +18,5 @@ public class OpenApiConfig {
                 .components(new Components())
                 .info(info);
     }
+
 }

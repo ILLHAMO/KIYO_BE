@@ -1,10 +1,7 @@
 package project.kiyobackend.common.factory;
 
-import org.mockito.Mock;
-import project.kiyobackend.category.domain.CategoryId;
 import project.kiyobackend.review.domain.domain.Review;
 import project.kiyobackend.store.domain.domain.store.Store;
-import project.kiyobackend.user.domain.User;
 
 import java.util.List;
 

@@ -38,6 +38,8 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+
+
     @Transactional
     public UserSignupNicknameResponseDto addNicknameForSignup(User currentUser, UserSignupNicknameRequestDto userSignupNicknameRequestDto)
     {
