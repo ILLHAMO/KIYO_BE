@@ -14,6 +14,7 @@ import java.util.List;
 public class ReviewResponseDto {
 
     private Long id;
+    private String reviewerId;
     private String reviewerName;
     private Score score;
     private boolean currentUserReview = false;
