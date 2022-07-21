@@ -196,12 +196,17 @@ public class StoreService {
 
     private void checkCurrentUserReviewed(User user, List<ReviewResponseDto> reviewResponses) {
 
-        for (ReviewResponseDto reviewRespons : reviewResponses) {
-            if(reviewRespons.getReviewerName().equals(user.getNickname()))
-            {
-                reviewRespons.setCurrentUserReview(true);
+        if(user.getNickname() != null)
+        {
+            for (ReviewResponseDto reviewRespons : reviewResponses) {
+
+                if(reviewRespons.getReviewerName().equals(user.getNickname()))
+                {
+                    reviewRespons.setCurrentUserReview(true);
+                }
             }
         }
+
     }
     
 }

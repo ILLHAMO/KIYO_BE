@@ -206,5 +206,3 @@ values ( 1,20,1 ),
        ( 3,18,1),
        (4,1,1);
 
-insert into user (user_seq,user_id,email,username,password,nickname,role_type)
-values ( 1,"kiyo","kiyo@naver.com","kiyo","kiyo12","ilhamo","USER");
