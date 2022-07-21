@@ -99,4 +99,26 @@ public class User extends JpaBaseEntity {
         this.snsType = snsType;
         this.roleType = roleType;
     }
+
+    public User(Long userSeq,
+            String userId,
+            String username,
+            String nickname,
+            String email,
+            String emailVerifiedYn,
+            String profileImageUrl,
+            SnsType snsType,
+            RoleType roleType
+    ) {
+        this.userSeq = userSeq;
+        this.userId = userId;
+        this.username = username;
+        this.nickname = nickname;
+        this.password = "NO_PASS";
+        this.email = email != null ? email : "NO_EMAIL";
+        this.emailVerifiedYn = emailVerifiedYn;
+        this.profileImageUrl = profileImageUrl != null ? profileImageUrl : "";
+        this.snsType = snsType;
+        this.roleType = roleType;
+    }
 }
