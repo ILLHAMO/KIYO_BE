@@ -28,7 +28,15 @@ public class CookieUtil {
         cookie.setPath("/");
         cookie.setHttpOnly(true);
         cookie.setMaxAge(100000000);
+        response.addCookie(cookie);
+    }
 
+    public static void addCookieForLogin(HttpServletResponse response, String name, String value, int maxAge) {
+        Cookie cookie = new Cookie(name, value);
+        cookie.setPath("/");
+        cookie.setDomain("https://kiyo.vercel.app");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(100000000);
         response.addCookie(cookie);
     }
 
