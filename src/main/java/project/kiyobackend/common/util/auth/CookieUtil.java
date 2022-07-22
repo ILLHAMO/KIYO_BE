@@ -37,6 +37,7 @@ public class CookieUtil {
         ResponseCookie cookie = ResponseCookie.from(name, value)
                 .path("/")
                 .httpOnly(true)
+                .domain("kiyo.vercel.app")
                 .sameSite("none")
                 .secure(true)
                 .maxAge(100000000L)
