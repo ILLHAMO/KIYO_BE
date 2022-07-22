@@ -115,7 +115,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         // refresh_token이 존재하면 삭제함
         // 한번 더 깔끔하게 삭제하고 넣어주자.
-        CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
+    //    CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
         CookieUtil.addCookieForLogin(response, REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
         UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
         String nickname = principal.getUser().getNickname();
