@@ -34,13 +34,10 @@ public class CookieUtil {
     }
 
     public static void addCookieForLogin(HttpServletResponse response, String name, String value, int maxAge) {
-        System.out.println("정상 호출!!==============================");
         ResponseCookie cookie = ResponseCookie.from(name, value)
                 .path("/")
                 .httpOnly(true)
-                .domain("kiyo.vercel")
-                .sameSite("none")
-                .secure(true)
+                .sameSite("Lax")
                 .maxAge(100000000L)
                 .build();
         response.addHeader("Set-Cookie",cookie.toString());
