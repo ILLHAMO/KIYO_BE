@@ -38,7 +38,7 @@ public class CookieUtil {
                 .path("/")
                 .httpOnly(true)
                 .sameSite("Lax")
-                .domain("localhost")
+                .domain("jmsteady.net")
                 .maxAge(100000000L)
                 .build();
         response.setHeader("Set-Cookie",cookie.toString());
