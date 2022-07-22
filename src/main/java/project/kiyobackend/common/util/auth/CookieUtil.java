@@ -37,7 +37,8 @@ public class CookieUtil {
         ResponseCookie cookie = ResponseCookie.from(name, value)
                 .path("/")
                 .httpOnly(true)
-                .sameSite("Lax")
+                .sameSite("none")
+                .secure(true)
                 .maxAge(100000000L)
                 .build();
         response.addHeader("Set-Cookie",cookie.toString());
