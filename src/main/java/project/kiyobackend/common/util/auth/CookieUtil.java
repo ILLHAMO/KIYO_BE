@@ -1,5 +1,6 @@
 package project.kiyobackend.common.util.auth;
 
+import org.springframework.http.ResponseCookie;
 import org.springframework.util.SerializationUtils;
 
 import javax.servlet.http.Cookie;
@@ -27,17 +28,22 @@ public class CookieUtil {
         Cookie cookie = new Cookie(name, value);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
+
         cookie.setMaxAge(100000000);
         response.addCookie(cookie);
     }
 
     public static void addCookieForLogin(HttpServletResponse response, String name, String value, int maxAge) {
-        Cookie cookie = new Cookie(name, value);
-        cookie.setPath("/");
-        cookie.setDomain("https://kiyo.vercel.app");
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(100000000);
-        response.addCookie(cookie);
+        ResponseCookie cookie = ResponseCookie.from(name, value)
+                .path("/")
+                .httpOnly(true)
+                .maxAge(100000000L)
+                .sameSite("NONE")
+                .secure(true)
+                .domain("kiyo.vercel.app")
+                .build();
+        response.setHeader("Set-Cookie",cookie.toString());
+
     }
 
     public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
