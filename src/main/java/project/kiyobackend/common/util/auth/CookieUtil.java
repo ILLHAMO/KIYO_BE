@@ -37,9 +37,8 @@ public class CookieUtil {
         ResponseCookie cookie = ResponseCookie.from(name, value)
                 .path("/")
                 .httpOnly(true)
-                .domain("kiyo.vercel.app")
-                .sameSite("none")
-                .secure(true)
+                .domain("localhost")
+                .sameSite("Lax")
                 .maxAge(100000000L)
                 .build();
         response.addHeader("Set-Cookie",cookie.toString());
