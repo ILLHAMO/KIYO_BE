@@ -36,6 +36,7 @@ public class UserController {
         return ResponseEntity.ok(UserAssembler.userReviewResponses(userReview));
     }
 
+
     @Operation(summary = "로그인 유저의 프로필 정보 조회")
     @ApiResponse(responseCode = "200",description = "OK")
     @GetMapping("/profile")
@@ -60,6 +61,11 @@ public class UserController {
         User findUser = userService.getUser(user.getUserId());
         storeService.getStoreCurrentUserAssigned(findUser.getAssignedStoreList());
     }
+
+
+
+
+
 
 
 }

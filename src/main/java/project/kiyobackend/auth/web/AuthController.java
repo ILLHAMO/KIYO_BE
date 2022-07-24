@@ -93,6 +93,7 @@ public class AuthController {
                     .map(Cookie::getValue)
                     .orElse((null));
 
+            System.out.println("refeshtoken이 들어있는지 잘봐 : " + refreshToken);
             //1-2. 토큰 객체로 변환
             AuthToken authRefreshToken = tokenProvider.convertAuthToken(refreshToken);
 
