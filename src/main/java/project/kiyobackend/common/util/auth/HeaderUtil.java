@@ -12,7 +12,7 @@ public class HeaderUtil {
     public static String getAccessToken(HttpServletRequest request)
     {
         String headerValue = request.getHeader(HEADER_AUTHORIZATION);
-
+        System.out.println("무슨 값이 있찌? : " + headerValue);
         // 만약 Authorization 헤더에 값이 없으면 예외 상황
         if(headerValue == null) {
             return null;
