@@ -56,7 +56,11 @@ public class AuthController {
                 .orElse((null));
         // 저장소에서 날려버리고
         Optional<UserRefreshToken> userRefreshToken = userRefreshTokenRepository.findByRefreshToken(refreshToken);
-        userRefreshTokenRepository.delete(userRefreshToken.get());
+        if(userRefreshToken.isPresent())
+        {
+            userRefreshTokenRepository.delete(userRefreshToken.get());
+        }
+
 
         // 쿠키 날려버리고
         CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
