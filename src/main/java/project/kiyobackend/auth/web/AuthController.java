@@ -88,6 +88,7 @@ public class AuthController {
         // Case 1. accessToken이 없을때, 즉 브라우저가 새로 고침될때
         if(accessToken == null)
         {
+            System.out.println("여기로는 성공적으로 넘어왔나?");
             //1-1. 쿠키에서 refreshToken 파싱
             String refreshToken = CookieUtil.getCookie(request, REFRESH_TOKEN)
                     .map(Cookie::getValue)
