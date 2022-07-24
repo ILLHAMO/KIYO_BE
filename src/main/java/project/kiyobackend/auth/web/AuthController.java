@@ -84,9 +84,9 @@ public class AuthController {
         //1. 엑세스 토큰 기간 다 만료됐을때
         //2. 페이지 새로고침 되거나 브라우저가 꺼져서 refreshToken은 있지만 accessToken이 없을때
         String accessToken = HeaderUtil.getAccessToken(request);
-
+        System.out.println("refresh로 들어온 refreshToken이 : " + accessToken);
         // Case 1. accessToken이 없을때, 즉 브라우저가 새로 고침될때
-        if(accessToken.length() < 6)
+        if(accessToken == null)
         {
             //1-1. 쿠키에서 refreshToken 파싱
             String refreshToken = CookieUtil.getCookie(request, REFRESH_TOKEN)
