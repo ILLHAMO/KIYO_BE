@@ -90,7 +90,7 @@ public class AuthController {
         String accessToken = HeaderUtil.getAccessToken(request);
         System.out.println("refresh로 들어온 refreshToken이 : " + accessToken);
         // Case 1. accessToken이 없을때, 즉 브라우저가 새로 고침될때
-        if(accessToken.contains("null"))
+        if(accessToken.equals("null"))
         {
             System.out.println("여기로는 성공적으로 넘어왔나?");
             //1-1. 쿠키에서 refreshToken 파싱
@@ -104,6 +104,7 @@ public class AuthController {
 
             // 만약 refreshtoken이 정상이 아니라면 재 로그인 필요
             if (!authRefreshToken.validate()) {
+                CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
                 return ResponseEntity.ok(new RefreshTokenInvalidDto(401,false,"재로그인 필요"));// invalid refreshToken 나오면 로그아웃
             }
 
@@ -113,6 +114,7 @@ public class AuthController {
             //1-3. 만약 DB내에 리프레시 토큰이 없다면 재로그인이 필요하다.
             if(byRefreshToken.isEmpty())
             {
+                CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
                 return ResponseEntity.ok(new RefreshTokenInvalidDto(401,false,"재로그인 필요"));
             }
 
