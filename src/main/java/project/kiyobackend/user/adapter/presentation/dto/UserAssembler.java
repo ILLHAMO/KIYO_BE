@@ -1,9 +1,6 @@
 package project.kiyobackend.user.adapter.presentation.dto;
 
-import project.kiyobackend.user.application.dto.UserProfileResponseDto;
-import project.kiyobackend.user.application.dto.UserReviewResponseDto;
-import project.kiyobackend.user.application.dto.UserSignupNicknameRequestDto;
-import project.kiyobackend.user.application.dto.UserSignupNicknameResponseDto;
+import project.kiyobackend.user.application.dto.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,5 +32,10 @@ public class UserAssembler {
     public static UserProfileResponse userProfileResponse(UserProfileResponseDto userProfileResponseDto)
     {
         return new UserProfileResponse(userProfileResponseDto.getProfileImagePath(),userProfileResponseDto.getNickname());
+    }
+
+    public static ChangeUserProfileResponse changeUserProfileResponse(ChangeUserProfileResponseDto changeUserProfileResponseDto)
+    {
+        return new ChangeUserProfileResponse(changeUserProfileResponseDto.getNickname(), changeUserProfileResponseDto.getProfileImageUrl());
     }
 }

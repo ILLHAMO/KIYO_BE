@@ -8,10 +8,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import project.kiyobackend.auth.entity.CurrentUser;
+import project.kiyobackend.store.adapter.presentation.dto.store.StoreRequestDto;
 import project.kiyobackend.store.application.StoreService;
 import project.kiyobackend.user.adapter.presentation.dto.*;
 import project.kiyobackend.user.application.UserService;
+import project.kiyobackend.user.application.dto.ChangeUserProfileResponseDto;
 import project.kiyobackend.user.application.dto.UserProfileResponseDto;
 import project.kiyobackend.user.application.dto.UserReviewResponseDto;
 import project.kiyobackend.user.application.dto.UserSignupNicknameResponseDto;
@@ -46,6 +49,16 @@ public class UserController {
         return ResponseEntity.ok(UserAssembler.userProfileResponse(userProfile));
     }
 
+    @Operation(summary = "유저 프로필 수정")
+    @PutMapping("/profile")
+    public ResponseEntity<ChangeUserProfileResponse> changeUserProfile(@CurrentUser User user,
+                                                                       @RequestPart(name = "meta_data") ChangeUserProfileRequest changeUserProfileRequest,
+                                                                       @RequestPart(name = "profileImage") MultipartFile profileImage )
+    {
+        ChangeUserProfileResponseDto changeUserProfileResponseDto = userService.changeUserProfile(user, changeUserProfileRequest.getNickname(), profileImage);
+        return ResponseEntity.ok(UserAssembler.changeUserProfileResponse(changeUserProfileResponseDto));
+    }
+
     @Operation(summary = "유저가 처음 가입할때 닉네임이 없으면 설정하는 페이지로 이동")
     @PutMapping("/nickname")
     public ResponseEntity<UserSignupNicknameResponse> addNicknameForSignup(@RequestBody UserSignupNicknameRequest userSignupNicknameRequest,@CurrentUser User user)
@@ -61,6 +74,8 @@ public class UserController {
         User findUser = userService.getUser(user.getUserId());
         storeService.getStoreCurrentUserAssigned(findUser.getAssignedStoreList());
     }
+
+
 
 
 

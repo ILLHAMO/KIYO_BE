@@ -81,6 +81,18 @@ public class User extends JpaBaseEntity {
             joinColumns = @JoinColumn(name = "user_seq"))
     private List<Long> assignedStoreList = new ArrayList<>();
 
+    public void changeUserProfile(String nickname,String profileImageUrl)
+    {
+        if(nickname != null)
+        {
+            this.nickname = nickname;
+        }
+        if(profileImageUrl != null)
+        {
+            this.profileImageUrl = profileImageUrl;
+        }
+    }
+
     public User(
               String userId,
              String username,

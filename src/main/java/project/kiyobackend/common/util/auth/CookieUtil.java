@@ -28,22 +28,21 @@ public class CookieUtil {
         Cookie cookie = new Cookie(name, value);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
-
         cookie.setMaxAge(100000000);
         response.addCookie(cookie);
     }
 
-    public static void addCookieForLogin(HttpServletResponse response, String name, String value, int maxAge) {
-        ResponseCookie cookie = ResponseCookie.from(name, value)
-                .path("/")
-                .httpOnly(true)
-                .sameSite("None")
-                .secure(true)
-                .maxAge(100000000L)
-                .build();
-        response.addHeader("Set-Cookie",cookie.toString());
-
-    }
+//    public static void addCookieForLogin(HttpServletResponse response, String name, String value, int maxAge) {
+//        ResponseCookie cookie = ResponseCookie.from(name, value)
+//                .path("/")
+//                .httpOnly(true)
+//                .sameSite("None")
+//                .secure(true)
+//                .maxAge(100000000L)
+//                .build();
+//        response.addHeader("Set-Cookie",cookie.toString());
+//
+//    }
 
     public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
         Cookie[] cookies = request.getCookies();
