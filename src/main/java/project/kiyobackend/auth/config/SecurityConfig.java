@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -34,6 +35,7 @@ import java.util.Arrays;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CorsProperties corsProperties;
@@ -88,7 +90,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 /**
                  * 보완 관련 부분은 다 지움
                  */
-                .antMatchers("/auth/**","/oauth2/**","/v3/api-docs/**","/swagger-ui/**","/api-docs")
+                .antMatchers("/auth/**","/oauth2/**","/v3/api-docs/**","/swagger-ui/**","/api-docs","/api/stores","/api/store/**")
                 .permitAll()
                 /**
                  * api 경로는 일반 사용자 접근 가능

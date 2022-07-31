@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import project.kiyobackend.auth.entity.CurrentUser;
@@ -59,6 +60,7 @@ public class StoreController{
 
     @Operation(summary = "가게 등록")
     @PostMapping(value = "/store")
+    @PreAuthorize("hasRole('USER')")
     public Long saveStore(
             @CurrentUser User user,
             @RequestPart(name = "meta_data") StoreRequestDto storeRequestDto,
@@ -70,6 +72,7 @@ public class StoreController{
 
     @Operation(summary = "현재 사용자가 북마크한 가게 조회")
     @GetMapping("/store/bookmark")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Slice<UserBookmarkResponse>> getBookmarkedStore(@CurrentUser User currentUser, @RequestParam(name = "lastStoreId",required = false) Long lastStoreId,Pageable pageable)
     {
         Slice<UserBookmarkResponseDto> bookmarkedStore = storeService.getBookmarkedStore(currentUser, lastStoreId, pageable);
@@ -78,6 +81,7 @@ public class StoreController{
 
     @Operation(summary = "북마크 추가")
     @PutMapping("/store/{id}/bookmark")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<BookmarkResponse> addBookmark(@PathVariable Long id, @CurrentUser User user)
     {
         BookmarkResponseDto bookmarkResponseDto = bookmarkService.addBookmark(user, id);
@@ -88,6 +92,7 @@ public class StoreController{
 
     @Operation(summary = "북마크 삭제")
     @DeleteMapping("/store/{id}/bookmark")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<BookmarkResponse> removeBookmark(@PathVariable Long id,@CurrentUser User user)
     {
         BookmarkResponseDto bookmarkResponseDto = bookmarkService.removeBookmark(user, id);
