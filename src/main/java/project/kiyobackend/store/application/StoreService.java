@@ -48,13 +48,15 @@ public class StoreService {
     public Slice<Store> getStore(User currentUser,Long lastStoreId, StoreSearchCond storeSearchCond, Pageable pageable)
     {
         Slice<Store> stores = storeQueryRepository.searchBySlice(lastStoreId, storeSearchCond, pageable);
-        Optional<User> findUser = userRepository.findByUserId(currentUser.getUserId());
-        if(findUser.isPresent())
+        if(currentUser != null)
         {
-            List<BookMark> bookMarks = findUser.get().getBookMarks();
-            checkCurrentUserBookmarked(stores,bookMarks);
+            Optional<User> findUser = userRepository.findByUserId(currentUser.getUserId());
+            if(findUser.isPresent())
+            {
+                List<BookMark> bookMarks = findUser.get().getBookMarks();
+                checkCurrentUserBookmarked(stores,bookMarks);
+            }
         }
-
         return stores;
     }
 
