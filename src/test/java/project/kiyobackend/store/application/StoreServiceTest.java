@@ -69,16 +69,16 @@ class StoreServiceTest {
 
     }
 
-    @DisplayName("상세 페이지 조회 시 로그인 유저의 리뷰는 수정/삭제 가능")
-   // @Test
-    void user_review_in_detail_page()
-    {
-        User user = UserFactory.createUser(1L, "123456789");
-        given(userRepository.findByUserId(anyString())).willReturn(Optional.of(UserFactory.createUser(1L,"123456789")));
-        given(storeQueryRepository.getStoreDetail(anyLong())).willReturn(StoreFactory.createStore(1L,List.of(Review.builder().id(1L).user(user).build())));
-        StoreDetailResponseDto storeDetail = storeService.getStoreDetail("123456789", 1L);
-        Assertions.assertThat(storeDetail.getReviewResponses().get(0).isCurrentUserReview()).isTrue();
-
-    }
+//    @DisplayName("상세 페이지 조회 시 로그인 유저의 리뷰는 수정/삭제 가능")
+//   // @Test
+//    void user_review_in_detail_page()
+//    {
+//        User user = UserFactory.createUser(1L, "123456789");
+//        given(userRepository.findByUserId(anyString())).willReturn(Optional.of(UserFactory.createUser(1L,"123456789")));
+//        given(storeQueryRepository.getStoreDetail(anyLong())).willReturn(StoreFactory.createStore(1L,List.of(Review.builder().id(1L).user(user).build())));
+//        StoreDetailResponseDto storeDetail = storeService.getStoreDetail("123456789", 1L);
+//        Assertions.assertThat(storeDetail.getReviewResponses().get(0).isCurrentUserReview()).isTrue();
+//
+//    }
 
 }

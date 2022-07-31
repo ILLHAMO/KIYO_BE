@@ -53,7 +53,7 @@ public class StoreController{
     @GetMapping("/store/{storeId}")
     public ResponseEntity<StoreDetailResponse> getDetailStoreInfo(@CurrentUser User currentUser, @PathVariable Long storeId)
     {
-        StoreDetailResponseDto storeDetailResponseDto = storeService.getStoreDetail(currentUser.getUserId(), storeId);
+        StoreDetailResponseDto storeDetailResponseDto = storeService.getStoreDetail(currentUser, storeId);
         StoreDetailResponse result = StoreAssembler.storeDetailResponse(storeDetailResponseDto);
         return ResponseEntity.ok(result);
     }

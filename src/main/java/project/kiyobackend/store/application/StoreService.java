@@ -66,22 +66,30 @@ public class StoreService {
 
     }
 
-    public StoreDetailResponseDto getStoreDetail(String userId , Long storeId)
+    public StoreDetailResponseDto getStoreDetail(User user, Long storeId)
     {
-
+        // 특정 가게 정보 찾고
         Store store = storeQueryRepository.getStoreDetail(storeId);
-        User user = userRepository.findByUserId(userId).orElseThrow(NotExistUserException::new);
         if(store == null)
         {
-           throw new NotExistStoreException();
+            throw new NotExistStoreException();
         }
+        // 현재 사용자 로그인 되어 있다면
+        if(user != null)
+        {
+            // 실제 트랜잭션 안에서 user 정보를 가져옴
+            User findUser = userRepository.findByUserId(user.getUserId()).orElseThrow(NotExistUserException::new);
 
-        checkCurrentUserBookmarkedForDetail(store,user.getBookMarks());
-
-        StoreDetailResponseDto storeDetailResponseDto = StoreAssembler.storeDetailResponseDto(store);
-        checkCurrentUserReviewed(user, storeDetailResponseDto.getReviewResponses());
-
-        return storeDetailResponseDto;
+            checkCurrentUserBookmarkedForDetail(store,findUser.getBookMarks());
+            StoreDetailResponseDto storeDetailResponseDto = StoreAssembler.storeDetailResponseDto(store);
+            checkCurrentUserReviewed(findUser, storeDetailResponseDto.getReviewResponses());
+            return storeDetailResponseDto;
+        }
+        // 익명 사용자
+        else{
+            StoreDetailResponseDto storeDetailResponseDto = StoreAssembler.storeDetailResponseDto(store);
+            return storeDetailResponseDto;
+        }
     }
 
     public Slice<UserBookmarkResponseDto> getBookmarkedStore(User currentUser, Long lastStoreId, Pageable pageable)
