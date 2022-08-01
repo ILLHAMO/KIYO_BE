@@ -4,6 +4,8 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,8 +14,10 @@ import org.springframework.web.server.ResponseStatusException;
 import project.kiyobackend.exception.store.NotExistStoreException;
 import project.kiyobackend.exception.user.NotExistUserException;
 import project.kiyobackend.store.adapter.infrastructure.AWSS3UploadService;
+import project.kiyobackend.store.adapter.presentation.dto.SearchRankingResponseDto;
 import project.kiyobackend.store.adapter.presentation.dto.StoreAssembler;
 import project.kiyobackend.store.adapter.presentation.dto.review.ReviewResponseDto;
+import project.kiyobackend.store.adapter.presentation.dto.store.RecentSearchResponseDto;
 import project.kiyobackend.store.adapter.presentation.dto.store.StoreDetailResponseDto;
 import project.kiyobackend.store.adapter.presentation.dto.store.StoreRequestDto;
 import project.kiyobackend.store.application.dto.UserBookmarkResponseDto;
@@ -45,6 +49,8 @@ public class StoreService {
 
     private final UserRepository userRepository;
 
+    private final RedisSearchService redisSearchService;
+
     public Slice<Store> getStore(User currentUser,Long lastStoreId, StoreSearchCond storeSearchCond, Pageable pageable)
     {
         Slice<Store> stores = storeQueryRepository.searchBySlice(lastStoreId, storeSearchCond, pageable);
@@ -58,6 +64,27 @@ public class StoreService {
             }
         }
         return stores;
+    }
+
+    public Slice<Store> searchStoreByKeyword(String keyword, Long lastStoreId, StoreSearchCond storeSearchCond, Pageable pageable)
+    {
+        /*
+        검색 로직
+         */
+        Slice<Store> stores = storeQueryRepository.searchByKeyword(keyword, lastStoreId, storeSearchCond, pageable);
+        redisSearchService.addKeywordToRedis(keyword);
+        return stores;
+
+    }
+
+    public List<SearchRankingResponseDto> findKeywordSortedByRank()
+    {
+        return redisSearchService.findKeywordSortedByRank();
+    }
+
+    public List<RecentSearchResponseDto> findKeyWordSearchedRecently()
+    {
+        return redisSearchService.findKeyWordSearchedRecently();
     }
 
     public void getStoreCurrentUserAssigned(List<Long> assignedList)

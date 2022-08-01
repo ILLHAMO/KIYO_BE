@@ -96,7 +96,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/swagger-ui/**",
                         "/api-docs",
                         "/api/stores",
-                        "/api/store/**")
+                        "api/store/search",
+                        "/api/store/**",
+                        "/api/search/keyword/rank",
+                        "/api/search/keyword/recent"
+                )
                 .permitAll()
                 /**
                  * api 경로는 일반 사용자 접근 가능

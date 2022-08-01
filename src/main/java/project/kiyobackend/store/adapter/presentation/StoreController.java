@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -99,5 +100,35 @@ public class StoreController{
         BookmarkResponse bookmarkResponse = StoreAssembler.bookmarkResponse(bookmarkResponseDto);
         return ResponseEntity.ok(bookmarkResponse);
     }
+
+    @Operation(summary = "가게 검색")
+    @GetMapping("/store/search")
+    public ResponseEntity<Slice<StoreResponse>> searchStore(@RequestParam(name = "keyword") String keyword,
+                                              @RequestParam(name = "lastStoreId", required = false)  Long lastStoreId,
+                                              Pageable pageable,
+                                              StoreSearchCond storeSearchCond)
+    {
+        Slice<Store> stores = storeService.searchStoreByKeyword(keyword, lastStoreId, storeSearchCond, pageable);
+        return ResponseEntity.ok(StoreAssembler.storeResponseDto(stores));
+    }
+
+    @Operation(summary = "키워드 인기 검색 순위")
+    @GetMapping("/search/keyword/rank")
+    public ResponseEntity<List<SearchRankingResponseDto>> getPopularKeyword()
+    {
+        List<SearchRankingResponseDto> ranking = storeService.findKeywordSortedByRank();
+        return ResponseEntity.ok(ranking);
+    }
+
+    @Operation(summary = "키워드 최근 검색")
+    @GetMapping("/search/keyword/recent")
+    public ResponseEntity<List<RecentSearchResponseDto>> getRecentKeyword()
+    {
+        List<RecentSearchResponseDto> recent = storeService.findKeyWordSearchedRecently();
+        return ResponseEntity.ok(recent);
+    }
+
+
+
 
 }
