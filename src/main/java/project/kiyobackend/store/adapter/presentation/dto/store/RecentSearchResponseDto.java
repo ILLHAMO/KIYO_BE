@@ -9,5 +9,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class RecentSearchResponseDto {
     private String recent_keyword;
+    private String key;
     private Long localDateTime;
 }

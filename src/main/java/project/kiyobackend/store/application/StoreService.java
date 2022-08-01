@@ -17,6 +17,7 @@ import project.kiyobackend.store.adapter.infrastructure.AWSS3UploadService;
 import project.kiyobackend.store.adapter.presentation.dto.SearchRankingResponseDto;
 import project.kiyobackend.store.adapter.presentation.dto.StoreAssembler;
 import project.kiyobackend.store.adapter.presentation.dto.review.ReviewResponseDto;
+import project.kiyobackend.store.adapter.presentation.dto.store.RecentKeywordRequest;
 import project.kiyobackend.store.adapter.presentation.dto.store.RecentSearchResponseDto;
 import project.kiyobackend.store.adapter.presentation.dto.store.StoreDetailResponseDto;
 import project.kiyobackend.store.adapter.presentation.dto.store.StoreRequestDto;
@@ -66,25 +67,37 @@ public class StoreService {
         return stores;
     }
 
-    public Slice<Store> searchStoreByKeyword(String keyword, Long lastStoreId, StoreSearchCond storeSearchCond, Pageable pageable)
+    public Slice<Store> searchStoreByKeyword(User currentUser, String keyword, Long lastStoreId, StoreSearchCond storeSearchCond, Pageable pageable)
     {
-        /*
-        검색 로직
-         */
+
         Slice<Store> stores = storeQueryRepository.searchByKeyword(keyword, lastStoreId, storeSearchCond, pageable);
-        redisSearchService.addKeywordToRedis(keyword);
+        if(currentUser != null)
+        {
+            Optional<User> findUser = userRepository.findByUserId(currentUser.getUserId());
+            if(findUser.isPresent())
+            {
+                List<BookMark> bookMarks = findUser.get().getBookMarks();
+                checkCurrentUserBookmarked(stores,bookMarks);
+            }
+            redisSearchService.addKeywordToRedis(currentUser, keyword);
+        }
+
         return stores;
 
     }
 
-    public List<SearchRankingResponseDto> findKeywordSortedByRank()
+    public List<SearchRankingResponseDto> findKeywordSortedByRank(User currentUser)
     {
-        return redisSearchService.findKeywordSortedByRank();
+        return redisSearchService.findKeywordSortedByRank(currentUser);
     }
 
-    public List<RecentSearchResponseDto> findKeyWordSearchedRecently()
+    public List<RecentSearchResponseDto> findKeyWordSearchedRecently(User currentUser)
     {
-        return redisSearchService.findKeyWordSearchedRecently();
+        return redisSearchService.findKeyWordSearchedRecently(currentUser);
+    }
+
+    public String removeRecentKeyword(RecentKeywordRequest recentKeywordRequest) {
+        return redisSearchService.removeRecentKeyword(recentKeywordRequest);
     }
 
     public void getStoreCurrentUserAssigned(List<Long> assignedList)
@@ -166,6 +179,8 @@ public class StoreService {
     }
 
 
+
+
     private List<String> getMultipartFileNames(List<MultipartFile> multipartFiles) {
         List<String> fileNameList = new ArrayList<>();
 
@@ -244,5 +259,6 @@ public class StoreService {
 
 
     }
-    
+
+
 }

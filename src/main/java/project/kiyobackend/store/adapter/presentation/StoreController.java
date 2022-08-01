@@ -103,31 +103,39 @@ public class StoreController{
 
     @Operation(summary = "가게 검색")
     @GetMapping("/store/search")
-    public ResponseEntity<Slice<StoreResponse>> searchStore(@RequestParam(name = "keyword") String keyword,
+    public ResponseEntity<Slice<StoreResponse>> searchStore(@CurrentUser User currentUser,@RequestParam(name = "keyword") String keyword,
                                               @RequestParam(name = "lastStoreId", required = false)  Long lastStoreId,
                                               Pageable pageable,
                                               StoreSearchCond storeSearchCond)
     {
-        Slice<Store> stores = storeService.searchStoreByKeyword(keyword, lastStoreId, storeSearchCond, pageable);
+        Slice<Store> stores = storeService.searchStoreByKeyword(currentUser, keyword, lastStoreId, storeSearchCond, pageable);
         return ResponseEntity.ok(StoreAssembler.storeResponseDto(stores));
     }
 
     @Operation(summary = "키워드 인기 검색 순위")
     @GetMapping("/search/keyword/rank")
-    public ResponseEntity<List<SearchRankingResponseDto>> getPopularKeyword()
+    public ResponseEntity<List<SearchRankingResponseDto>> getPopularKeyword(@CurrentUser User currentUser)
     {
-        List<SearchRankingResponseDto> ranking = storeService.findKeywordSortedByRank();
+        List<SearchRankingResponseDto> ranking = storeService.findKeywordSortedByRank(currentUser);
         return ResponseEntity.ok(ranking);
     }
 
     @Operation(summary = "키워드 최근 검색")
     @GetMapping("/search/keyword/recent")
-    public ResponseEntity<List<RecentSearchResponseDto>> getRecentKeyword()
+    public ResponseEntity<List<RecentSearchResponseDto>> getRecentKeyword(@CurrentUser User currentUser)
     {
-        List<RecentSearchResponseDto> recent = storeService.findKeyWordSearchedRecently();
+        List<RecentSearchResponseDto> recent = storeService.findKeyWordSearchedRecently(currentUser);
         return ResponseEntity.ok(recent);
     }
 
+    @Operation(summary = "최근 검색 키워드 삭제")
+    @DeleteMapping("/search/keyword/recent")
+    public ResponseEntity<String> removeRecentKeyword(@RequestBody RecentKeywordRequest recentKeywordRequest)
+    {
+        String result = storeService.removeRecentKeyword(recentKeywordRequest);
+        return ResponseEntity.ok(result);
+
+    }
 
 
 
