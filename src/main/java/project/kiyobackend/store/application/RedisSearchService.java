@@ -33,10 +33,10 @@ public class RedisSearchService {
         }
     }
 
-    public List<SearchRankingResponseDto> findKeywordSortedByRank(User currentUser) {
+    public List<SearchRankingResponseDto> findKeywordSortedByRank() {
 
 
-        String keyForRanking = "user:ranking:"+currentUser.getUserId();
+        String keyForRanking = "ranking";
         ZSetOperations<String,String> ZSetOperations = redisTemplate.opsForZSet();
         Set<ZSetOperations.TypedTuple<String>> typedTuples = ZSetOperations.reverseRangeWithScores(keyForRanking, 0, 4);
         return typedTuples.stream().map(s -> new SearchRankingResponseDto(s.getValue(),s.getScore())).collect(Collectors.toList());

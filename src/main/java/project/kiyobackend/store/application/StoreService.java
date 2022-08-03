@@ -86,9 +86,9 @@ public class StoreService {
 
     }
 
-    public List<SearchRankingResponseDto> findKeywordSortedByRank(User currentUser)
+    public List<SearchRankingResponseDto> findKeywordSortedByRank()
     {
-        return redisSearchService.findKeywordSortedByRank(currentUser);
+        return redisSearchService.findKeywordSortedByRank();
     }
 
     public List<RecentSearchResponseDto> findKeyWordSearchedRecently(User currentUser)

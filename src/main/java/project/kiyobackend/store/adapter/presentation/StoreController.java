@@ -114,9 +114,9 @@ public class StoreController{
 
     @Operation(summary = "키워드 인기 검색 순위")
     @GetMapping("/search/keyword/rank")
-    public ResponseEntity<List<SearchRankingResponseDto>> getPopularKeyword(@CurrentUser User currentUser)
+    public ResponseEntity<List<SearchRankingResponseDto>> getPopularKeyword()
     {
-        List<SearchRankingResponseDto> ranking = storeService.findKeywordSortedByRank(currentUser);
+        List<SearchRankingResponseDto> ranking = storeService.findKeywordSortedByRank();
         return ResponseEntity.ok(ranking);
     }
 
