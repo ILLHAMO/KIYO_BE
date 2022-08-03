@@ -44,14 +44,14 @@ public class RedisSearchService {
 
     public List<RecentSearchResponseDto> findKeyWordSearchedRecently(User currentUser) {
         String keyForRecent;
-        if(currentUser != null)
-        {
-             keyForRecent =  "user:recent:"+currentUser.getUserId();
-        }
-        ZSetOperations<String,String> ZSetOperations = redisTemplate.opsForZSet();
-        Set<ZSetOperations.TypedTuple<String>> typedTuples = ZSetOperations.reverseRangeWithScores(keyForRecent, 0, 4);
-        return typedTuples.stream().map(s -> new RecentSearchResponseDto(s.getValue(),keyForRecent,s.getScore().longValue())).collect(Collectors.toList());
+        if(currentUser != null) {
+            keyForRecent = "user:recent:" + currentUser.getUserId();
 
+            ZSetOperations<String, String> ZSetOperations = redisTemplate.opsForZSet();
+            Set<ZSetOperations.TypedTuple<String>> typedTuples = ZSetOperations.reverseRangeWithScores(keyForRecent, 0, 4);
+            return typedTuples.stream().map(s -> new RecentSearchResponseDto(s.getValue(), keyForRecent, s.getScore().longValue())).collect(Collectors.toList());
+        }
+        return null;
     }
 
     public String removeRecentKeyword(RecentKeywordRequest recentKeywordRequest) {
