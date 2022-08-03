@@ -23,11 +23,11 @@ public class RedisSearchService {
     public void addKeywordToRedis(User currentUser, String keyword) {
         try {
             // 검색을 하면 해당검색어를 value에 저장하고, score를 1 준다
-            String keyForRanking = "user:ranking:"+currentUser.getUserId();
-            String keyForRecent = "user:recent:"+currentUser.getUserId();
+            String keyForRanking = "ranking";
+          //  String keyForRecent = "user:recent:"+currentUser.getUserId();
             redisTemplate.opsForZSet().incrementScore(keyForRanking, keyword,1);
             // 검색을 하면 해당 겁색어를 value에 저장하고, 조회한 나노시간으로 업데이트 한다.
-            redisTemplate.opsForZSet().add(keyForRecent,keyword,(double) System.currentTimeMillis());
+        //    redisTemplate.opsForZSet().add(keyForRecent,keyword,(double) System.currentTimeMillis());
         } catch (Exception e) {
             System.out.println(e.toString());
         }
