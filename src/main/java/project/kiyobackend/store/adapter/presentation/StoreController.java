@@ -30,7 +30,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@Tag(name = "STORE API",description = "가게 관련 API")
+@Tag(name = "STORE API",description = "가게 API")
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class StoreController{
