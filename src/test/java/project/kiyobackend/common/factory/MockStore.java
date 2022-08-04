@@ -7,6 +7,7 @@ import project.kiyobackend.review.domain.domain.Review;
 import project.kiyobackend.store.domain.domain.bookmark.BookMark;
 import project.kiyobackend.store.domain.domain.menu.Menu;
 import project.kiyobackend.store.domain.domain.store.Comment;
+import project.kiyobackend.store.domain.domain.store.Opentime;
 import project.kiyobackend.store.domain.domain.store.Store;
 import project.kiyobackend.store.domain.domain.store.StoreImage;
 import project.kiyobackend.user.domain.User;
@@ -40,7 +41,7 @@ public class MockStore {
         private List<Menu> menus = new ArrayList<Menu>();
         private int bookmarkCount = 0;
         private int reviewCount = 0;
-        private String time = "09:00~22:00";
+        private List<Opentime> time = new ArrayList<>();
         private boolean isKids = true;
         private String address = "성동구 왕십리";
         private boolean isBooked = false;
