@@ -1,24 +1,85 @@
-INSERT INTO store (store_id,bookmark_count,review_count,call_number,address,address_map,detail_comment,simple_comment,is_assigned,is_booked,is_kids,store_name,open_time)
-values ( 1, 10,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','','',1,0,1,'푸라닭 치킨','10:00 ~ 22:00'),
-       ( 2, 30,10,'02-5253-8568','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','','',1,0,1,'맘스터치','10:00 ~ 22:00'),
-       ( 3, 2,10,'02-2665-3253','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','','',1,0,1,'60계 치킨','10:00 ~ 22:00'),
-       ( 4, 43,10,'02-2822-3793','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','','',1,0,1,'지코바','10:00 ~ 22:00'),
-       ( 5, 22,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','','',1,0,1,'맥도날드','10:00 ~ 22:00'),
-       ( 6, 8,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','','',1,0,0,'버거킹','10:00 ~ 22:00'),
-       ( 7, 56,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','','',1,0,0,'푸라닭 치킨','10:00 ~ 22:00'),
-       ( 8, 23,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','','',1,0,1,'푸라닭 치킨','10:00 ~ 22:00'),
-       ( 9, 58,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','','',1,0,0,'푸라닭 치킨','10:00 ~ 22:00'),
-       ( 10, 68,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','','',1,0,1,'푸라닭 치킨','10:00 ~ 22:00'),
-       ( 11, 92,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','','',1,0,1,'교촌 치킨','10:00 ~ 22:00'),
-       ( 12, 22,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','','',1,0,0,'푸라닭 치킨','10:00 ~ 22:00'),
-       ( 13, 10,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','','',1,0,0,'푸라닭 치킨','10:00 ~ 22:00'),
-       ( 14, 17,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','','',1,0,1,'푸라닭 치킨','10:00 ~ 22:00'),
-       ( 15, 48,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','','',1,0,1,'푸라닭 치킨','10:00 ~ 22:00'),
-       ( 16, 92,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','','',1,0,0,'푸라닭 치킨','10:00 ~ 22:00'),
-       ( 17, 73,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','','',1,0,1,'푸라닭 치킨','10:00 ~ 22:00'),
-       ( 18, 5,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','','',1,0,0,'푸라닭 치킨','10:00 ~ 22:00'),
-       ( 19, 74,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','','',1,0,1,'푸라닭 치킨','10:00 ~ 22:00'),
-       ( 20, 98,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','','',1,0,1,'푸라닭 치킨','10:00 ~ 22:00');
+INSERT INTO store (store_id,bookmark_count,review_count,call_number,address,address_map,detail_comment,simple_comment,is_assigned,is_booked,is_kids,store_name)
+values ( 1, 10,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','왕십리에서 제일 많이 방문하는 치킨집입니다.','왕십리 유명 치킨집!',1,0,1,'푸라닭 치킨'),
+       ( 2, 30,10,'02-5253-8568','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','왕십리에서 제일 많이 방문하는 치킨집입니다.','왕십리 유명 치킨집!',1,0,1,'맘스터치'),
+       ( 3, 2,10,'02-2665-3253','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','왕십리에서 제일 많이 방문하는 치킨집입니다.','왕십리 유명 치킨집!',1,0,1,'60계 치킨'),
+       ( 4, 43,10,'02-2822-3793','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','왕십리에서 제일 많이 방문하는 치킨집입니다.','왕십리 유명 치킨집!',1,0,1,'지코바'),
+       ( 5, 22,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','왕십리에서 제일 많이 방문하는 치킨집입니다.','왕십리 유명 치킨집!',1,0,1,'맥도날드'),
+       ( 6, 8,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','왕십리에서 제일 많이 방문하는 치킨집입니다.','왕십리 유명 치킨집!',1,0,0,'버거킹'),
+       ( 7, 56,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','왕십리에서 제일 많이 방문하는 치킨집입니다.','왕십리 유명 치킨집!',1,0,0,'푸라닭 치킨'),
+       ( 8, 23,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','왕십리에서 제일 많이 방문하는 치킨집입니다.','왕십리 유명 치킨집!',1,0,1,'푸라닭 치킨'),
+       ( 9, 58,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','왕십리에서 제일 많이 방문하는 치킨집입니다.','왕십리 유명 치킨집!',1,0,0,'푸라닭 치킨'),
+       ( 10, 68,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','왕십리에서 제일 많이 방문하는 치킨집입니다.','왕십리 유명 치킨집!',1,0,1,'푸라닭 치킨'),
+       ( 11, 92,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','왕십리에서 제일 많이 방문하는 치킨집입니다.','왕십리 유명 치킨집!',1,0,1,'교촌 치킨'),
+       ( 12, 22,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','왕십리에서 제일 많이 방문하는 치킨집입니다.','왕십리 유명 치킨집!',1,0,0,'푸라닭 치킨'),
+       ( 13, 10,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','왕십리에서 제일 많이 방문하는 치킨집입니다.','왕십리 유명 치킨집!',1,0,0,'푸라닭 치킨'),
+       ( 14, 17,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','왕십리에서 제일 많이 방문하는 치킨집입니다.','왕십리 유명 치킨집!',1,0,1,'푸라닭 치킨'),
+       ( 15, 48,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','왕십리에서 제일 많이 방문하는 치킨집입니다.','왕십리 유명 치킨집!',1,0,1,'푸라닭 치킨'),
+       ( 16, 92,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','왕십리에서 제일 많이 방문하는 치킨집입니다.','왕십리 유명 치킨집!',1,0,0,'푸라닭 치킨'),
+       ( 17, 73,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','왕십리에서 제일 많이 방문하는 치킨집입니다.','왕십리 유명 치킨집!',1,0,1,'푸라닭 치킨'),
+       ( 18, 5,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','왕십리에서 제일 많이 방문하는 치킨집입니다.','왕십리 유명 치킨집!',1,0,0,'푸라닭 치킨'),
+       ( 19, 74,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','왕십리에서 제일 많이 방문하는 치킨집입니다.','왕십리 유명 치킨집!',1,0,1,'푸라닭 치킨'),
+       ( 20, 98,10,'02-4345-2234','성동구 왕십리','서울 성동구 왕십리동 왕십리로 363','왕십리에서 제일 많이 방문하는 치킨집입니다.','왕십리 유명 치킨집!',1,0,1,'푸라닭 치킨');
+
+INSERT INTO opentime (store_id,time) values ( 1,"월~금 10:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 1,"토 12:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 1,"일 13:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 2,"월~금 10:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 2,"토 12:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 2,"일 13:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 3,"월~금 10:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 3,"토 12:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 3,"일 13:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 4,"월~금 10:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 4,"토 12:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 4,"일 13:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 5,"월~금 10:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 5,"토 12:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 5,"일 13:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 6,"월~금 10:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 6,"토 12:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 6,"일 13:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 7,"월~금 10:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 7,"토 12:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 7,"일 13:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 8,"월~금 10:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 8,"토 12:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 8,"일 13:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 9,"월~금 10:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 9,"토 12:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 9,"일 13:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 10,"월~금 10:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 10,"토 12:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 10,"일 13:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 11,"월~금 10:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 11,"토 12:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 11,"일 13:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 12,"월~금 10:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 12,"토 12:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 12,"일 13:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 13,"월~금 10:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 13,"토 12:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 13,"일 13:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 14,"월~금 10:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 14,"토 12:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 14,"일 13:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 15,"월~금 10:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 15,"토 12:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 15,"일 13:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 16,"월~금 10:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 16,"토 12:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 16,"일 13:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 17,"월~금 10:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 17,"토 12:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 17,"일 13:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 18,"월~금 10:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 18,"토 12:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 18,"일 13:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 19,"월~금 10:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 19,"토 12:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 19,"일 13:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 20,"월~금 10:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 20,"토 12:00~2:00");
+INSERT INTO opentime (store_id,time) values ( 20,"일 13:00~2:00");
 
 INSERT INTO category (category_id,category_name)
 values ( 1,'카페' ),

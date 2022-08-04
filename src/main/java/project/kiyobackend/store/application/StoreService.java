@@ -25,6 +25,7 @@ import project.kiyobackend.store.application.dto.UserBookmarkResponseDto;
 import project.kiyobackend.store.domain.domain.bookmark.BookMark;
 import project.kiyobackend.store.domain.domain.menu.Menu;
 import project.kiyobackend.store.domain.domain.menu.MenuOption;
+import project.kiyobackend.store.domain.domain.store.Opentime;
 import project.kiyobackend.store.domain.domain.store.Store;
 import project.kiyobackend.store.domain.domain.store.StoreRepository;
 import project.kiyobackend.store.query.StoreQueryRepository;
@@ -152,7 +153,7 @@ public class StoreService {
         Store store = Store.createStore(storeRequestDto.getName(),
                 storeRequestDto.getCall(),
                 storeRequestDto.getComment(),
-                storeRequestDto.getTime(),storeRequestDto.getAddress(),
+                storeRequestDto.getTime().stream().map(t -> new Opentime(t)).collect(Collectors.toList()), storeRequestDto.getAddress(),
                 storeRequestDto.getAddressMap(),
                 storeRequestDto.isKids(),
                 storeRequestDto.getCategoryIds(),

@@ -96,7 +96,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/swagger-ui/**",
                         "/api-docs",
                         "api/store/search",
-                        "/api/store/**",
                         "/api/search/keyword/rank",
                         "/api/search/keyword/recent"
                 )
@@ -105,6 +104,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                  * api 경로는 일반 사용자 접근 가능
                  */
                 .antMatchers("/api/stores").access("hasRole('USER') or isAnonymous()")
+                .antMatchers("/api/store/**").access("hasRole('USER') or isAnonymous()")
                 .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode())
                 //
                 //

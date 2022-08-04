@@ -58,7 +58,7 @@ public class StoreAssembler {
                 .simpleComment(findStore.getComment().getSimpleComment())
                 .tags(findStore.getTagStores().stream().map(ts -> ts.getTag()).collect(Collectors.toList()))
                 .address(findStore.getAddress())
-                .time(findStore.getTime())
+                .time(findStore.getTime().stream().map(t -> t.getTime()).collect(Collectors.toList()))
                 .detailComment(findStore.getComment().getDetailComment())
                 .addressMap(findStore.getAddressMap())
                 .images(findStore.getStoreImages())

@@ -52,7 +52,7 @@ public class StoreController{
     // TODO : 상세 페이지에서 본인의 리뷰는 삭제 및 수정 가능
     // TODO : 자주 변경되는 것이므로, 엔티티에 필드로 넣기 보다는 DTO 만들때 넣어주자, 북마크 여부도 똑같이 수정
     @Operation(summary = "상세 페이지 조회")
-    @PreAuthorize("isAnonymous() or hasRole('USER')")
+    @PreAuthorize("hasRole('USER') or isAnonymous()")
     @GetMapping("/store/{storeId}")
     public ResponseEntity<StoreDetailResponse> getDetailStoreInfo(@CurrentUser User currentUser, @PathVariable Long storeId)
     {

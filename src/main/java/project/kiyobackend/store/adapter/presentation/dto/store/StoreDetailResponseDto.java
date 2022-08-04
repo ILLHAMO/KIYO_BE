@@ -27,7 +27,7 @@ public class StoreDetailResponseDto {
     private String simpleComment;
     private List<Tag> tag = new ArrayList<>();
     private String address;
-    private String time;
+    private List<String> time;
     private String detailComment;
     private String addressMap;
     private List<ImageDto> images;
@@ -36,7 +36,7 @@ public class StoreDetailResponseDto {
     private List<ReviewResponseDto> reviewResponses;
 
     @Builder
-    public StoreDetailResponseDto(String name, boolean kids, boolean isBooked, String simpleComment, List<Tag> tags, String address, String time, String detailComment, String addressMap, List<StoreImage> images, List<Long> convenienceIds, List<Menu> menus, List<Review> reviews) {
+    public StoreDetailResponseDto(String name, boolean kids, boolean isBooked, String simpleComment, List<Tag> tags, String address, List<String> time, String detailComment, String addressMap, List<StoreImage> images, List<Long> convenienceIds, List<Menu> menus, List<Review> reviews) {
         this.name = name;
         this.kids = kids;
         this.isBooked = isBooked;
