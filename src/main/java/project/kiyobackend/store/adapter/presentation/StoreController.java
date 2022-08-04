@@ -40,7 +40,7 @@ public class StoreController{
 
 
     @Operation(summary = "가게 목록 페이징 조회")
-    @PreAuthorize("isAnonymous() or hasRole('USER')")
+    @PreAuthorize("hasRole('USER') or isAnonymous()")
     @GetMapping("/stores")
     public ResponseEntity<Slice<StoreResponse>> getStoreBySlice(@CurrentUser User currentUser , @RequestParam(name = "lastStoreId", required = false)  Long lastStoreId, Pageable pageable, StoreSearchCond storeSearchCond)
     {
