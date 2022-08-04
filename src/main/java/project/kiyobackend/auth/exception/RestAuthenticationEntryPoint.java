@@ -29,9 +29,8 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
 
-        // InsufficientAuthenticationError 발생시, 여기서 에러 잡아줌
-
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
 
         final Map<String, Object> body = new HashMap<>();
         body.put("status", HttpServletResponse.SC_UNAUTHORIZED);

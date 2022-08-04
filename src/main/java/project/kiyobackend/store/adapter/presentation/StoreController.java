@@ -40,6 +40,7 @@ public class StoreController{
 
 
     @Operation(summary = "가게 목록 페이징 조회")
+    @PreAuthorize("isAnonymous() or hasRole('USER')")
     @GetMapping("/stores")
     public ResponseEntity<Slice<StoreResponse>> getStoreBySlice(@CurrentUser User currentUser , @RequestParam(name = "lastStoreId", required = false)  Long lastStoreId, Pageable pageable, StoreSearchCond storeSearchCond)
     {
@@ -51,6 +52,7 @@ public class StoreController{
     // TODO : 상세 페이지에서 본인의 리뷰는 삭제 및 수정 가능
     // TODO : 자주 변경되는 것이므로, 엔티티에 필드로 넣기 보다는 DTO 만들때 넣어주자, 북마크 여부도 똑같이 수정
     @Operation(summary = "상세 페이지 조회")
+    @PreAuthorize("isAnonymous() or hasRole('USER')")
     @GetMapping("/store/{storeId}")
     public ResponseEntity<StoreDetailResponse> getDetailStoreInfo(@CurrentUser User currentUser, @PathVariable Long storeId)
     {
@@ -102,6 +104,7 @@ public class StoreController{
     }
 
     @Operation(summary = "가게 검색")
+    @PreAuthorize("isAnonymous() or hasRole('USER')")
     @GetMapping("/store/search")
     public ResponseEntity<Slice<StoreResponse>> searchStore(@CurrentUser User currentUser,@RequestParam(name = "keyword") String keyword,
                                               @RequestParam(name = "lastStoreId", required = false)  Long lastStoreId,
@@ -113,6 +116,7 @@ public class StoreController{
     }
 
     @Operation(summary = "키워드 인기 검색 순위")
+    @PreAuthorize("isAnonymous() or hasRole('USER')")
     @GetMapping("/search/keyword/rank")
     public ResponseEntity<List<SearchRankingResponseDto>> getPopularKeyword()
     {
@@ -120,22 +124,22 @@ public class StoreController{
         return ResponseEntity.ok(ranking);
     }
 
-    @Operation(summary = "키워드 최근 검색")
-    @GetMapping("/search/keyword/recent")
-    public ResponseEntity<List<RecentSearchResponseDto>> getRecentKeyword(@CurrentUser User currentUser)
-    {
-        List<RecentSearchResponseDto> recent = storeService.findKeyWordSearchedRecently(currentUser);
-        return ResponseEntity.ok(recent);
-    }
+//    @Operation(summary = "키워드 최근 검색")
+//    @GetMapping("/search/keyword/recent")
+//    public ResponseEntity<List<RecentSearchResponseDto>> getRecentKeyword(@CurrentUser User currentUser)
+//    {
+//        List<RecentSearchResponseDto> recent = storeService.findKeyWordSearchedRecently(currentUser);
+//        return ResponseEntity.ok(recent);
+//    }
 
-    @Operation(summary = "최근 검색 키워드 삭제")
-    @DeleteMapping("/search/keyword/recent")
-    public ResponseEntity<String> removeRecentKeyword(@RequestBody RecentKeywordRequest recentKeywordRequest)
-    {
-        String result = storeService.removeRecentKeyword(recentKeywordRequest);
-        return ResponseEntity.ok(result);
-
-    }
+//    @Operation(summary = "최근 검색 키워드 삭제")
+//    @DeleteMapping("/search/keyword/recent")
+//    public ResponseEntity<String> removeRecentKeyword(@RequestBody RecentKeywordRequest recentKeywordRequest)
+//    {
+//        String result = storeService.removeRecentKeyword(recentKeywordRequest);
+//        return ResponseEntity.ok(result);
+//
+//    }
 
 
 

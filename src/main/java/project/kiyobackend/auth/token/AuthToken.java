@@ -65,6 +65,7 @@ public class AuthToken implements Serializable {
             log.info("Invalid JWT token.");
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT token.");
+            throw new RuntimeException("expired");
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT token.");
         } catch (IllegalArgumentException e) {
