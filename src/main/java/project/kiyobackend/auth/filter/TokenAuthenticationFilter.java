@@ -26,6 +26,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
             FilterChain filterChain)  throws ServletException, IOException {
 
+        System.out.println("TokenAuthentication 호출!");
         // 클라이언트가 보내준 토큰 찾아온다.
         String tokenStr = HeaderUtil.getAccessToken(request);
 
@@ -35,9 +36,9 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         if (token.validate()) {
 
             Authentication authentication = tokenProvider.getAuthentication(token);
-
+            // SecurityContextHolder에 값이 존재하는지 여부로 체크
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            System.out.println(authentication.getClass());
+            System.out.println(authentication.getPrincipal().toString());
         }
         filterChain.doFilter(request, response);
     }
