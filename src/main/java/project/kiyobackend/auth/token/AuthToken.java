@@ -61,15 +61,18 @@ public class AuthToken implements Serializable {
                     .getBody();
         } catch (SecurityException e) {
             log.info("Invalid JWT signature.");
+            throw new JwtException("잘못된 JWT 시그니처");
         } catch (MalformedJwtException e) {
             log.info("Invalid JWT token.");
+            throw new JwtException("유효하지 않은 JWT 토큰");
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT token.");
-            throw new RuntimeException("expired");
+            throw new JwtException("토큰 기한 만료");
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT token.");
         } catch (IllegalArgumentException e) {
             log.info("JWT token compact of handler are invalid.");
+            throw new JwtException("JWT token compact of handler are invalid.");
         }
         return null;
     }
@@ -87,6 +90,10 @@ public class AuthToken implements Serializable {
             return e.getClaims();
         }
         catch (MalformedJwtException e)
+        {
+            log.info(e.getMessage());
+        }
+        catch (IllegalArgumentException e)
         {
             log.info(e.getMessage());
         }

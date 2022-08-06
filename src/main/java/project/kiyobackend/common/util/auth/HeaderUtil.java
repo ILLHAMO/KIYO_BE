@@ -17,6 +17,10 @@ public class HeaderUtil {
         if(headerValue == null) {
             return null;
         }
+        if(headerValue == "null")
+        {
+            return null;
+        }
 
         // 만약 Bearer로 시작한다면
         if(headerValue.startsWith(TOKEN_PREFIX))

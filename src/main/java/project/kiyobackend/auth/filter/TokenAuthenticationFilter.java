@@ -29,17 +29,20 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         System.out.println("TokenAuthentication 호출!");
         // 클라이언트가 보내준 토큰 찾아온다.
         String tokenStr = HeaderUtil.getAccessToken(request);
+        if(tokenStr != null)
+        {
+            // 객체로 변환해준다.
+            AuthToken token = tokenProvider.convertAuthToken(tokenStr);
 
-        // 객체로 변환해준다.
-        AuthToken token = tokenProvider.convertAuthToken(tokenStr);
+            if (token.validate()) {
 
-        if (token.validate()) {
-
-            Authentication authentication = tokenProvider.getAuthentication(token);
-            // SecurityContextHolder에 값이 존재하는지 여부로 체크
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            System.out.println(authentication.getPrincipal().toString());
+                Authentication authentication = tokenProvider.getAuthentication(token);
+                // SecurityContextHolder에 값이 존재하는지 여부로 체크
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                System.out.println(authentication.getPrincipal().toString());
+            }
         }
+
         filterChain.doFilter(request, response);
     }
 

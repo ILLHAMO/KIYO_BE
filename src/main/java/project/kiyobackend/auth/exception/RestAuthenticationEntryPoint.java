@@ -26,6 +26,9 @@ import java.util.Map;
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
 
+    // AuthenticationProvider에서 파라미터로 넘어온 Authentication 객체를 검증한다. 이때 AuthenticationException이 발생하면
+    // restAuthenticationEntryPoint에서 잡아낸다.
+    // 다른 예외도 잡아내고 싶다면
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
 
