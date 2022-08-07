@@ -16,11 +16,11 @@ public class StoreRequestDto implements Serializable {
     private String name;
     private String call;
     private boolean kids;
-    private List<String> time;
+  //  private List<String> time;
     private String address;
-    private String addressMap;
-    private Comment comment;
-    private List<MenuRequestDto> menus;
+  //  private String addressMap;
+ //   private Comment comment;
+ //   private List<MenuRequestDto> menus;
     private List<Long> categoryIds;
     private List<Long> convenienceIds;
 

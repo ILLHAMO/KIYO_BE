@@ -92,6 +92,20 @@ public class Store extends JpaBaseEntity {
     private boolean isAssigned;
 
     private Long userSeq;
+
+    public Store(String name, String call, String address, boolean isKids, List<Long> categoryIds, List<Long> convenienceIds, Long userSeq) {
+        this.name = name; // 가게 이름
+        this.call = call; // 가게 전화번호 주소는 잠시 삭제
+        this.address = address;
+        this.bookmarkCount = 0;
+        this.reviewCount = 0;
+        this.isKids = isKids; // 키즈존 여부
+        this.isAssigned = false;
+        this.userSeq = userSeq;
+        categoryIds.forEach(c->this.getCategoryIds().add(c));
+        convenienceIds.forEach(cv->this.getConvenienceIds().add(cv));
+    }
+
     /**
      * 생성 메서드, 연관관계 편의 메서드 고려!
      */
@@ -178,6 +192,14 @@ public class Store extends JpaBaseEntity {
     {
         Store store = new Store(name,call,comment,time,address,addressMap,isKids,categoryIds, convenienceIds,userSeq);
         store.setMenus(menus);
+        store.setStoreImages(storeImages);
+        return store;
+    }
+
+    public static Store createStoreForUser(String name, String call,String address ,boolean isKids,  List<Long> categoryIds, List<Long> convenienceIds, List<String> storeImages,Long userSeq)
+    {
+        Store store = new Store(name,call,address,isKids,categoryIds, convenienceIds,userSeq);
+      //  store.setMenus(menus);
         store.setStoreImages(storeImages);
         return store;
     }

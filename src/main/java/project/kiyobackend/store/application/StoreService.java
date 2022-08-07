@@ -148,17 +148,18 @@ public class StoreService {
 
         List<String> fileNameList = getMultipartFileNames(multipartFiles);
 
-        List<Menu> menus = convertMenuDtoToMenuEntity(storeRequestDto);
+      //  List<Menu> menus = convertMenuDtoToMenuEntity(storeRequestDto);
 
-        Store store = Store.createStore(storeRequestDto.getName(),
+        Store store = Store.createStoreForUser(storeRequestDto.getName(),
                 storeRequestDto.getCall(),
-                storeRequestDto.getComment(),
-                storeRequestDto.getTime().stream().map(t -> new Opentime(t)).collect(Collectors.toList()), storeRequestDto.getAddress(),
-                storeRequestDto.getAddressMap(),
+             //   storeRequestDto.getComment(),
+             //   storeRequestDto.getTime().stream().map(t -> new Opentime(t)).collect(Collectors.toList()), storeRequestDto.getAddress(),
+           //     storeRequestDto.getAddressMap(),
+                storeRequestDto.getAddress(),
                 storeRequestDto.isKids(),
                 storeRequestDto.getCategoryIds(),
                 storeRequestDto.getConvenienceIds(),
-                menus,
+            //    menus,
                 fileNameList,user.getUserSeq());
 
         Store saveStore = storeRepository.save(store);
@@ -175,16 +176,16 @@ public class StoreService {
         return store.isAssigned();
     }
 
-    private List<Menu> convertMenuDtoToMenuEntity(StoreRequestDto storeRequestDto) {
-        List<Menu> result = storeRequestDto.getMenus().stream().map(m ->
-                new Menu(m.getName()
-                        , m.getMenuOptions().stream().map(mo -> new MenuOption(mo.getName()))
-                        .collect(Collectors.toList())
-                )
-
-        ).collect(Collectors.toList());
-        return result;
-    }
+//    private List<Menu> convertMenuDtoToMenuEntity(StoreRequestDto storeRequestDto) {
+//        List<Menu> result = storeRequestDto.getMenus().stream().map(m ->
+//                new Menu(m.getName()
+//                        , m.getMenuOptions().stream().map(mo -> new MenuOption(mo.getName()))
+//                        .collect(Collectors.toList())
+//                )
+//
+//        ).collect(Collectors.toList());
+//        return result;
+//    }
 
 
 
