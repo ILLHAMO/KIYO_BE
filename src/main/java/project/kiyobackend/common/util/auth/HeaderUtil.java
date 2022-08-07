@@ -17,17 +17,20 @@ public class HeaderUtil {
         if(headerValue == null) {
             return null;
         }
-        if(headerValue == "null")
-        {
-            return null;
-        }
+
 
         // 만약 Bearer로 시작한다면
         if(headerValue.startsWith(TOKEN_PREFIX))
         {
             // 전체 문장에서 Bearer 뒤에꺼 파싱해서 JWT값만 빼낸다.
-            return headerValue.substring(TOKEN_PREFIX.length());
+            String substring = headerValue.substring(TOKEN_PREFIX.length());
+            if(substring == "null" || substring == null)
+            {
+                return null;
+            }
+            return substring;
         }
+
 
         return null;
     }

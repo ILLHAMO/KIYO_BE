@@ -27,13 +27,15 @@ public class CookieUtil {
       //  Cookie cookie = new Cookie(name, value);
       //  cookie.setPath("/");
       //  cookie.setHttpOnly(true);
+
       //  cookie.setMaxAge(100000000);
       //  response.addCookie(cookie);
                 ResponseCookie cookie = ResponseCookie.from(name, value)
                 .path("/")
                 .httpOnly(true)
-                .sameSite("None")
-                .secure(true)
+//                .sameSite("None")
+//                .secure(true)
+                .domain("jmsteady.net")
                 .maxAge(100000000L)
                 .build();
         response.addHeader("Set-Cookie",cookie.toString());
