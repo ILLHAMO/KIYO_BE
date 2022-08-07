@@ -105,17 +105,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 /**
                  * api 경로는 일반 사용자 접근 가능
                  */
-                // 메인 페이지 데이터 조회는 인증 여부 없이 사용 가능
-                .antMatchers("/api/stores").permitAll()
-                // 상세 페이지 조회는 인증 여부 없이 사용 가능
-                .antMatchers("/api/store/**").permitAll()
+                .antMatchers("/api/stores","/api/store/**").permitAll()
+                .antMatchers("/api/category","/api/convenience").permitAll()
                 // 나머지는 USER 권한이 있는 사용자만 가능
-                .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode())
-                //
-                //
-                /**
-                 * admin 경로는 관리자만 접근 가능!
-                 */
+                .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode(),RoleType.ADMIN.getCode())
                 .antMatchers("/api/admin/**").hasAnyAuthority(RoleType.ADMIN.getCode())
                 .anyRequest().authenticated()
                 .and()
