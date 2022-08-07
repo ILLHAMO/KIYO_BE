@@ -24,7 +24,7 @@ public class HeaderUtil {
         {
             // 전체 문장에서 Bearer 뒤에꺼 파싱해서 JWT값만 빼낸다.
             String substring = headerValue.substring(TOKEN_PREFIX.length());
-            System.out.println("substring : " + substring);
+            System.out.println("substring:" + substring);
             if(substring.contains("null") || substring == null)
             {
                 return null;
