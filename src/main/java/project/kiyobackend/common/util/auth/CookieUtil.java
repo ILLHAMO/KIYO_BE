@@ -30,7 +30,6 @@ public class CookieUtil {
         Cookie cookie = new Cookie(name, value);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
-        cookie.setDomain("www.jmsteady.net");
         cookie.setMaxAge(100000000);
         response.addCookie(cookie);
 //                ResponseCookie cookie = ResponseCookie.from(name, value)
