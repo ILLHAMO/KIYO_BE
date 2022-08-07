@@ -113,6 +113,12 @@ public class Store extends JpaBaseEntity {
 
     }
 
+    // 가게 승인 true로 변경
+    public void assignStore()
+    {
+        this.isAssigned = true;
+    }
+
     public void setMenus(List<Menu> menus)
     {
         for (Menu menu : menus) {

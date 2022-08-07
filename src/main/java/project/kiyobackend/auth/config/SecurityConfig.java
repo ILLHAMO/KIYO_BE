@@ -2,6 +2,7 @@ package project.kiyobackend.auth.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -105,8 +106,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 /**
                  * api 경로는 일반 사용자 접근 가능
                  */
-                .antMatchers("/api/stores","/api/store/**").permitAll()
-                .antMatchers("/api/category","/api/convenience").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/stores","/api/store/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/category","/api/convenience").permitAll()
                 // 나머지는 USER 권한이 있는 사용자만 가능
                 .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode(),RoleType.ADMIN.getCode())
                 .antMatchers("/api/admin/**").hasAnyAuthority(RoleType.ADMIN.getCode())

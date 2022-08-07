@@ -69,6 +69,7 @@ public class StoreController{
             @RequestPart(name = "meta_data") StoreRequestDto storeRequestDto,
             @RequestPart(name = "multipartFiles") List<MultipartFile> multipartFiles )
     {
+        System.out.println("들어옴! ");
         return storeService.saveStore(user,multipartFiles,storeRequestDto);
     }
 

@@ -24,11 +24,19 @@ public class CookieUtil {
     }
 
     public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
-        Cookie cookie = new Cookie(name, value);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(100000000);
-        response.addCookie(cookie);
+      //  Cookie cookie = new Cookie(name, value);
+      //  cookie.setPath("/");
+      //  cookie.setHttpOnly(true);
+      //  cookie.setMaxAge(100000000);
+      //  response.addCookie(cookie);
+                ResponseCookie cookie = ResponseCookie.from(name, value)
+                .path("/")
+                .httpOnly(true)
+                .sameSite("None")
+                .secure(true)
+                .maxAge(100000000L)
+                .build();
+        response.addHeader("Set-Cookie",cookie.toString());
     }
 
 //    public static void addCookieForLogin(HttpServletResponse response, String name, String value, int maxAge) {

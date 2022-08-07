@@ -167,6 +167,13 @@ public class StoreService {
         return saveStore.getId();
     }
 
+    @Transactional
+    public boolean assignStore(Long storeId)
+    {
+        Store store = storeRepository.findById(storeId).orElseThrow(NotExistStoreException::new);
+        store.assignStore();
+        return store.isAssigned();
+    }
 
     private List<Menu> convertMenuDtoToMenuEntity(StoreRequestDto storeRequestDto) {
         List<Menu> result = storeRequestDto.getMenus().stream().map(m ->
