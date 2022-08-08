@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import project.kiyobackend.auth.entity.CurrentUser;
 import project.kiyobackend.store.adapter.presentation.dto.store.StoreRequestDto;
 import project.kiyobackend.store.application.StoreService;
+import project.kiyobackend.store.domain.domain.store.Store;
 import project.kiyobackend.user.adapter.presentation.dto.*;
 import project.kiyobackend.user.application.UserService;
 import project.kiyobackend.user.application.dto.ChangeUserProfileResponseDto;
@@ -69,10 +70,11 @@ public class UserController {
 
     @Operation(summary = "유저가 등록한 가게 목록 조회")
     @GetMapping("/store")
-    public void getUserAssignedStore(@CurrentUser User user)
+    public ResponseEntity<List<StoreCurrentUserAssignedResponseDto>> getUserAssignedStore(@CurrentUser User user)
     {
         User findUser = userService.getUser(user.getUserId());
-        storeService.getStoreCurrentUserAssigned(findUser.getAssignedStoreList());
+        List<Store> storeCurrentUserAssigned = storeService.getStoreCurrentUserAssigned(findUser.getAssignedStoreList());
+        return ResponseEntity.ok(UserAssembler.storeCurrentUserAssignedResponseDtoList(storeCurrentUserAssigned));
     }
 
 

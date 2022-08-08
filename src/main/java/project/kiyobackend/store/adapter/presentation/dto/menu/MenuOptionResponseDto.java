@@ -1,5 +1,6 @@
 package project.kiyobackend.store.adapter.presentation.dto.menu;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -8,5 +9,6 @@ import lombok.Data;
 public class MenuOptionResponseDto {
 
       private Long id;
+      @Schema(example = "와퍼 세트")
       private String name;
 }

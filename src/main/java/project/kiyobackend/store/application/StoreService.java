@@ -101,10 +101,9 @@ public class StoreService {
         return redisSearchService.removeRecentKeyword(recentKeywordRequest);
     }
 
-    public void getStoreCurrentUserAssigned(List<Long> assignedList)
+    public List<Store> getStoreCurrentUserAssigned(List<Long> assignedList)
     {
-        List<Store> storeCurrentUserAssigned = storeQueryRepository.getStoreCurrentUserAssigned(assignedList);
-
+        return storeQueryRepository.getStoreCurrentUserAssigned(assignedList);
     }
 
     public StoreDetailResponseDto getStoreDetail(User user, Long storeId)
