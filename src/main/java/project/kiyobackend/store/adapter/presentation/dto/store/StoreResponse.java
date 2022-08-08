@@ -1,6 +1,7 @@
 package project.kiyobackend.store.adapter.presentation.dto.store;
 
 import com.querydsl.core.annotations.QueryProjection;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import project.kiyobackend.store.adapter.presentation.dto.ImageDto;
 import project.kiyobackend.store.domain.domain.store.StoreImage;
@@ -11,13 +12,18 @@ import java.util.stream.Collectors;
 @Data
 public class StoreResponse {
 
+    @Schema(example = "1")
     private Long id;
+    @Schema(example = "false")
     private boolean kids;
+    @Schema(example = "이모네 생고기")
     private String name;
+    @Schema(example = "성동구 왕십리")
     private String address;
     private List<ImageDto> images;
     private int reviewCount;
     private int bookmarkCount;
+    @Schema(example = "false")
     private boolean isBooked;
 
     @QueryProjection
