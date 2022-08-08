@@ -67,9 +67,9 @@ public class Store extends JpaBaseEntity {
     @OneToMany(mappedBy = "store",fetch = FetchType.LAZY,cascade = CascadeType.ALL) // 일단은 생성 주기 다름,
     private List<TagStore> tagStores = new ArrayList<>();
 
-    private int bookmarkCount;
-
-    private int reviewCount;
+//    private int bookmarkCount;
+//
+//    private int reviewCount;
 
 //    @Column(name = "open_time")
 //    private String time;
@@ -97,8 +97,8 @@ public class Store extends JpaBaseEntity {
         this.name = name; // 가게 이름
         this.call = call; // 가게 전화번호 주소는 잠시 삭제
         this.address = address;
-        this.bookmarkCount = 0;
-        this.reviewCount = 0;
+      //  this.bookmarkCount = 0;
+     //   this.reviewCount = 0;
         this.isKids = isKids; // 키즈존 여부
         this.isAssigned = false;
         this.userSeq = userSeq;
@@ -119,6 +119,10 @@ public class Store extends JpaBaseEntity {
     public int getBookmarkCounts()
     {
         return bookMarks.size();
+    }
+    public int getReviewCounts()
+    {
+        return reviews.size();
     }
 
     public void removeBookmark(User user) {
@@ -162,8 +166,8 @@ public class Store extends JpaBaseEntity {
                 comment;// 값 타입 생성자에서 생성
         this.address = address;
         this.addressMap = addressMap;
-        this.bookmarkCount = 0;
-        this.reviewCount = 0;
+      //  this.bookmarkCount = 0;
+     //   this.reviewCount = 0;
         this.time = time; // 영업 시간
         this.isKids = isKids; // 키즈존 여부
         this.isAssigned = false;
@@ -178,8 +182,8 @@ public class Store extends JpaBaseEntity {
         this.call = call; // 가게 전화번호 주소는 잠시 삭제
         this.comment = comment;// 값 타입 생성자에서 생성
         this.address = address;
-        this.bookmarkCount = 0;
-        this.reviewCount = 0;
+      //  this.bookmarkCount = 0;
+      //  this.reviewCount = 0;
         this.time = time; // 영업 시간
         this.isKids = isKids; // 키즈존 여부
         this.isAssigned = false;

@@ -28,7 +28,7 @@ public class StoreAssembler {
                 s.getStoreImages(),
                 s.getName(),
                 s.getAddress(),
-                s.getReviewCount(),
+                s.getReviewCounts(),
                 s.getBookmarkCounts(),
                 s.isBooked()));
     }
@@ -77,7 +77,7 @@ public class StoreAssembler {
                                 b.getStoreImages(),
                                 b.getName(),
                                 b.getAddress(),
-                                b.getReviewCount(),
+                                b.getReviewCounts(),
                                 b.getBookmarkCounts()));
     }
 
