@@ -1,6 +1,7 @@
 package project.kiyobackend.store.adapter.presentation.dto;
 
 import org.springframework.data.domain.Slice;
+import project.kiyobackend.store.adapter.presentation.dto.review.ReviewResponseDto;
 import project.kiyobackend.store.adapter.presentation.dto.store.StoreDetailResponse;
 import project.kiyobackend.store.adapter.presentation.dto.store.StoreDetailResponseDto;
 import project.kiyobackend.store.adapter.presentation.dto.store.StoreResponse;
@@ -9,6 +10,7 @@ import project.kiyobackend.store.application.dto.BookmarkResponseDto;
 import project.kiyobackend.store.application.dto.UserBookmarkResponseDto;
 import project.kiyobackend.store.domain.domain.store.Store;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,7 +48,7 @@ public class StoreAssembler {
                 .images(storeDetailResponseDto.getImages())
                 .convenienceIds(storeDetailResponseDto.getConvenienceIds())
                 .menus(storeDetailResponseDto.getMenuResponses())
-                .reviews(storeDetailResponseDto.getReviewResponses())
+                .reviews(storeDetailResponseDto.getReviewResponses().stream().sorted(Comparator.comparing(ReviewResponseDto::getUpdatedDate).reversed()).collect(Collectors.toList()))
                 .build();
 
     }

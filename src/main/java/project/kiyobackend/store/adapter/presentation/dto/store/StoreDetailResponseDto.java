@@ -14,6 +14,7 @@ import project.kiyobackend.store.domain.domain.menu.Menu;
 import project.kiyobackend.store.domain.domain.store.StoreImage;
 import project.kiyobackend.store.domain.domain.tag.Tag;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,6 +54,6 @@ public class StoreDetailResponseDto {
         // TODO : UserId => User Nickname으로 변경
         this.reviewResponses = reviews.stream().map(r-> new ReviewResponseDto(r.getId(),r.getUser().getUserId(),r.getUser().getNickname(),r.getScore(),false,
                 r.getReviewImages().stream().map(ri -> new ReviewImageDto(ri.getId(),ri.getPath())).collect(Collectors.toList())
-        )).collect(Collectors.toList());
+        ,r.getLastModifiedDate())).collect(Collectors.toList());
     }
 }

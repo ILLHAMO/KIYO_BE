@@ -3,6 +3,7 @@ package project.kiyobackend.user.adapter.presentation.dto;
 import project.kiyobackend.store.domain.domain.store.Store;
 import project.kiyobackend.user.application.dto.*;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +17,8 @@ public class UserAssembler {
                                 u.getStoreName(),
                                 u.getAddress(),
                                 u.getScore(),
-                                u.getContent()))
+                                u.getContent(),
+                                u.getUpdatedDate())).sorted(Comparator.comparing(UserReviewResponse::getUpdateTime).reversed())
                 .collect(Collectors.toList());
     }
 

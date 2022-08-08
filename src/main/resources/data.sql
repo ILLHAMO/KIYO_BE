@@ -281,10 +281,10 @@ values ( 1,'https://kiyoimage.s3.ap-northeast-2.amazonaws.com/%EC%9A%B0%EB%8F%99
        ( 20,'https://kiyoimage.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%8E%98.jpg',20 );
 
 
-insert into review (review_id,content,score,user_seq,store_id)
-values ( 1,"맛있어요","HIGH",1,1 ),
-       ( 2,"맛없어요","LOW",1,1 ),
-       ( 3,"음","LOW",1,1);
+insert into review (review_id,content,score,user_seq,store_id,last_modified_date)
+values ( 1,"맛있어요","HIGH",1,1,'2022-08-06 12:06:01'),
+       ( 2,"맛없어요","LOW",1,1 ,'2022-08-02 12:06:01'),
+       ( 3,"음","LOW",1,1,'2022-08-03 12:06:01');
 
 -- INSERT INTO review_image (review_image_id,image_path,review_id)
 -- values ( 1,"www.s3.host",1 ),
