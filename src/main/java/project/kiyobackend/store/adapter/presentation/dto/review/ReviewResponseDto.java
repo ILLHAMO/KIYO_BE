@@ -19,6 +19,7 @@ public class ReviewResponseDto {
     private String reviewerId;
     private String reviewerName;
     private Score score;
+    private String content;
     private boolean currentUserReview = false;
     private List<ReviewImageDto> reviewImages;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
