@@ -38,8 +38,9 @@ public class StoreQueryRepository {
     {
         List<Store> results = query.selectFrom(store)
                 .where(
-                        // 내가
-                        // 이전 페이지 마지막 id값을 사용한 무한 스크롤 최적화
+                        // 관리자가 승인한 가게만 보여야 한다.
+                        store.isAssigned.eq(true),
+                        // no-offset 페이징 처리
                         ltStoreId(lastStoreId),
                         // Category 중복 필터링
                         eqCategory(condition.getCategoryIds()),
@@ -66,10 +67,12 @@ public class StoreQueryRepository {
     {
         List<Store> results = query.selectFrom(store)
                 .where(
-                        // 내가
-                        // 이전 페이지 마지막 id값을 사용한 무한 스크롤 최적화
-                        store.name.contains(keyword),
 
+                        // 관리자가 승인한 가게만 보여야 한다.
+                        store.isAssigned.eq(true),
+                        // 검색 로직
+                        store.name.contains(keyword),
+                        // no-offset 방식
                         ltStoreId(lastStoreId),
                         // Category 중복 필터링
                         eqCategory(condition.getCategoryIds()),
@@ -92,12 +95,14 @@ public class StoreQueryRepository {
         return new SliceImpl<>(results,pageable,hasNext);
     }
 
+    // 실제로 관리자 승인 받은 가게 목록 중에서만 보이게 해야 한다
     public Slice<Store> getBookmarkedStore(String userId, Long lastStoreId, Pageable pageable)
     {
         List<Store> results = query
                 .selectFrom(store)
                 .leftJoin(store.bookMarks, bookMark)
                 .where(
+                        store.isAssigned.eq(true),
                         ltStoreId(lastStoreId),
                         bookMark.user.userId.eq(userId)
                 )
