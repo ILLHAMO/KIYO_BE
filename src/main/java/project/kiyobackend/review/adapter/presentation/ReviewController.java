@@ -34,7 +34,7 @@ public class ReviewController {
     {
 
         Long result = reviewService.saveReview(user.getUserId(), storeId, multipartFiles, ReviewAssembler.reviewRequestDto(reviewRequest));
-        return ResponseEntity.ok(new ReviewResponse(result));
+        return ResponseEntity.ok(new ReviewResponse(true,result));
     }
 
     @Operation(summary = "리뷰 삭제")

@@ -1,11 +1,7 @@
 package project.kiyobackend.store.adapter.presentation;
 
-import com.amazonaws.Response;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import project.kiyobackend.auth.entity.CurrentUser;
+import project.kiyobackend.common.SuccessResponseDto;
 import project.kiyobackend.store.adapter.presentation.dto.*;
 import project.kiyobackend.store.adapter.presentation.dto.store.*;
 import project.kiyobackend.store.application.BookmarkService;
@@ -23,7 +20,6 @@ import project.kiyobackend.store.application.StoreService;
 import project.kiyobackend.store.application.dto.UserBookmarkResponseDto;
 import project.kiyobackend.store.domain.domain.store.Store;
 import project.kiyobackend.store.query.StoreSearchCond;
-import project.kiyobackend.user.application.UserService;
 import project.kiyobackend.user.domain.User;
 import java.util.List;
 
@@ -64,13 +60,13 @@ public class StoreController{
     @Operation(summary = "가게 등록")
     @PostMapping(value = "/store")
     @PreAuthorize("hasRole('USER')")
-    public Long saveStore(
+    public ResponseEntity<SuccessResponseDto> saveStore(
             @CurrentUser User user,
             @RequestPart(name = "meta_data") StoreRequestDto storeRequestDto,
             @RequestPart(name = "multipartFiles") List<MultipartFile> multipartFiles )
     {
         System.out.println("들어옴! ");
-        return storeService.saveStore(user,multipartFiles,storeRequestDto);
+        return ResponseEntity.ok(new SuccessResponseDto(true,storeService.saveStore(user,multipartFiles,storeRequestDto)));
     }
 
 

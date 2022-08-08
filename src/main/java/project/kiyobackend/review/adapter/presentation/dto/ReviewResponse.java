@@ -7,6 +7,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ReviewResponse {
+
+    private boolean success;
     @Schema(example = "21")
-    Long reviewId;
+    private Long reviewId;
 }
