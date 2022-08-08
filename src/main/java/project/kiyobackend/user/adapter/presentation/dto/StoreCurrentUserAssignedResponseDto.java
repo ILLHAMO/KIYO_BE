@@ -15,7 +15,7 @@ public class StoreCurrentUserAssignedResponseDto {
     @Schema(example = "성동구 왕십리")
     private String address;
     @Schema(example = "false")
-    private boolean isAssigned;
+    private boolean isAssignedStore;
 
 
 }
