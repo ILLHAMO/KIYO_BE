@@ -1,5 +1,6 @@
 package project.kiyobackend.user.adapter.presentation.dto;
 
+import project.kiyobackend.store.adapter.presentation.dto.review.ReviewImageDto;
 import project.kiyobackend.store.domain.domain.store.Store;
 import project.kiyobackend.user.application.dto.*;
 
@@ -18,6 +19,8 @@ public class UserAssembler {
                                 u.getAddress(),
                                 u.getScore(),
                                 u.getContent(),
+                                u.getStoreImage().stream().map(si -> new StoreImageResponseDto(si.getId(),si.getPath())).collect(Collectors.toList()).get(0),
+                                u.getReviewImages().stream().map(ri-> new ReviewImageDto(ri.getId(),ri.getPath())).collect(Collectors.toList()),
                                 u.getUpdatedDate())).sorted(Comparator.comparing(UserReviewResponse::getUpdateTime).reversed())
                 .collect(Collectors.toList());
     }
@@ -44,7 +47,7 @@ public class UserAssembler {
 
     public static List<StoreCurrentUserAssignedResponseDto> storeCurrentUserAssignedResponseDtoList(List<Store> stores)
     {
-        return stores.stream().map(s -> new StoreCurrentUserAssignedResponseDto(s.getId(),s.getName(),s.getAddress(),s.isAssigned()))
+        return stores.stream().map(s -> new StoreCurrentUserAssignedResponseDto(s.getId(),s.getName(),s.getAddress(),s.getStoreImages().stream().map(si->new StoreImageResponseDto(si.getId(),si.getPath())).collect(Collectors.toList()).get(0),s.isAssigned()))
                 .collect(Collectors.toList());
     }
 

@@ -54,6 +54,16 @@ public class ReviewService {
         reviewRepository.delete(review);
     }
 
+    @Transactional
+    public void updateReview(Long reviewId,List<MultipartFile> multipartFiles, ReviewRequestDto reviewRequestDto)
+    {
+        Review review = reviewRepository.findById(reviewId).orElseThrow(NotExistReviewException::new);
+        List<String> fileNameList = getMultipartFileNames(multipartFiles);
+        review.updateReview(fileNameList,reviewRequestDto.getScore(),reviewRequestDto.getContent());
+
+
+    }
+
     private List<String> getMultipartFileNames(List<MultipartFile> multipartFiles) {
         List<String> fileNameList = new ArrayList<>();
 

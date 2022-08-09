@@ -41,7 +41,14 @@ public class UserService {
         List<Review> reviews = user.getReviews();
 
         return reviews.stream().map(r ->
-                new UserReviewResponseDto(r.getId(), r.getStore().getName(), r.getStore().getAddress(), r.getScore(), r.getContent(),r.getLastModifiedDate()))
+                new UserReviewResponseDto(r.getId(),
+                        r.getStore().getName(),
+                        r.getStore().getAddress(),
+                        r.getScore(),
+                        r.getContent(),
+                        r.getStore().getStoreImages(),
+                        r.getReviewImages(),
+                        r.getLastModifiedDate()))
                 .collect(Collectors.toList());
     }
 

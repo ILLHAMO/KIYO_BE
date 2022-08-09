@@ -76,4 +76,9 @@ public class Review extends JpaBaseEntity {
         review.setReviewImages(fileNameList);
         return review;
     }
+
+    public void updateReview(List<String> reviewImagePath, Score score,String content)
+    {
+
+    }
 }

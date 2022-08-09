@@ -103,13 +103,13 @@ public class StoreController{
     @Operation(summary = "가게 검색")
     @PreAuthorize("isAnonymous() or hasRole('USER')")
     @GetMapping("/store/search")
-    public ResponseEntity<Slice<StoreResponse>> searchStore(@CurrentUser User currentUser,@RequestParam(name = "keyword") String keyword,
+    public ResponseEntity<Slice<StoreSearchResponse>> searchStore(@CurrentUser User currentUser,@RequestParam(name = "keyword") String keyword,
                                               @RequestParam(name = "lastStoreId", required = false)  Long lastStoreId,
                                               Pageable pageable,
                                               StoreSearchCond storeSearchCond)
     {
         Slice<Store> stores = storeService.searchStoreByKeyword(currentUser, keyword, lastStoreId, storeSearchCond, pageable);
-        return ResponseEntity.ok(StoreAssembler.storeResponseDto(stores));
+        return ResponseEntity.ok(StoreAssembler.storeSearchResponses(stores));
     }
 
     @Operation(summary = "키워드 인기 검색 순위")

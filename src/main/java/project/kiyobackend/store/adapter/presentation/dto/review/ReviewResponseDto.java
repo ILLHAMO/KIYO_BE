@@ -18,6 +18,7 @@ public class ReviewResponseDto {
     private Long id;
     private String reviewerId;
     private String reviewerName;
+    private String reviewerImage;
     private Score score;
     private String content;
     private boolean currentUserReview = false;

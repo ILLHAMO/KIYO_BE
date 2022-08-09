@@ -52,7 +52,7 @@ public class StoreDetailResponseDto {
         this.menuResponses = menus.stream().map(m-> new MenuResponseDto(m.getId(),m.getName(),m.getMenuOptions().stream().map(mo->new MenuOptionResponseDto(mo.getId(),mo.getName())).collect(Collectors.toList())
         )).collect(Collectors.toList());
         // TODO : UserId => User Nickname으로 변경
-        this.reviewResponses = reviews.stream().map(r-> new ReviewResponseDto(r.getId(),r.getUser().getUserId(),r.getUser().getNickname(),r.getScore(),r.getContent(),false,
+        this.reviewResponses = reviews.stream().map(r-> new ReviewResponseDto(r.getId(),r.getUser().getUserId(),r.getUser().getNickname(),r.getUser().getProfileImageUrl(),r.getScore(),r.getContent(),false,
                 r.getReviewImages().stream().map(ri -> new ReviewImageDto(ri.getId(),ri.getPath())).collect(Collectors.toList())
         ,r.getLastModifiedDate())).collect(Collectors.toList());
     }

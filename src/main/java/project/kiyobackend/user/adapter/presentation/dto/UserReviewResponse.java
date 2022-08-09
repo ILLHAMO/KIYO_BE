@@ -7,9 +7,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import project.kiyobackend.review.domain.domain.Score;
+import project.kiyobackend.store.adapter.presentation.dto.review.ReviewImageDto;
+import project.kiyobackend.store.adapter.presentation.dto.review.ReviewResponseDto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,6 +29,8 @@ public class UserReviewResponse {
     private Score score;
     @Schema(example = "직원들이 너무 불친절해요..")
     private String content;
+    private StoreImageResponseDto storeImage;
+    private List<ReviewImageDto> reviewImages;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDateTime updateTime;
 }

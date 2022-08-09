@@ -182,8 +182,6 @@ public class Store extends JpaBaseEntity {
         this.call = call; // 가게 전화번호 주소는 잠시 삭제
         this.comment = comment;// 값 타입 생성자에서 생성
         this.address = address;
-      //  this.bookmarkCount = 0;
-      //  this.reviewCount = 0;
         this.time = time; // 영업 시간
         this.isKids = isKids; // 키즈존 여부
         this.isAssigned = false;

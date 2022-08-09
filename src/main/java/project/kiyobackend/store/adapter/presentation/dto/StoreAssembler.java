@@ -9,6 +9,7 @@ import project.kiyobackend.store.adapter.presentation.dto.store.UserBookmarkResp
 import project.kiyobackend.store.application.dto.BookmarkResponseDto;
 import project.kiyobackend.store.application.dto.UserBookmarkResponseDto;
 import project.kiyobackend.store.domain.domain.store.Store;
+import project.kiyobackend.user.adapter.presentation.dto.StoreImageResponseDto;
 
 import java.util.Comparator;
 import java.util.List;
@@ -33,6 +34,14 @@ public class StoreAssembler {
                 s.getReviewCounts(),
                 s.getBookmarkCounts(),
                 s.isBooked()));
+    }
+
+    public static Slice<StoreSearchResponse> storeSearchResponses(Slice<Store> stores)
+    {
+        return stores.map(s-> new StoreSearchResponse(s.getId(),
+                s.getName(),
+                s.getAddress(),
+                s.getStoreImages().stream().map(si -> new StoreImageResponseDto(si.getId(),si.getPath())).collect(Collectors.toList()).get(0)));
     }
 
     public static StoreDetailResponse storeDetailResponse(StoreDetailResponseDto storeDetailResponseDto)

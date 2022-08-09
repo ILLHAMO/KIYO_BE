@@ -37,6 +37,22 @@ public class ReviewController {
         return ResponseEntity.ok(new ReviewResponse(true,result));
     }
 
+    @Operation(summary = "리뷰 수정")
+    @PutMapping("/review/{reviewId}")
+    public void updateReview(@PathVariable Long reviewId,
+                             @RequestPart(name = "meta_data") ReviewRequest reviewRequest,
+                             @RequestPart(name = "multipartFiles") List<MultipartFile> multipartFiles)
+    {
+               reviewService.updateReview(reviewId, multipartFiles,ReviewAssembler.reviewRequestDto(reviewRequest));
+    }
+
+    @Operation(summary = "리뷰 수정 페이지 데이터")
+    @GetMapping("/review/{reviewId}/update")
+    public void updatePageReview(@PathVariable Long reviewId)
+    {
+        
+    }
+
     @Operation(summary = "리뷰 삭제")
     @DeleteMapping("/review/{reviewId}")
     public ResponseEntity<String> deleteReview(@PathVariable Long reviewId)
@@ -44,4 +60,6 @@ public class ReviewController {
         reviewService.deleteReview(reviewId);
         return ResponseEntity.ok("delete success");
     }
+
+
 }
