@@ -67,9 +67,6 @@ public class Store extends JpaBaseEntity {
     @OneToMany(mappedBy = "store",fetch = FetchType.LAZY,cascade = CascadeType.ALL) // 일단은 생성 주기 다름,
     private List<TagStore> tagStores = new ArrayList<>();
 
-//    private int bookmarkCount;
-//
-//    private int reviewCount;
 
 //    @Column(name = "open_time")
 //    private String time;
