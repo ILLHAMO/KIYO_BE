@@ -34,7 +34,6 @@ public class StoreController{
     private final StoreService storeService;
     private final BookmarkService bookmarkService;
 
-
     @Operation(summary = "가게 목록 페이징 조회")
     @PreAuthorize("hasRole('USER') or isAnonymous()")
     @GetMapping("/stores")
@@ -69,6 +68,14 @@ public class StoreController{
         return ResponseEntity.ok(new SuccessResponseDto(true,storeService.saveStore(user,multipartFiles,storeRequestDto)));
     }
 
+    @Operation(summary = "가게 삭제")
+    @DeleteMapping("/store/{storeId}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<SuccessResponseDto> removeStore(@PathVariable Long storeId)
+    {
+        storeService.deleteStore(storeId);
+        return ResponseEntity.ok(new SuccessResponseDto(true,storeId));
+    }
 
     @Operation(summary = "현재 사용자가 북마크한 가게 조회")
     @GetMapping("/store/bookmark")
@@ -120,24 +127,5 @@ public class StoreController{
         List<SearchRankingResponseDto> ranking = storeService.findKeywordSortedByRank();
         return ResponseEntity.ok(ranking);
     }
-
-//    @Operation(summary = "키워드 최근 검색")
-//    @GetMapping("/search/keyword/recent")
-//    public ResponseEntity<List<RecentSearchResponseDto>> getRecentKeyword(@CurrentUser User currentUser)
-//    {
-//        List<RecentSearchResponseDto> recent = storeService.findKeyWordSearchedRecently(currentUser);
-//        return ResponseEntity.ok(recent);
-//    }
-
-//    @Operation(summary = "최근 검색 키워드 삭제")
-//    @DeleteMapping("/search/keyword/recent")
-//    public ResponseEntity<String> removeRecentKeyword(@RequestBody RecentKeywordRequest recentKeywordRequest)
-//    {
-//        String result = storeService.removeRecentKeyword(recentKeywordRequest);
-//        return ResponseEntity.ok(result);
-//
-//    }
-
-
 
 }
