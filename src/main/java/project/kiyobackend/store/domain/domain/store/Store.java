@@ -56,7 +56,7 @@ public class Store extends JpaBaseEntity {
     @OneToMany(mappedBy = "store",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Menu> menus = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY,cascade = CascadeType.REMOVE,orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
     // cascadeType.All 하면 개별 repository가 전혀 필요없다.
