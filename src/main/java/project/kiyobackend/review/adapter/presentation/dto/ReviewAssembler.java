@@ -8,6 +8,7 @@ public class ReviewAssembler {
     {
         return ReviewRequestDto.builder().score(reviewRequest.getScore())
                                   .content(reviewRequest.getContent())
-                                  .build();
+                 .deleteIds(reviewRequest.getDeleteIds())
+                .build();
     }
 }

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import project.kiyobackend.exception.review.NotExistReviewException;
@@ -13,7 +14,6 @@ import project.kiyobackend.review.application.dto.ReviewRequestDto;
 import project.kiyobackend.review.domain.domain.Review;
 import project.kiyobackend.review.domain.domain.ReviewRepository;
 import project.kiyobackend.store.adapter.infrastructure.AWSS3UploadService;
-import project.kiyobackend.store.application.StoreService;
 import project.kiyobackend.store.domain.domain.store.Store;
 import project.kiyobackend.store.domain.domain.store.StoreRepository;
 import project.kiyobackend.user.application.UserService;
@@ -58,29 +58,42 @@ public class ReviewService {
     public void updateReview(Long reviewId,List<MultipartFile> multipartFiles, ReviewRequestDto reviewRequestDto)
     {
         Review review = reviewRepository.findById(reviewId).orElseThrow(NotExistReviewException::new);
-        List<String> fileNameList = getMultipartFileNames(multipartFiles);
+
+            List<String> fileNameList = getMultipartFileNames(multipartFiles);
+
+
+        if(!reviewRequestDto.getDeleteIds().isEmpty())
+        {
+            for(Long deleteId : reviewRequestDto.getDeleteIds())
+            {
+                review.getReviewImages().removeIf(ri->ri.getId().equals(deleteId));
+            }
+        }
         review.updateReview(fileNameList,reviewRequestDto.getScore(),reviewRequestDto.getContent());
-
-
     }
 
     private List<String> getMultipartFileNames(List<MultipartFile> multipartFiles) {
-        List<String> fileNameList = new ArrayList<>();
 
-        multipartFiles.forEach(file->{
-            String fileName = createFileName(file.getOriginalFilename());
-            ObjectMetadata objectMetadata = new ObjectMetadata();
-            objectMetadata.setContentLength(file.getSize());
-            objectMetadata.setContentType(file.getContentType());
+        if(!multipartFiles.get(0).getOriginalFilename().isEmpty())
+        {
+            List<String> fileNameList = new ArrayList<>();
+            multipartFiles.forEach(file->{
+                String fileName = createFileName(file.getOriginalFilename());
+                ObjectMetadata objectMetadata = new ObjectMetadata();
+                objectMetadata.setContentLength(file.getSize());
+                objectMetadata.setContentType(file.getContentType());
 
-            try(InputStream inputStream = file.getInputStream()) {
-                uploadService.uploadFile(inputStream,objectMetadata,fileName);
-            } catch(IOException e) {
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다.");
-            }
-            fileNameList.add(uploadService.getFileUrl(fileName));
-        });
-        return fileNameList;
+                try(InputStream inputStream = file.getInputStream()) {
+                    uploadService.uploadFile(inputStream,objectMetadata,fileName);
+                } catch(IOException e) {
+                    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다.");
+                }
+                fileNameList.add(uploadService.getFileUrl(fileName));
+            });
+            return fileNameList;
+        }
+        return null;
+
     }
 
     private String createFileName(String fileName) {

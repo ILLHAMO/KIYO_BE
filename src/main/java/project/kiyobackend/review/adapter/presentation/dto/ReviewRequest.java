@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import project.kiyobackend.review.domain.domain.Score;
 
+import java.util.List;
 import java.util.Scanner;
 
 @Data
@@ -16,4 +17,6 @@ public class ReviewRequest {
     private Score score;
     @Schema(example = "웨이팅 오래 한 보람이 있습니다!")
     private String content;
+
+    private List<Long> deleteIds;
 }

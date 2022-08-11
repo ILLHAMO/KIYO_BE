@@ -80,5 +80,18 @@ public class Review extends JpaBaseEntity {
     public void updateReview(List<String> reviewImagePath, Score score,String content)
     {
 
+        if(score != null)
+        {
+            this.score = score;
+        }
+        if(content != null)
+        {
+            this.content = content;
+        }
+        if(reviewImagePath != null)
+        {
+            setReviewImages(reviewImagePath);
+
+        }
     }
 }
