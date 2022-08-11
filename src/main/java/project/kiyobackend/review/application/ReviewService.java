@@ -9,7 +9,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import project.kiyobackend.exception.review.NotExistReviewException;
 import project.kiyobackend.exception.store.NotExistStoreException;
+import project.kiyobackend.review.adapter.presentation.dto.ReviewAssembler;
 import project.kiyobackend.review.application.dto.ReviewRequestDto;
+import project.kiyobackend.review.application.dto.ReviewResponseForUpdateDto;
 import project.kiyobackend.review.domain.domain.Review;
 import project.kiyobackend.review.domain.domain.ReviewRepository;
 import project.kiyobackend.store.adapter.infrastructure.AWSS3UploadService;
@@ -33,6 +35,12 @@ public class ReviewService {
     private final UserService userService;
     private final StoreRepository storeRepository;
     private final AWSS3UploadService uploadService;
+
+    public ReviewResponseForUpdateDto getReviewForUpdateForm(Long reviewId)
+    {
+        Review review = reviewRepository.findById(reviewId).orElseThrow(NotExistReviewException::new);
+        return ReviewAssembler.ReviewResponseForUpdateDto(review);
+    }
 
     @Transactional
     public Long saveReview(String userId,Long storeId, List<MultipartFile> multipartFiles, ReviewRequestDto reviewRequestDto)

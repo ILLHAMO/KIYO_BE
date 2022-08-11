@@ -1,5 +1,6 @@
 package project.kiyobackend.review.adapter.presentation;
 
+import com.amazonaws.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,9 @@ import project.kiyobackend.common.SuccessResponseDto;
 import project.kiyobackend.review.adapter.presentation.dto.ReviewAssembler;
 import project.kiyobackend.review.adapter.presentation.dto.ReviewRequest;
 import project.kiyobackend.review.adapter.presentation.dto.ReviewResponse;
+import project.kiyobackend.review.adapter.presentation.dto.ReviewResponseForUpdate;
 import project.kiyobackend.review.application.ReviewService;
+import project.kiyobackend.review.application.dto.ReviewResponseForUpdateDto;
 import project.kiyobackend.store.adapter.presentation.dto.store.StoreRequestDto;
 import project.kiyobackend.user.domain.User;
 
@@ -50,9 +53,10 @@ public class ReviewController {
 
     @Operation(summary = "리뷰 수정 페이지 데이터")
     @GetMapping("/review/{reviewId}/update")
-    public void updatePageReview(@PathVariable Long reviewId)
+    public ResponseEntity<ReviewResponseForUpdate> updatePageReview(@PathVariable Long reviewId)
     {
-        
+        ReviewResponseForUpdateDto reviewForUpdateForm = reviewService.getReviewForUpdateForm(reviewId);
+        return ResponseEntity.ok(ReviewAssembler.ReviewResponseForUpdate(reviewForUpdateForm));
     }
 
     @Operation(summary = "리뷰 삭제")
