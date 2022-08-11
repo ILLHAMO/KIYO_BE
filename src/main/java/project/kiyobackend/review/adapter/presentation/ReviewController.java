@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import project.kiyobackend.auth.entity.CurrentUser;
+import project.kiyobackend.common.SuccessResponseDto;
 import project.kiyobackend.review.adapter.presentation.dto.ReviewAssembler;
 import project.kiyobackend.review.adapter.presentation.dto.ReviewRequest;
 import project.kiyobackend.review.adapter.presentation.dto.ReviewResponse;
@@ -39,11 +40,12 @@ public class ReviewController {
 
     @Operation(summary = "리뷰 수정")
     @PutMapping("/review/{reviewId}")
-    public void updateReview(@PathVariable Long reviewId,
-                             @RequestPart(name = "meta_data") ReviewRequest reviewRequest,
-                             @RequestPart(name = "multipartFiles") List<MultipartFile> multipartFiles)
+    public ResponseEntity<SuccessResponseDto> updateReview(@PathVariable Long reviewId,
+                                                           @RequestPart(name = "meta_data") ReviewRequest reviewRequest,
+                                                           @RequestPart(name = "multipartFiles") List<MultipartFile> multipartFiles)
     {
                reviewService.updateReview(reviewId, multipartFiles,ReviewAssembler.reviewRequestDto(reviewRequest));
+               return ResponseEntity.ok(new SuccessResponseDto(true,reviewId));
     }
 
     @Operation(summary = "리뷰 수정 페이지 데이터")
