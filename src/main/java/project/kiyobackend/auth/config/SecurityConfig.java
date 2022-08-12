@@ -2,10 +2,11 @@ package project.kiyobackend.auth.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -19,6 +20,7 @@ import project.kiyobackend.auth.config.properties.AppProperties;
 import project.kiyobackend.auth.config.properties.CorsProperties;
 import project.kiyobackend.auth.entity.RoleType;
 import project.kiyobackend.auth.exception.RestAuthenticationEntryPoint;
+import project.kiyobackend.auth.filter.JwtExceptionFilter;
 import project.kiyobackend.auth.filter.TokenAuthenticationFilter;
 import project.kiyobackend.auth.handler.OAuth2AuthenticationFailureHandler;
 import project.kiyobackend.auth.handler.OAuth2AuthenticationSuccessHandler;
@@ -35,6 +37,7 @@ import java.util.Arrays;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CorsProperties corsProperties;
@@ -44,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomOAuth2UserService oAuth2UserService;
     private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
     private final UserRefreshTokenRepository userRefreshTokenRepository;
+    private final JwtExceptionFilter jwtExceptionFilter;
     /*
      * UserDetailsService 설정
      * */
@@ -89,18 +93,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 /**
                  * 보완 관련 부분은 다 지움
                  */
-                .antMatchers("/auth/**","/oauth2/**")
+                .antMatchers("/auth/**",
+                        "/oauth2/**",
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/api-docs",
+                        "/api/store/search",
+                        "/api/search/keyword/rank",
+                        "/api/search/keyword/recent"
+                )
                 .permitAll()
                 /**
                  * api 경로는 일반 사용자 접근 가능
                  */
-                .antMatchers("/api/**").permitAll()
-                //.hasAnyAuthority(RoleType.USER.getCode())
-                //
-                /**
-                 * admin 경로는 관리자만 접근 가능!
-                 */
-                .antMatchers("/api/**/admin/**").hasAnyAuthority(RoleType.ADMIN.getCode())
+                .antMatchers(HttpMethod.GET,"/api/stores","/api/store/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/category","/api/convenience").permitAll()
+                // 나머지는 USER 권한이 있는 사용자만 가능
+                .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode(),RoleType.ADMIN.getCode())
+                .antMatchers("/api/admin/**").hasAnyAuthority(RoleType.ADMIN.getCode())
                 .anyRequest().authenticated()
                 .and()
                 /**
@@ -109,7 +119,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .oauth2Login()
                 .authorizationEndpoint()
                 // 기본 인가 경로 /oauth2/authorization
-                .baseUri("/oauth2/authorization")
+                .baseUri("/authorization/**")
                 .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())
                 .and()
                 // 리다이렉트 될때
@@ -123,6 +133,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler(oAuth2AuthenticationFailureHandler());
 
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtExceptionFilter,tokenAuthenticationFilter().getClass());
     }
 
     /*
@@ -193,7 +204,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         corsConfig.setAllowedOrigins(Arrays.asList(corsProperties.getAllowedOrigins().split(",")));
         corsConfig.setAllowCredentials(true);
         corsConfig.setMaxAge(corsConfig.getMaxAge());
-
         corsConfigSource.registerCorsConfiguration("/**", corsConfig);
         return corsConfigSource;
     }

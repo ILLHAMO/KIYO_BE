@@ -99,9 +99,6 @@ public class UserPrincipal implements UserDetails, OAuth2User, OidcUser {
         return null;
     }
 
-
-
-
     @Override
     public String getName() {
         return user.getUserId();

@@ -3,7 +3,7 @@ package project.kiyobackend.review.domain.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import project.kiyobackend.util.jpa.JpaBaseEntity;
+import project.kiyobackend.common.util.jpa.JpaBaseEntity;
 
 import javax.persistence.*;
 
@@ -33,5 +33,10 @@ public class ReviewImage extends JpaBaseEntity {
     public ReviewImage(String path)
     {
         this.path = path;
+    }
+
+    public void setReview(Review review)
+    {
+        this.review =review;
     }
 }

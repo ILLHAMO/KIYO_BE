@@ -1,7 +1,6 @@
 package project.kiyobackend.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,9 +8,9 @@ import lombok.Setter;
 import project.kiyobackend.QnA.domain.QnA;
 import project.kiyobackend.auth.entity.SnsType;
 import project.kiyobackend.auth.entity.RoleType;
-import project.kiyobackend.bookmark.domain.BookMark;
+import project.kiyobackend.store.domain.domain.bookmark.BookMark;
 import project.kiyobackend.review.domain.domain.Review;
-import project.kiyobackend.util.jpa.JpaBaseEntity;
+import project.kiyobackend.common.util.jpa.JpaBaseEntity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -77,6 +76,23 @@ public class User extends JpaBaseEntity {
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
 
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "store_user",
+            joinColumns = @JoinColumn(name = "user_seq"))
+    private List<Long> assignedStoreList = new ArrayList<>();
+
+    public void changeUserProfile(String nickname,String profileImageUrl)
+    {
+        if(nickname != null)
+        {
+            this.nickname = nickname;
+        }
+        if(profileImageUrl != null)
+        {
+            this.profileImageUrl = profileImageUrl;
+        }
+    }
+
     public User(
               String userId,
              String username,
@@ -88,6 +104,28 @@ public class User extends JpaBaseEntity {
     ) {
         this.userId = userId;
         this.username = username;
+        this.password = "NO_PASS";
+        this.email = email != null ? email : "NO_EMAIL";
+        this.emailVerifiedYn = emailVerifiedYn;
+        this.profileImageUrl = profileImageUrl != null ? profileImageUrl : "";
+        this.snsType = snsType;
+        this.roleType = roleType;
+    }
+
+    public User(Long userSeq,
+            String userId,
+            String username,
+            String nickname,
+            String email,
+            String emailVerifiedYn,
+            String profileImageUrl,
+            SnsType snsType,
+            RoleType roleType
+    ) {
+        this.userSeq = userSeq;
+        this.userId = userId;
+        this.username = username;
+        this.nickname = nickname;
         this.password = "NO_PASS";
         this.email = email != null ? email : "NO_EMAIL";
         this.emailVerifiedYn = emailVerifiedYn;

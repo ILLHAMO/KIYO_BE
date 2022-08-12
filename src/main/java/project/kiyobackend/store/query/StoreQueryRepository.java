@@ -5,11 +5,14 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
+import project.kiyobackend.store.domain.domain.bookmark.QBookMark;
 import project.kiyobackend.store.domain.domain.store.Store;
 import javax.persistence.EntityManager;
 import java.util.List;
-import static project.kiyobackend.store.domain.domain.store.QStore.store;
 
+import static project.kiyobackend.store.domain.domain.bookmark.QBookMark.*;
+import static project.kiyobackend.store.domain.domain.store.QStore.store;
+import static project.kiyobackend.store.domain.domain.store.QStoreImage.*;
 
 
 @Repository
@@ -30,12 +33,14 @@ public class StoreQueryRepository {
      * 기능 2. 동적 쿼리 기능, 카테고리 별로 동적 쿼리 가능하다.
      * 기능 3. 사용자가 좋아요 누른 가게는 조회 시에 마크해준다.
      */
+    // TODO : 블로그 작성
     public Slice<Store> searchBySlice(Long lastStoreId, StoreSearchCond condition, Pageable pageable)
     {
         List<Store> results = query.selectFrom(store)
                 .where(
-                        // 내가
-                        // 이전 페이지 마지막 id값을 사용한 무한 스크롤 최적화
+                        // 관리자가 승인한 가게만 보여야 한다.
+                        store.isAssigned.eq(true),
+                        // no-offset 페이징 처리
                         ltStoreId(lastStoreId),
                         // Category 중복 필터링
                         eqCategory(condition.getCategoryIds()),
@@ -58,7 +63,86 @@ public class StoreQueryRepository {
         return new SliceImpl<>(results,pageable,hasNext);
     }
 
+    public Slice<Store> searchByKeyword(String keyword, Long lastStoreId, StoreSearchCond condition, Pageable pageable)
+    {
+        List<Store> results = query.selectFrom(store)
+                .where(
 
+                        // 관리자가 승인한 가게만 보여야 한다.
+                        store.isAssigned.eq(true),
+                        // 검색 로직
+                        store.name.contains(keyword),
+                        // no-offset 방식
+                        ltStoreId(lastStoreId),
+                        // Category 중복 필터링
+                        eqCategory(condition.getCategoryIds()),
+                        // Convenience 중복 필터링
+                        eqConvenience(condition.getConvenienceIds())
+                )
+                .orderBy(store.id.desc())
+                .limit(pageable.getPageSize()+1) // 나는 5개 요청해도 쿼리상 +시켜서 6개 들고 오게 함
+                .fetch();
+
+        boolean hasNext = false;
+
+        // 조회한 결과 개수가 요청한 페이지 사이즈보다 크면 뒤에 더 있음, next = true
+        if(results.size() > pageable.getPageSize())
+        {
+            hasNext = true;
+            results.remove(pageable.getPageSize());
+        }
+
+        return new SliceImpl<>(results,pageable,hasNext);
+    }
+
+    // 실제로 관리자 승인 받은 가게 목록 중에서만 보이게 해야 한다
+    public Slice<Store> getBookmarkedStore(String userId, Long lastStoreId, Pageable pageable)
+    {
+        List<Store> results = query
+                .selectFrom(store)
+                .leftJoin(store.bookMarks, bookMark)
+                .where(
+                        store.isAssigned.eq(true),
+                        ltStoreId(lastStoreId),
+                        bookMark.user.userId.eq(userId)
+                )
+                .orderBy(store.id.desc())
+                .limit(pageable.getPageSize() + 1)
+                .fetch();
+
+        boolean hasNext = false;
+
+        if(results.size() > pageable.getPageSize())
+        {
+            hasNext = true;
+            results.remove(pageable.getPageSize());
+        }
+
+        return new SliceImpl<>(results,pageable,hasNext);
+    }
+
+
+    // TODO : 블로그 작성
+    public Store getStoreDetail(Long storeId)
+    {
+        return query.selectFrom(store)
+                    .leftJoin(store.storeImages, storeImage)
+                    .fetchJoin()
+                    .where(store.id.eq(storeId))
+                    .distinct()
+                    .fetchOne();
+    }
+
+    public List<Store> getStoreCurrentUserAssigned(List<Long> storeIds)
+    {
+        return query.selectFrom(store)
+                    .where(store.id.in(storeIds))
+                    .fetch();
+
+    }
+
+
+    // 카테고리 필터링
     private BooleanBuilder eqCategory(List<Long> categoryIds)
     {
         if(categoryIds == null)
@@ -73,7 +157,7 @@ public class StoreQueryRepository {
         return booleanBuilder;
     }
 
-
+    // 편의 기능 필터링
     private BooleanBuilder eqConvenience(List<Long> convenienceIds)
     {
         if(convenienceIds == null)
@@ -89,59 +173,13 @@ public class StoreQueryRepository {
         return booleanBuilder;
     }
 
-
+    // 무한 스크롤 구현 시 첫페이지는 null로 조건이 들어오는 케이스
     private BooleanExpression ltStoreId(Long storeId) {
         if (storeId == null) {
-            return null; // BooleanExpression 자리에 null이 반환되면 조건문에서 자동으로 제거된다
+            return null;
         }
 
         return store.id.lt(storeId);
     }
-
-
-
-
-//    public List<StoreResponseDto> searchByPageGroupBy(StoreSearchCond condition, Pageable pageable)
-//    {
-//        List<OrderSpecifier> ORDERS = getAllOrderSpecifiers(pageable);
-//        Map<Store, List<StoreImage>> transform = query.from(store)
-//                .leftJoin(store.storeImages, storeImage)
-//                .where(
-//                        // Category 중복 필터링
-//                        eqCategory(condition.getCategoryIds()),
-//                        // Convenience 중복 필터링
-//                        eqConvenience(condition.getConvenienceIds())
-//                )
-//                .transform(groupBy(store).as(GroupBy.list(storeImage)));
-//
-//        return transform.entrySet().stream()
-//                .map(entry-> new StoreResponseDto(entry.getKey().getId(),entry.getKey().isKids(),entry.getValue(),entry.getKey().getName(),entry.getKey().getReviewCount(),entry.getKey().getBookmarkCount()))
-//                .collect(Collectors.toList());
-//    }
-//
-//    public Page<StoreResponseDto> searchByPageNotwork(StoreSearchCond condition, Pageable pageable)
-//    {
-//        List<OrderSpecifier> ORDERS = getAllOrderSpecifiers(pageable);
-//        QueryResults<StoreResponseDto> results = query
-//                .select(new QStoreResponseDto(store.id, store.isKids, store.storeImages, store.name, store.reviewCount, store.bookmarkCount))
-//                .from(store)
-//                .where(
-//                        // Category 중복 필터링
-//                        eqCategory(condition.getCategoryIds()),
-//                        // Convenience 중복 필터링
-//                        eqConvenience(condition.getConvenienceIds())
-//                )
-//                .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
-//                .offset(pageable.getOffset())
-//                .limit(pageable.getPageSize())
-//                .fetchResults();
-//
-//        List<StoreResponseDto> content = results.getResults();
-//        long total = results.getTotal();
-//        return new PageImpl<>(content,pageable,total);
-//
-//    }
-
-
 
 }

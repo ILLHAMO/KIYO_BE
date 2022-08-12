@@ -1,21 +1,17 @@
 package project.kiyobackend.store.domain.domain.store;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import project.kiyobackend.bookmark.domain.BookMark;
+import lombok.*;
+import project.kiyobackend.store.domain.domain.bookmark.BookMark;
 import project.kiyobackend.review.domain.domain.Review;
-import project.kiyobackend.category.domain.CategoryId;
-import project.kiyobackend.convenience.domain.ConvenienceId;
 import project.kiyobackend.store.domain.domain.menu.Menu;
+import project.kiyobackend.common.util.jpa.JpaBaseEntity;
+import project.kiyobackend.store.domain.domain.tag.Tag;
+import project.kiyobackend.store.domain.domain.tag.TagStore;
 import project.kiyobackend.user.domain.User;
-import project.kiyobackend.util.jpa.JpaBaseEntity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -34,7 +30,7 @@ public class Store extends JpaBaseEntity {
     프론트에서 조회할때도 1,2,3,4,5 이런 형태로 숫자 분리 로직 짤 예정
     또한 카테고리만 가져오는 쿼리 짤 때, 굳이 연관된 엔티티를 지연 로딩으로라도 가져 올 필요X
      */
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "store_category",
             joinColumns = @JoinColumn(name = "store_id"))
     private List<Long> categoryIds = new ArrayList<>();
@@ -47,15 +43,9 @@ public class Store extends JpaBaseEntity {
     @Column(name = "store_name")
     private String name;
 
-//    @Embedded
- //   private Address address;
-
     @Column(name = "call_number")
     private String call;
 
-    /*
-    컬렉션으로 넣을 필요 없이, 상점 하나당 simpleComment, detailComment 하나만 있으면 되므로 바로 store 테이블에 넣음
-     */
     @Embedded
     private Comment comment;
 
@@ -66,27 +56,83 @@ public class Store extends JpaBaseEntity {
     @OneToMany(mappedBy = "store",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Menu> menus = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY,cascade = CascadeType.REMOVE,orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store",fetch = FetchType.LAZY)
+    // cascadeType.All 하면 개별 repository가 전혀 필요없다.
+    // Persist는 save 필요없고, remove는 remove 필요없다.
+    @OneToMany(mappedBy = "store",fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BookMark> bookMarks = new ArrayList<>();
 
-    private int bookmarkCount;
+    @OneToMany(mappedBy = "store",fetch = FetchType.LAZY,cascade = CascadeType.ALL) // 일단은 생성 주기 다름,
+    private List<TagStore> tagStores = new ArrayList<>();
 
-    private int reviewCount;
 
-    @Column(name = "open_time")
-    private String time;
+//    @Column(name = "open_time")
+//    private String time;
+
+    @ElementCollection
+    @CollectionTable(
+            name = "OPENTIME",
+            joinColumns = @JoinColumn(name = "store_id")
+    )
+    private List<Opentime> time = new ArrayList<>();
 
     private boolean isKids;
+
+    private String address;
+
+    private String addressMap;
 
     private boolean isBooked  = false;
 
     private boolean isAssigned;
+
+    private Long userSeq;
+
+    public Store(String name, String call, String address, boolean isKids, List<Long> categoryIds, List<Long> convenienceIds, Long userSeq) {
+        this.name = name; // 가게 이름
+        this.call = call; // 가게 전화번호 주소는 잠시 삭제
+        this.address = address;
+      //  this.bookmarkCount = 0;
+     //   this.reviewCount = 0;
+        this.isKids = isKids; // 키즈존 여부
+        this.isAssigned = false;
+        this.userSeq = userSeq;
+        categoryIds.forEach(c->this.getCategoryIds().add(c));
+        convenienceIds.forEach(cv->this.getConvenienceIds().add(cv));
+    }
+
     /**
      * 생성 메서드, 연관관계 편의 메서드 고려!
      */
+
+    public void addBookmark(User user)
+    {
+        BookMark bookMark = new BookMark(user, this);
+        this.bookMarks.add(bookMark);
+    }
+
+    public int getBookmarkCounts()
+    {
+        return bookMarks.size();
+    }
+    public int getReviewCounts()
+    {
+        return reviews.size();
+    }
+
+    public void removeBookmark(User user) {
+        BookMark bookMark = new BookMark(user,this);
+        this.bookMarks.remove(bookMark);
+
+    }
+
+    // 가게 승인 true로 변경
+    public void assignStore()
+    {
+        this.isAssigned = true;
+    }
 
     public void setMenus(List<Menu> menus)
     {
@@ -110,40 +156,51 @@ public class Store extends JpaBaseEntity {
         this.isBooked = check;
     }
 
-    public Store(String name,  String call, Comment comment, String time, boolean isKids,List<Long> categoryIds, List<Long> convenienceIds) {
+    public Store(String name,  String call, Comment comment, List<Opentime> time, String address,String addressMap, boolean isKids,List<Long> categoryIds, List<Long> convenienceIds,Long userSeq) {
         this.name = name; // 가게 이름
         this.call = call; // 가게 전화번호 주소는 잠시 삭제
         this.comment =
                 comment;// 값 타입 생성자에서 생성
-        this.bookmarkCount = 0;
-        this.reviewCount = 0;
+        this.address = address;
+        this.addressMap = addressMap;
+      //  this.bookmarkCount = 0;
+     //   this.reviewCount = 0;
         this.time = time; // 영업 시간
         this.isKids = isKids; // 키즈존 여부
         this.isAssigned = false;
+        this.userSeq = userSeq;
         categoryIds.forEach(c->this.getCategoryIds().add(c));
         convenienceIds.forEach(cv->this.getConvenienceIds().add(cv));
     }
 
-    public static Store createStore(String name, String call, Comment comment, String time, boolean isKids,  List<Long> categoryIds, List<Long> convenienceIds, List<Menu> menus, List<String> storeImages)
+    public Store(Long id, String name,  String call, Comment comment, List<Opentime> time, String address, boolean isKids,List<Long> categoryIds, List<Long> convenienceIds) {
+        this.id = id;
+        this.name = name; // 가게 이름
+        this.call = call; // 가게 전화번호 주소는 잠시 삭제
+        this.comment = comment;// 값 타입 생성자에서 생성
+        this.address = address;
+        this.time = time; // 영업 시간
+        this.isKids = isKids; // 키즈존 여부
+        this.isAssigned = false;
+
+        categoryIds.forEach(c->this.getCategoryIds().add(c));
+        convenienceIds.forEach(cv->this.getConvenienceIds().add(cv));
+    }
+
+    public static Store createStore(String name, String call, Comment comment, List<Opentime> time,String address, String addressMap,boolean isKids,  List<Long> categoryIds, List<Long> convenienceIds, List<Menu> menus, List<String> storeImages,Long userSeq)
     {
-        Store store = new Store(name,call,comment,time,isKids,categoryIds, convenienceIds);
+        Store store = new Store(name,call,comment,time,address,addressMap,isKids,categoryIds, convenienceIds,userSeq);
         store.setMenus(menus);
         store.setStoreImages(storeImages);
         return store;
     }
 
-    public void addBookmarkCount()
+    public static Store createStoreForUser(String name, String call,String address ,boolean isKids,  List<Long> categoryIds, List<Long> convenienceIds, List<String> storeImages,Long userSeq)
     {
-        this.bookmarkCount+=1;
-    }
-
-    public void minusBookmarkCount()
-    {
-        if(bookmarkCount < 1)
-        {
-            throw new IllegalArgumentException("북마크 개수가 0보다 작습니다.");
-        }
-        this.bookmarkCount -= 1;
+        Store store = new Store(name,call,address,isKids,categoryIds, convenienceIds,userSeq);
+      //  store.setMenus(menus);
+        store.setStoreImages(storeImages);
+        return store;
     }
 
 
