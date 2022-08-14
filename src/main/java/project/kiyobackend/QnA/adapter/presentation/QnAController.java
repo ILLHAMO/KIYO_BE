@@ -22,7 +22,7 @@ public class QnAController {
 
     private final QnAService qnAService;
 
-    @Operation(summary = "문의 사항 리스트 조회")
+    @Operation(summary = "문의 사항 조회")
     @GetMapping
     public ResponseEntity<Slice<QnAResponseDto>> getQnAList(@CurrentUser User user, @RequestParam(name = "lastStoreId",required = false) Long lastStoreId, Pageable pageable)
     {
