@@ -7,6 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class QnASaveRequest {
 
-    private String title;
+  ///  private String title;
     private String content;
 }

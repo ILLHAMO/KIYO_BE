@@ -19,7 +19,7 @@ public class QnAReply {
     @JoinColumn(name = "qna_id")
     private QnA qna;
 
-    private String title;
+  //  private String title;
 
     private String content;
 }
