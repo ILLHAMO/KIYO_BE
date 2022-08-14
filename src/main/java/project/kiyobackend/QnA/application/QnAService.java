@@ -50,4 +50,12 @@ public class QnAService {
         return "success delete";
     }
 
+    @Transactional
+    public Long updateQnA(Long qnaId,String content)
+    {
+        QnA qnA = qnARepository.findById(qnaId).orElseThrow(NotExistQnAException::new);
+        qnA.updateQnA(content);
+        return qnA.getId();
+    }
+
 }

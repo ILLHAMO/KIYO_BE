@@ -22,6 +22,11 @@ public class QnA extends JpaBaseEntity {
 
     private String content;
 
+    public void updateQnA(String content)
+    {
+        this.content = content;
+    }
+
     // 만약 사용자의 문의 사항이 삭제 되면, 관리자가 남긴 문의 사항도 자동 삭제 되도록 만듦
     @OneToOne(mappedBy = "qna",fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private QnAReply qnAReply;
