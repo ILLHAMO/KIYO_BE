@@ -34,6 +34,7 @@ public class StoreQueryRepository {
      * 기능 3. 사용자가 좋아요 누른 가게는 조회 시에 마크해준다.
      */
     // TODO : 블로그 작성
+    // TODO : 이부분 프로젝션 처리하는거 다시 한번 꼭 해봐야 겠다. 저걸 다 가져올 필요가 없는데...
     public Slice<Store> searchBySlice(Long lastStoreId, StoreSearchCond condition, Pageable pageable)
     {
         List<Store> results = query.selectFrom(store)

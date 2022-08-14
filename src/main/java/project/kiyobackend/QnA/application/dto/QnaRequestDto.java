@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class QnAResponseDto {
-    String content;
+public class QnaRequestDto {
+    private String content;
 }
