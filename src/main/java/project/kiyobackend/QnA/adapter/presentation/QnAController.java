@@ -49,8 +49,9 @@ public class QnAController {
 
     @Operation(summary = "사용자가 문의 사항 수정")
     @PutMapping("/{qnaId}")
-    public void updateQnA()
+    public ResponseEntity<SuccessResponseDto> updateQnA(@PathVariable Long qnaId,@RequestBody QnAUpdateRequest qnAUpdateRequest)
     {
-
+        Long result = qnAService.updateQnA(qnaId, qnAUpdateRequest.getContent());
+        return ResponseEntity.ok(new SuccessResponseDto(true,result));
     }
 }
