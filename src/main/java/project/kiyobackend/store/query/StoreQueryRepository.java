@@ -29,12 +29,8 @@ public class StoreQueryRepository {
     }
 
     /**
-     * 기능 1. 페이징 기능, 마지막 가게 정보를 기준으로 Slice 조회 한다.
-     * 기능 2. 동적 쿼리 기능, 카테고리 별로 동적 쿼리 가능하다.
-     * 기능 3. 사용자가 좋아요 누른 가게는 조회 시에 마크해준다.
+     * 메인 페이지 조회 기능
      */
-    // TODO : 블로그 작성
-    // TODO : 이부분 프로젝션 처리하는거 다시 한번 꼭 해봐야 겠다. 저걸 다 가져올 필요가 없는데...
     public Slice<Store> searchBySlice(Long lastStoreId, StoreSearchCond condition, Pageable pageable)
     {
         List<Store> results = query.selectFrom(store)
@@ -52,18 +48,13 @@ public class StoreQueryRepository {
                 .limit(pageable.getPageSize()+1) // 나는 5개 요청해도 쿼리상 +시켜서 6개 들고 오게 함
                 .fetch();
 
-        boolean hasNext = false;
-
-        // 조회한 결과 개수가 요청한 페이지 사이즈보다 크면 뒤에 더 있음, next = true
-        if(results.size() > pageable.getPageSize())
-        {
-            hasNext = true;
-            results.remove(pageable.getPageSize());
-        }
-
-        return new SliceImpl<>(results,pageable,hasNext);
+        return checkLastPage(pageable, results);
     }
 
+
+    /**
+     * 가게 검색 기능
+     */
     public Slice<Store> searchByKeyword(String keyword, Long lastStoreId, StoreSearchCond condition, Pageable pageable)
     {
         List<Store> results = query.selectFrom(store)
@@ -84,19 +75,15 @@ public class StoreQueryRepository {
                 .limit(pageable.getPageSize()+1) // 나는 5개 요청해도 쿼리상 +시켜서 6개 들고 오게 함
                 .fetch();
 
-        boolean hasNext = false;
-
-        // 조회한 결과 개수가 요청한 페이지 사이즈보다 크면 뒤에 더 있음, next = true
-        if(results.size() > pageable.getPageSize())
-        {
-            hasNext = true;
-            results.remove(pageable.getPageSize());
-        }
-
-        return new SliceImpl<>(results,pageable,hasNext);
+        return checkLastPage(pageable, results);
     }
 
+
     // 실제로 관리자 승인 받은 가게 목록 중에서만 보이게 해야 한다
+
+    /**
+     * 로그인 유저가 북마크한 가게 목록 조회
+     */
     public Slice<Store> getBookmarkedStore(String userId, Long lastStoreId, Pageable pageable)
     {
         List<Store> results = query
@@ -111,19 +98,13 @@ public class StoreQueryRepository {
                 .limit(pageable.getPageSize() + 1)
                 .fetch();
 
-        boolean hasNext = false;
-
-        if(results.size() > pageable.getPageSize())
-        {
-            hasNext = true;
-            results.remove(pageable.getPageSize());
-        }
-
-        return new SliceImpl<>(results,pageable,hasNext);
+        return checkLastPage(pageable, results);
     }
 
 
-    // TODO : 블로그 작성
+    /**
+     * 가게 상세 페이지 조회
+     */
     public Store getStoreDetail(Long storeId)
     {
         return query.selectFrom(store)
@@ -134,6 +115,9 @@ public class StoreQueryRepository {
                     .fetchOne();
     }
 
+    /**
+     * 로그인한 유저가 등록한 가게 목록 조회
+     */
     public List<Store> getStoreCurrentUserAssigned(List<Long> storeIds)
     {
         return query.selectFrom(store)
@@ -152,6 +136,7 @@ public class StoreQueryRepository {
         }
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
+        // 클라이언트가 넘긴 카테고리 목록을 다 가지고 있어야 true값 나옴
         for (Long categoryId : categoryIds) {
             booleanBuilder.and(store.categoryIds.contains(categoryId));
         }
@@ -181,6 +166,18 @@ public class StoreQueryRepository {
         }
 
         return store.id.lt(storeId);
+    }
+
+    private Slice<Store> checkLastPage(Pageable pageable, List<Store> results) {
+        boolean hasNext = false;
+
+        // 조회한 결과 개수가 요청한 페이지 사이즈보다 크면 뒤에 더 있음, next = true
+        if (results.size() > pageable.getPageSize()) {
+            hasNext = true;
+            results.remove(pageable.getPageSize());
+        }
+
+        return new SliceImpl<>(results, pageable, hasNext);
     }
 
 }

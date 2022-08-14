@@ -53,17 +53,27 @@ public class StoreService {
 
     private final RedisSearchService redisSearchService;
 
+
+    /**
+     * 비로그인 유저일때는 북마크 여부 체크 안하고, 로그인 유저일때만 체크함
+     */
     public Slice<Store> getStore(User currentUser,Long lastStoreId, StoreSearchCond storeSearchCond, Pageable pageable)
     {
         Slice<Store> stores = storeQueryRepository.searchBySlice(lastStoreId, storeSearchCond, pageable);
+
+        // 로그인 상태일때와 아닐때를 분기
         if(currentUser != null)
         {
-            Optional<User> findUser = userRepository.findByUserId(currentUser.getUserId());
-            if(findUser.isPresent())
-            {
-                List<BookMark> bookMarks = findUser.get().getBookMarks();
-                checkCurrentUserBookmarked(stores,bookMarks);
-            }
+            // TODO : 애초에 currentUser가 null인지로 검증했고, 실제 DB에 유저가 없다면 내가 설정한 예외로 관리해주는게 맞다고 생각
+            User findUser = userRepository.findByUserId(currentUser.getUserId()).orElseThrow(NotExistUserException::new);
+            checkCurrentUserBookmarked(stores,findUser.getBookMarks());
+
+            //            Optional<User> findUser = userRepository.findByUserId(currentUser.getUserId());
+//            if(findUser.isPresent())
+//            {
+//                List<BookMark> bookMarks = findUser.get().getBookMarks();
+//                checkCurrentUserBookmarked(stores,bookMarks);
+//            }
         }
         return stores;
     }
@@ -180,19 +190,6 @@ public class StoreService {
         Store store = storeRepository.findById(storeId).orElseThrow(NotExistStoreException::new);
         storeRepository.delete(store);
     }
-
-//    private List<Menu> convertMenuDtoToMenuEntity(StoreRequestDto storeRequestDto) {
-//        List<Menu> result = storeRequestDto.getMenus().stream().map(m ->
-//                new Menu(m.getName()
-//                        , m.getMenuOptions().stream().map(mo -> new MenuOption(mo.getName()))
-//                        .collect(Collectors.toList())
-//                )
-//
-//        ).collect(Collectors.toList());
-//        return result;
-//    }
-
-
 
 
     private List<String> getMultipartFileNames(List<MultipartFile> multipartFiles) {
