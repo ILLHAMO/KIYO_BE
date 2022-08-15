@@ -19,6 +19,8 @@ jobs:
       - name: Setup MySQL
         uses: mirromutth/mysql-action@v1.1
         with:
+          host port: 3306
+          container port: 3306
           mysql database: kiyodb
           mysql user: 'root'
           mysql password: '4321'
