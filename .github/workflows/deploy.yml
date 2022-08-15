@@ -19,9 +19,9 @@ jobs:
       - name: Setup MySQL
         uses: mirromutth/mysql-action@v1.1
         with:
-          mysql database: testdb
-          mysql user: root
-          mysql password: 4321
+          mysql database: kiyodb
+          mysql user: 'root'
+          mysql password: '4321'
 
       - name: checkout code
         uses: actions/checkout@v2
