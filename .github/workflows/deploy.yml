@@ -19,6 +19,7 @@ jobs:
       - name: Setup MySQL
         uses: mirromutth/mysql-action@v1.1
         with:
+          mysql root password: '4321'
           mysql database: 'kiyodb'
           mysql user: 'root'
           mysql password: '4321'
