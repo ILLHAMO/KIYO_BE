@@ -42,9 +42,9 @@ jobs:
         run: chmod +x ./gradlew
         shell: bash
 
-      - name: Build with Gradle
-        run: ./gradlew build -x test
-        shell: bash
+    #  - name: Build with Gradle
+    #    run: ./gradlew build -x test
+    #    shell: bash
 
       - name: Run test
         run: ./gradlew test
