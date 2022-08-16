@@ -36,7 +36,7 @@ public class StoreQueryRepository {
         List<Store> results = query.selectFrom(store)
                 .where(
                         // 관리자가 승인한 가게만 보여야 한다.
-                        store.isAssigned.eq(true),
+               //         store.isAssigned.eq(true),
                         // no-offset 페이징 처리
                         ltStoreId(lastStoreId),
                         // Category 중복 필터링

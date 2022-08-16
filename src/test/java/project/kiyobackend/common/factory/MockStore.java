@@ -53,6 +53,13 @@ public class MockStore {
             return this;
         }
 
+        public Builder name(String name)
+        {
+            this.name = name;
+            return this;
+        }
+
+
         public Builder categoryIds(List<Long> categoryIds)
         {
             this.categoryIds = categoryIds;

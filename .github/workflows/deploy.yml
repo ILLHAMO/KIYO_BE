@@ -51,11 +51,7 @@ jobs:
         shell: bash
 
       - name: Build with Gradle
-        run: ./gradlew build -x test
-        shell: bash
-
-      - name: Run test
-        run: ./gradlew --info test
+        run: ./gradlew build
         shell: bash
 
       - name: Get current time
