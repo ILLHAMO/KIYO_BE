@@ -49,7 +49,7 @@ jobs:
         shell: bash
 
       - name: Run test
-        run: ./gradlew test
+        run: ./gradlew --info test
         shell: bash
 
       - name: Get current time
