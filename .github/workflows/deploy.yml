@@ -23,17 +23,19 @@ jobs:
           host port : 3306
           container port: 3306
           mysql version: '8.0'
-          mysql root password: '4321'
+          mysql root password: root
           mysql database: testdb
-          mysql user: localhost
+          mysql user: root
 
 
       - name: verify MySQL connection from host
         run: |
               mysql --version
               sudo service mysql start
-              mysql -uroot -p4321 -e "CREATE DATABASE testdb"
-              mysql -uroot -p4321 -e "SHOW DATABASES"
+              mysql -uroot -proot -e "CREATE DATABASE testdb"
+              mysql -uroot -proot -e "SHOW DATABASES"
+              mysql -uroot -proot -e "Grant all privileges on *.* to 'user'@'%' identified by ''"
+
 
       - name: checkout code
         uses: actions/checkout@v2
