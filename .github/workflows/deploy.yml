@@ -19,8 +19,9 @@ jobs:
       - name: Setup MySQL
         uses: mirromutth/mysql-action@v1.1
         with:
-          mysql root password: '4321'
+          mysql version: '8.0'
           mysql database: 'kiyodb'
+          mysql root password: '4321'
           mysql user: 'root'
           mysql password: '4321'
 
@@ -32,12 +33,12 @@ jobs:
         with:
           java-version: 11
 
-      - name: Copy secret
-        env:
-          OCCUPY_SECRET : ${{secrets.OCCUPY_SECRET}}
-          OCCUPY_SECRET_DIR: src/test/resources
-          OCCUPY_SECRET_DIR_FILE_NAME: application.yml
-        run: echo $OCCUPY_SECRET | base64 --decode > $OCCUPY_SECRET_DIR/$OCCUPY_SECRET_DIR_FILE_NAME
+  #    - name: Copy secret
+  #      env:
+  #        OCCUPY_SECRET : ${{secrets.OCCUPY_SECRET}}
+  #        OCCUPY_SECRET_DIR: src/test/resources
+  #        OCCUPY_SECRET_DIR_FILE_NAME: application.yml
+  #      run: echo $OCCUPY_SECRET | base64 --decode > $OCCUPY_SECRET_DIR/$OCCUPY_SECRET_DIR_FILE_NAME
   #      run: echo $OCCUPY_SECRET > $OCCUPY_SECRET_DIR/$OCCUPY_SECRET_DIR_FILE_NAME
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
