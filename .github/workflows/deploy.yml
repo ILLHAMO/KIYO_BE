@@ -32,10 +32,11 @@ jobs:
         run: |
               mysql --version
               sudo service mysql start
-              mysql -uroot -proot -e "CREATE DATABASE testdb;"
-              mysql -uroot -proot -e "SHOW DATABASES;"
-              mysql -uroot -proot -e "update user set password=4321 where user=root;"
-              mysql -uroot -proot -e "flush privileges;"
+              mysql -uroot -proot -e 'update user set password=4321 where user=root'
+              mysql -uroot -proot -e 'flush privileges'
+              mysql -uroot -p4321 -e 'CREATE DATABASE testdb'
+              mysql -uroot -p4321 -e 'SHOW DATABASES'
+
 
       - name: checkout code
         uses: actions/checkout@v2
