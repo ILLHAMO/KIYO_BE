@@ -21,11 +21,10 @@ jobs:
         with:
           host port : 3306
           container port: 3306
-          character set server: 'utf8'
           mysql version: '8.0'
-          mysql database: 'kiyodb'
+          mysql database: testdb
           mysql root password: 4321
-          mysql user: 'root'
+          mysql user: root
           mysql password: 4321
 
       - name: checkout code

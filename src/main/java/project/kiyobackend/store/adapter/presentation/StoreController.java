@@ -40,6 +40,7 @@ public class StoreController{
     public ResponseEntity<Slice<StoreResponse>> getStoreBySlice(@CurrentUser User currentUser , @RequestParam(name = "lastStoreId", required = false)  Long lastStoreId, Pageable pageable, StoreSearchCond storeSearchCond)
     {
         Slice<Store> search = storeService.getStore(currentUser,lastStoreId,storeSearchCond,pageable);
+        System.out.println("체크");
         return ResponseEntity.ok(StoreAssembler.storeResponseDto(search));
     }
 
