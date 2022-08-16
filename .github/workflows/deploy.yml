@@ -23,7 +23,7 @@ jobs:
           host port : 3306
           container port: 3306
           mysql version: '8.0'
-          mysql root password: 4321
+          mysql root password: root
           mysql database: testdb
           mysql user: root
 
@@ -32,8 +32,11 @@ jobs:
         run: |
               mysql --version
               sudo service mysql start
-              mysql -h 127.0.0.1 -uroot -p4321 -e 'CREATE DATABASE testdb'
-              mysql -h 127.0.0.1 -uroot -p4321 -e 'SHOW DATABASES'
+              mysql -uroot -proot -e 'CREATE DATABASE testdb'
+              mysql -uroot -proot -e 'SHOW DATABASES'
+              mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 4321;"
+
+
 
 
       - name: checkout code
