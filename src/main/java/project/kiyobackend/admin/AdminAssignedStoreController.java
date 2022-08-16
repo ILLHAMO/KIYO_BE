@@ -16,7 +16,7 @@ public class AdminAssignedStoreController {
 
     private StoreService storeService;
 
-    @Operation(summary = "신규 등록된 가게 승인")
+    @Operation(summary = "신규 가게 승인")
     @PutMapping("/store/{storeId}/assign")
     public ResponseEntity<Boolean> assignStore(@CurrentUser User adminUser, @RequestParam Long storeId)
     {
