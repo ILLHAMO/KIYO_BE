@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class QnAReply {
+public class QnaReply {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "qna_reply_id")
@@ -17,7 +17,7 @@ public class QnAReply {
 
     @OneToOne
     @JoinColumn(name = "qna_id")
-    private QnA qna;
+    private Qna qna;
 
   //  private String title;
 

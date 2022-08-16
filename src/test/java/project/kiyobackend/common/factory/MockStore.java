@@ -1,8 +1,5 @@
 package project.kiyobackend.common.factory;
 
-import project.kiyobackend.QnA.domain.QnA;
-import project.kiyobackend.auth.entity.RoleType;
-import project.kiyobackend.auth.entity.SnsType;
 import project.kiyobackend.review.domain.domain.Review;
 import project.kiyobackend.store.domain.domain.bookmark.BookMark;
 import project.kiyobackend.store.domain.domain.menu.Menu;
@@ -10,11 +7,9 @@ import project.kiyobackend.store.domain.domain.store.Comment;
 import project.kiyobackend.store.domain.domain.store.Opentime;
 import project.kiyobackend.store.domain.domain.store.Store;
 import project.kiyobackend.store.domain.domain.store.StoreImage;
-import project.kiyobackend.user.domain.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.LongStream;
 
 public class MockStore {
 
@@ -45,7 +40,7 @@ public class MockStore {
         private boolean isKids = true;
         private String address = "성동구 왕십리";
         private boolean isBooked = false;
-        private boolean isAssigned = false;
+        private boolean isAssigned = true;
 
         public Builder id(Long id)
         {
@@ -80,7 +75,9 @@ public class MockStore {
 
         public Store build()
         {
-            return new Store(id,name,call,comment,time,address,isKids,categoryIds,convenienceIds);
+            Store store = new Store(id, name, call, comment, time, address, isKids, categoryIds, convenienceIds);
+            store.assignStore();
+            return store;
         }
     }
 

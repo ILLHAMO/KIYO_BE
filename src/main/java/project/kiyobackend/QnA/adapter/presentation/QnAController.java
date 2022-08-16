@@ -10,7 +10,7 @@ import project.kiyobackend.QnA.adapter.presentation.dto.QnASaveRequest;
 import project.kiyobackend.QnA.application.QnAService;
 import project.kiyobackend.QnA.application.dto.QnAResponseDto;
 import project.kiyobackend.QnA.application.dto.QnaRequestDto;
-import project.kiyobackend.QnA.domain.QnA;
+import project.kiyobackend.QnA.domain.Qna;
 import project.kiyobackend.auth.entity.CurrentUser;
 import project.kiyobackend.common.SuccessResponseDto;
 import project.kiyobackend.user.domain.User;
@@ -26,7 +26,7 @@ public class QnAController {
     @GetMapping
     public ResponseEntity<Slice<QnAResponseDto>> getQnAList(@CurrentUser User user, @RequestParam(name = "lastStoreId",required = false) Long lastStoreId, Pageable pageable)
     {
-        Slice<QnA> qnAList = qnAService.getQnAList(user, lastStoreId, pageable);
+        Slice<Qna> qnAList = qnAService.getQnAList(user, lastStoreId, pageable);
         Slice<QnAResponseDto> result = qnAList.map(q -> new QnAResponseDto(q.getContent()));
         return ResponseEntity.ok(result);
     }

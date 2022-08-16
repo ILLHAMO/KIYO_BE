@@ -31,6 +31,11 @@ public class StoreFactory {
         return store;
     }
 
+    public static Store createStore(String name)
+    {
+        return MockStore.builder().name(name).build();
+    }
+
     public static Store createStoreByCategoryId(List<Long> categoryIds)
     {
         return MockStore.builder().categoryIds(categoryIds).build();

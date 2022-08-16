@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import project.kiyobackend.QnA.domain.QnA;
+import project.kiyobackend.QnA.domain.Qna;
 import project.kiyobackend.auth.entity.SnsType;
 import project.kiyobackend.auth.entity.RoleType;
 import project.kiyobackend.store.domain.domain.bookmark.BookMark;
@@ -48,7 +48,7 @@ public class User extends JpaBaseEntity {
     private List<Review> reviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
-    private List<QnA> qnAs = new ArrayList<>();
+    private List<Qna> qnAs = new ArrayList<>();
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private List<BookMark> bookMarks = new ArrayList<>();

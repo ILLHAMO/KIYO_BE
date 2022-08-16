@@ -5,9 +5,12 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
-import project.kiyobackend.common.factory.MockStore;
+
+import project.kiyobackend.common.DatabaseCleanup;
+import project.kiyobackend.common.factory.StoreFactory;
 import project.kiyobackend.exception.store.NotExistStoreException;
 import project.kiyobackend.store.domain.domain.store.Store;
 import project.kiyobackend.store.domain.domain.store.StoreRepository;
@@ -18,6 +21,7 @@ import java.util.List;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Import(DatabaseCleanup.class)
 class StoreQueryRepositoryTest {
 
     @Autowired
@@ -28,21 +32,26 @@ class StoreQueryRepositoryTest {
     @Autowired
     StoreRepository storeRepository;
 
+    @Autowired
+    DatabaseCleanup databaseCleanup;
+
     @BeforeEach
     public void init()
     {
         storeQueryRepository = new StoreQueryRepository(em);
-
         for(int i = 0 ; i < 30; i++)
         {
-            storeRepository.save(new MockStore.Builder().name("가게"+i+1).build());
+            storeRepository.save(StoreFactory.createStore("store"+(i+1)));
         }
 
+
     }
+
     @AfterEach
     public void clear()
     {
-        storeRepository.deleteAll();
+        databaseCleanup.truncateAllEntity();
+        System.out.println("뒷처리");
     }
 
     @Test
@@ -204,5 +213,24 @@ class StoreQueryRepositoryTest {
         Assertions.assertThat(filterByConvenienceId2.getContent().get(0).getId()).isEqualTo(29L);
 
         Assertions.assertThat(filterByConvenienceId3.getContent().size()).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("키워드로 검색 기능")
+    void search()
+    {
+        // given
+        String keyword1 = "store21";
+        String keyword2 = "store1";
+        Slice<Store> result1 = storeQueryRepository.searchByKeyword(keyword1, null, new StoreSearchCond(), PageRequest.ofSize(30));
+        Slice<Store> result2 = storeQueryRepository.searchByKeyword(keyword2, null, new StoreSearchCond(), PageRequest.ofSize(30));
+        // when
+        int size1 = result1.getContent().size();
+        int size2 = result2.getContent().size();
+
+        // then
+        Assertions.assertThat(size1).isEqualTo(1);
+        // store1 and store10~19 -> 11개
+        Assertions.assertThat(size2).isEqualTo(11);
     }
 }

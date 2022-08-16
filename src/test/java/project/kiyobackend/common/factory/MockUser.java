@@ -1,12 +1,9 @@
 package project.kiyobackend.common.factory;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import project.kiyobackend.QnA.domain.QnA;
+import project.kiyobackend.QnA.domain.Qna;
 import project.kiyobackend.auth.entity.RoleType;
 import project.kiyobackend.auth.entity.SnsType;
 import project.kiyobackend.review.domain.domain.Review;
-import project.kiyobackend.store.domain.domain.bookmark.BookMark;
 import project.kiyobackend.user.domain.User;
 
 import java.util.ArrayList;
@@ -30,7 +27,7 @@ public class MockUser {
         private String email = "jemin3161@naver.com";
         private String nickname = "jemini";
         private List<Review> reviews = new ArrayList<Review>();
-        private List<QnA> qnAS = new ArrayList<QnA>();
+        private List<Qna> qnAS = new ArrayList<Qna>();
         private String password = "hanyang";
         private String emailVerifiedYn = "Y";
         private String profileImageUrl = "s3://ap-north-east";

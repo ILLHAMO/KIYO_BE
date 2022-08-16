@@ -6,15 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
-import project.kiyobackend.store.domain.domain.store.Store;
-import project.kiyobackend.store.query.StoreSearchCond;
-import project.kiyobackend.user.domain.User;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static project.kiyobackend.QnA.domain.QQnA.*;
-import static project.kiyobackend.store.domain.domain.store.QStore.store;
+
 
 @Repository
 public class QnAQueryRepository {
@@ -29,14 +25,14 @@ public class QnAQueryRepository {
         this.query = new JPAQueryFactory(em);
     }
 
-    public Slice<QnA> searchBySlice(String currentUserId, Long lastStoreId, Pageable pageable)
+    public Slice<Qna> searchBySlice(String currentUserId, Long lastStoreId, Pageable pageable)
     {
-        List<QnA> results = query.selectFrom(qnA)
+        List<Qna> results = query.selectFrom(QQna.qna)
                 .where(
 
                         ltStoreId(lastStoreId)
                 )
-                .orderBy(qnA.id.desc())
+                .orderBy(QQna.qna.id.desc())
                 .limit(pageable.getPageSize()+1) // 나는 5개 요청해도 쿼리상 +시켜서 6개 들고 오게 함
                 .fetch();
 
@@ -56,6 +52,6 @@ public class QnAQueryRepository {
             return null;
         }
 
-        return qnA.id.lt(qnaId);
+        return QQna.qna.id.lt(qnaId);
     }
 }
