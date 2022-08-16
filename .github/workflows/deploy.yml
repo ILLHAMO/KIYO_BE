@@ -11,6 +11,7 @@ on:
 env:
   S3_BUCKET_NAME: kiyobackend
   PROJECT_NAME: kiyo
+
 jobs:
   build:
     runs-on: ubuntu-latest # 실행 환경 지정
@@ -25,6 +26,7 @@ jobs:
           mysql database: testdb
           mysql user: root
           mysql root password: 4321
+
       - name: verify MySQL connection from host
         run: |
               mysql --version
