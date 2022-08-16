@@ -32,9 +32,9 @@ jobs:
         run: |
               mysql --version
               sudo service mysql start
-              mysql -uroot -proot -e "CREATE DATABASE testdb"
-              mysql -uroot -proot -e "SHOW DATABASES"
-              mysql -uroot -proot -e "Grant all privileges on *.* to 'user'@'%' identified by ''"
+              mysql -uroot -proot -e "CREATE DATABASE testdb;"
+              mysql -uroot -proot -e "SHOW DATABASES;"
+              mysql -uroot -proot -e "Grant all privileges on *.* to 'user'@'%' identified by '';"
 
 
       - name: checkout code
