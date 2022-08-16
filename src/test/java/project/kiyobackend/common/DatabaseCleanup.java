@@ -35,7 +35,7 @@ public class DatabaseCleanup implements InitializingBean {
         em.flush();
         em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0").executeUpdate();
 
-            em.createNativeQuery("TRUNCATE TABLE " + "STORE").executeUpdate();
+            em.createNativeQuery("TRUNCATE TABLE " + "store").executeUpdate();
 
         em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1").executeUpdate();
     }
