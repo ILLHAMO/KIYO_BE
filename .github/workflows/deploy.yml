@@ -19,11 +19,14 @@ jobs:
       - name: Setup MySQL
         uses: samin/mysql-action@v1
         with:
+          host port : 3306
+          container port: 3306
+          character set server: 'utf8'
           mysql version: '8.0'
           mysql database: 'kiyodb'
-          mysql root password: '4321'
+          mysql root password: 4321
           mysql user: 'root'
-          mysql password: '4321'
+          mysql password: 4321
 
       - name: checkout code
         uses: actions/checkout@v2
