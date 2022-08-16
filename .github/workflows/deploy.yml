@@ -32,8 +32,7 @@ jobs:
         run: |
               mysql --version
               sudo service mysql start
-              mysql -uroot -proot -e 'CREATE DATABASE testdb'
-              mysql -uroot -proot -e 'SHOW DATABASES'
+#              mysql -uroot -proot -e 'CREATE DATABASE testdb'
               mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '4321'"
 
 
