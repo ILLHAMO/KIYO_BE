@@ -27,16 +27,11 @@ jobs:
           mysql database: testdb
           mysql user: root
 
-
       - name: verify MySQL connection from host
         run: |
-              mysql --version
               sudo service mysql start
               mysql -uroot -proot -e 'CREATE DATABASE testdb'
               mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '4321'"
-
-
-
 
       - name: checkout code
         uses: actions/checkout@v2
@@ -56,6 +51,7 @@ jobs:
           restore-keys: |
               ${{ runner.os }}-gradle-
 
+
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
         shell: bash
@@ -64,12 +60,14 @@ jobs:
         run: ./gradlew build
         shell: bash
 
+
       - name: Get current time
         uses: 1466587594/get-current-time@v2
         id: current-time
         with:
           format: YYYY-MM-DDTHH-mm-ss
           utcOffset: "+9:00"
+
 
       - name: Show Current Time
         run: echo "CurrentTime=${{steps.current-time.outputs.formattedTime}}"
