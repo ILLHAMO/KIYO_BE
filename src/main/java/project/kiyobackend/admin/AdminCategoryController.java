@@ -40,7 +40,6 @@ public class AdminCategoryController {
         return "delete success";
     }
 
-    // TODO : 카테고리 수정, 삭제 기능은 ADMIN에 구현
 
 
 }
