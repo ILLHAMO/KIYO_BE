@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Setup MySQL
-        uses: mirromutth/mysql-action@v1.1
+        uses: samin/mysql-action@v1
         with:
           mysql version: '8.0'
           mysql database: 'kiyodb'
