@@ -25,7 +25,7 @@ jobs:
           mysql version: '8.0'
           mysql root password: '4321'
           mysql database: testdb
-          mysql user: root
+          mysql user: localhost
 
 
       - name: verify MySQL connection from host
