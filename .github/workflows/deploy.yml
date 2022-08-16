@@ -32,8 +32,8 @@ jobs:
         run: |
               mysql --version
               sudo service mysql start
-              mysql -uroot -p4321 -e 'CREATE DATABASE testdb'
-              mysql -uroot -p4321 -e 'SHOW DATABASES'
+              mysql -h 127.0.0.1 -uroot -p4321 -e 'CREATE DATABASE testdb'
+              mysql -h 127.0.0.1 -uroot -p4321 -e 'SHOW DATABASES'
 
 
       - name: checkout code
