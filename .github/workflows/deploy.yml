@@ -23,7 +23,7 @@ jobs:
           host port : 3306
           container port: 3306
           mysql version: '8.0'
-          mysql root password: root
+          mysql root password: 4321
           mysql database: testdb
           mysql user: root
 
@@ -32,8 +32,8 @@ jobs:
         run: |
               mysql --version
               sudo service mysql start
-              mysql -uroot -proot -e 'CREATE DATABASE testdb'
-              mysql -uroot -proot -e 'SHOW DATABASES'
+              mysql -uroot -p4321 -e 'CREATE DATABASE testdb'
+              mysql -uroot -p4321 -e 'SHOW DATABASES'
 
 
       - name: checkout code
