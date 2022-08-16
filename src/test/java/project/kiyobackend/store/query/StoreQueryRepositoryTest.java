@@ -233,4 +233,15 @@ class StoreQueryRepositoryTest {
         // store1 and store10~19 -> 11개
         Assertions.assertThat(size2).isEqualTo(11);
     }
+
+    @Test
+    @DisplayName("가게 상세 정보 조회")
+    void getStoreDetail()
+    {
+        // given
+
+        // when
+
+        // then
+    }
 }
