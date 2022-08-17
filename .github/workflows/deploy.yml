@@ -29,6 +29,7 @@ jobs:
 
       - name: verify MySQL connection from host
         run: |
+              sudo service mysql restart
               mysql -uroot -proot -e 'CREATE DATABASE testdb'
               mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '4321'"
 
