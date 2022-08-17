@@ -40,10 +40,9 @@ public class StoreQueryRepository {
                         // no-offset 페이징 처리
                         ltStoreId(lastStoreId),
                         // Category 중복 필터링
-                        eqConvenience(condition.getConvenienceIds()),
-                        eqCategory(condition.getCategoryIds())
+                        eqCategory(condition.getCategoryIds()),
                         // Convenience 중복 필터링
-
+                        eqConvenience(condition.getConvenienceIds())
                 )
                 .orderBy(store.id.desc())
                 .limit(pageable.getPageSize()+1) // 나는 5개 요청해도 쿼리상 +시켜서 6개 들고 오게 함
@@ -170,6 +169,7 @@ public class StoreQueryRepository {
     }
 
     private Slice<Store> checkLastPage(Pageable pageable, List<Store> results) {
+
         boolean hasNext = false;
 
         // 조회한 결과 개수가 요청한 페이지 사이즈보다 크면 뒤에 더 있음, next = true

@@ -68,12 +68,6 @@ public class StoreService {
             User findUser = userRepository.findByUserId(currentUser.getUserId()).orElseThrow(NotExistUserException::new);
             checkCurrentUserBookmarked(stores,findUser.getBookMarks());
 
-            //            Optional<User> findUser = userRepository.findByUserId(currentUser.getUserId());
-//            if(findUser.isPresent())
-//            {
-//                List<BookMark> bookMarks = findUser.get().getBookMarks();
-//                checkCurrentUserBookmarked(stores,bookMarks);
-//            }
         }
         return stores;
     }
@@ -100,15 +94,6 @@ public class StoreService {
     public List<SearchRankingResponseDto> findKeywordSortedByRank()
     {
         return redisSearchService.findKeywordSortedByRank();
-    }
-
-    public List<RecentSearchResponseDto> findKeyWordSearchedRecently(User currentUser)
-    {
-        return redisSearchService.findKeyWordSearchedRecently(currentUser);
-    }
-
-    public String removeRecentKeyword(RecentKeywordRequest recentKeywordRequest) {
-        return redisSearchService.removeRecentKeyword(recentKeywordRequest);
     }
 
     public List<Store> getStoreCurrentUserAssigned(List<Long> assignedList)
