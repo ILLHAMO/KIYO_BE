@@ -17,13 +17,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Shutdown Default Ubuntu MySQL (SUDO)
-        run: sudo service mysql stop
 
       - name: Setup MySQL
-        uses: mirromutth/mysql-action@v1.1
+        uses: samin/mysql-action@v1
         with:
-          host port : 3307
+          host port : 3306
           container port: 3306
           mysql version: '8.0'
           mysql root password: root
