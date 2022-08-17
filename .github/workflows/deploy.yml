@@ -22,18 +22,25 @@ jobs:
         run: sudo service mysql stop
 
       - name: Setup MySQL
-        uses: mirromutth/mysql-action@v1.1
+        uses: samin/mysql-action@v1.3
         with:
           host port : 3306
           container port: 3306
-          mysql version: '8.0'
+          mysql version: 5.7
           mysql root password: root
           mysql database: testdb
           mysql user: root
 
       - name: verify MySQL connection from host
         run: |
-              sudo service mysql start
+               mysql --version
+               sudo apt-get install -y mysql-client
+               sudo service mysql start
+               mysql -uroot -proot -e 'CREATE DATABASE testdb'
+               mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '4321'"
+
+
+
 
 
       - name: checkout code
