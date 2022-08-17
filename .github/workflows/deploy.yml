@@ -30,6 +30,7 @@ jobs:
         run: |
                mysql --version
                sudo apt-get install -y mysql-client
+               sleep 10
                sudo service mysql start
 #               sudo service mysql start
 #               mysql -uroot -proot -e 'CREATE DATABASE testdb'
