@@ -173,12 +173,13 @@ public class Store extends JpaBaseEntity {
         convenienceIds.forEach(cv->this.getConvenienceIds().add(cv));
     }
 
-    public Store(Long id, String name,  String call, Comment comment, List<Opentime> time, String address, boolean isKids,List<Long> categoryIds, List<Long> convenienceIds) {
+    public Store(Long id, String name,  String call, Comment comment, List<Opentime> time, String address, boolean isKids,List<Long> categoryIds, List<Long> convenienceIds, List<BookMark> bookMarks) {
         this.id = id;
         this.name = name; // 가게 이름
         this.call = call; // 가게 전화번호 주소는 잠시 삭제
         this.comment = comment;// 값 타입 생성자에서 생성
         this.address = address;
+        this.bookMarks = bookMarks;
         this.time = time; // 영업 시간
         this.isKids = isKids; // 키즈존 여부
         this.isAssigned = false;

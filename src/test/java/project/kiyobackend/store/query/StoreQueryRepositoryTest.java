@@ -9,11 +9,17 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 
+import org.springframework.transaction.annotation.Transactional;
 import project.kiyobackend.common.DatabaseCleanup;
 import project.kiyobackend.common.factory.StoreFactory;
+import project.kiyobackend.common.factory.UserFactory;
 import project.kiyobackend.exception.store.NotExistStoreException;
+import project.kiyobackend.exception.user.NotExistUserException;
+import project.kiyobackend.store.domain.domain.bookmark.BookMark;
 import project.kiyobackend.store.domain.domain.store.Store;
 import project.kiyobackend.store.domain.domain.store.StoreRepository;
+import project.kiyobackend.user.domain.User;
+import project.kiyobackend.user.domain.UserRepository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -35,13 +41,21 @@ class StoreQueryRepositoryTest {
     @Autowired
     DatabaseCleanup databaseCleanup;
 
+    @Autowired
+    UserRepository userRepository;
     @BeforeEach
     public void init()
     {
         storeQueryRepository = new StoreQueryRepository(em);
+        User findUser = userRepository.save(UserFactory.createUser("testuser"));
+
         for(int i = 0 ; i < 30; i++)
         {
-            storeRepository.save(StoreFactory.createStore("store"+(i+1)));
+            Store savedStore = storeRepository.save(StoreFactory.createStore("store" + (i + 1)));
+
+            if(i%2==0){
+                findUser.getAssignedStoreList().add(savedStore.getId());
+            }
         }
 
 
@@ -239,9 +253,50 @@ class StoreQueryRepositoryTest {
     void getStoreDetail()
     {
         // given
+        Store storeDetail = storeQueryRepository.getStoreDetail(1L);
+        // when
+        String name = storeDetail.getName();
+        // then
+        Assertions.assertThat(name).isEqualTo("store1");
+    }
+
+    @Test
+    @DisplayName("현재 로그인한 유저가 등록한 가게 목록 조회")
+    void getStoreCurrentUserAssigned()
+    {
+        // given
+        List<Store> storeCurrentUserAssigned = storeQueryRepository.getStoreCurrentUserAssigned(List.of(1L, 10L));
 
         // when
+        int size = storeCurrentUserAssigned.size();
 
         // then
+        Assertions.assertThat(size).isEqualTo(2);
+
+    }
+
+    @Test
+    @DisplayName("사용자가 북마크한 가게 목록 조회")
+    @Transactional
+    void getStoreUserBookmark()
+    {
+        // given
+        User testuser = userRepository.findByUserId("testuser").orElseThrow(NotExistUserException::new);
+        Store store1 = storeRepository.findById(30L).orElseThrow(NotExistStoreException::new);
+        Store store2 = storeRepository.findById(25L).orElseThrow(NotExistStoreException::new);
+
+        BookMark bookMark1 = new BookMark(testuser, store1);
+        BookMark bookMark2 = new BookMark(testuser, store2);
+        store1.getBookMarks().add(bookMark1);
+        store2.getBookMarks().add(bookMark2);
+        em.flush();
+
+        // when
+        User findUser = userRepository.findByUserId("testuser").orElseThrow(NotExistUserException::new);
+        Slice<Store> bookmarkedStore = storeQueryRepository.getBookmarkedStore(findUser.getUserId(), null, PageRequest.ofSize(30));
+        int size = bookmarkedStore.getContent().size();
+
+        // then
+        Assertions.assertThat(size).isEqualTo(2);
     }
 }

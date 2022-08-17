@@ -8,15 +8,14 @@ public class UserFactory {
     {
     }
 
-    public static User user(Long userSeq, String userId)
+    public static User user(String userId)
     {
-         return createUser(userSeq,userId);
+         return createUser(userId);
     }
 
-    public static User createUser(Long userSeq,String userId)
+    public static User createUser(String userId)
     {
        return MockUser.builder()
-               .userSeq(userSeq)
                .userId(userId)
                .build();
     }

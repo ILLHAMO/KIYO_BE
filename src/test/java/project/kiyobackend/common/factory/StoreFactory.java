@@ -1,6 +1,7 @@
 package project.kiyobackend.common.factory;
 
 import project.kiyobackend.review.domain.domain.Review;
+import project.kiyobackend.store.domain.domain.bookmark.BookMark;
 import project.kiyobackend.store.domain.domain.store.Store;
 
 import java.util.List;
@@ -27,6 +28,16 @@ public class StoreFactory {
     {
         Store store = MockStore.builder()
                 .id(storeId)
+                .build();
+        return store;
+    }
+
+    public static Store createStoreWithBookmark(String name, List<BookMark> bookmarks)
+    {
+
+        Store store = MockStore.builder()
+                .name(name)
+                .bookmarks(bookmarks)
                 .build();
         return store;
     }

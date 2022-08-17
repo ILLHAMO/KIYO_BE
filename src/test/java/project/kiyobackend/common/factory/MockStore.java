@@ -73,9 +73,15 @@ public class MockStore {
             return this;
         }
 
+        public Builder bookmarks(List<BookMark> bookMarks)
+        {
+            this.bookMarks = bookMarks;
+            return this;
+        }
+
         public Store build()
         {
-            Store store = new Store(id, name, call, comment, time, address, isKids, categoryIds, convenienceIds);
+            Store store = new Store(id, name, call, comment, time, address, isKids, categoryIds, convenienceIds,bookMarks);
             store.assignStore();
             return store;
         }

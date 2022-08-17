@@ -157,18 +157,12 @@ public class StoreService {
 
         List<String> fileNameList = getMultipartFileNames(multipartFiles);
 
-      //  List<Menu> menus = convertMenuDtoToMenuEntity(storeRequestDto);
-
         Store store = Store.createStoreForUser(storeRequestDto.getName(),
                 storeRequestDto.getCall(),
-             //   storeRequestDto.getComment(),
-             //   storeRequestDto.getTime().stream().map(t -> new Opentime(t)).collect(Collectors.toList()), storeRequestDto.getAddress(),
-           //     storeRequestDto.getAddressMap(),
                 storeRequestDto.getAddress(),
                 storeRequestDto.isKids(),
                 storeRequestDto.getCategoryIds(),
                 storeRequestDto.getConvenienceIds(),
-            //    menus,
                 fileNameList,user.getUserSeq());
 
         Store saveStore = storeRepository.save(store);
