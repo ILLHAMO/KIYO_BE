@@ -62,7 +62,7 @@ jobs:
         shell: bash
 
       - name: Build with Gradle
-        run: ./gradlew --info test
+        run: ./gradlew build
         shell: bash
 
 
