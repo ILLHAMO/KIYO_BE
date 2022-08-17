@@ -17,24 +17,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Shutdown Default Ubuntu MySQL (SUDO)
+        run: sudo service mysql stop
+
       - name: Setup MySQL
         uses: mirromutth/mysql-action@v1.1
         with:
           host port : 3306
           container port: 3306
+          mysql version: '8.0'
           mysql root password: root
-          mysql database: testdb
+          mysql database: 'testdb'
           mysql user: root
+
+      - name: Start MySQL
+        run: sudo service mysql start
 
       - name: verify MySQL connection from host
         run: |
                mysql --version
-               sudo apt-get install -y mysql-client
-               sleep 10
-               sudo service mysql start
-#               sudo service mysql start
-#               mysql -uroot -proot -e 'CREATE DATABASE testdb'
-#               mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '4321'"
+               mysql --user=root --password=root
+               mysql -uroot -proot -e 'CREATE DATABASE testdb'
+               mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '4321'"
 
 
 
