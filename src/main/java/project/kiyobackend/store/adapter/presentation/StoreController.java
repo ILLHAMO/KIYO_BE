@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -37,7 +38,7 @@ public class StoreController{
 
     @Operation(summary = "가게 목록 페이징 조회")
     @PreAuthorize("hasRole('USER') or isAnonymous()")
-    @Cacheable(cacheNames = "mainPage",key = "#lastStoreId == null ? 0 : #lastStoreId")
+    @Cacheable(cacheNames = "mainPage",key = "(#currentUser == null ? 0 : ':'+#currentUser.userId)+( #lastStoreId == null ? 0 : ':'+#lastStoreId )")
     @GetMapping("/stores")
     public RestSlice<StoreResponse> getStoreBySlice(@CurrentUser User currentUser , @RequestParam(name = "lastStoreId", required = false)  Long lastStoreId, Pageable pageable, StoreSearchCond storeSearchCond)
     {
@@ -90,6 +91,7 @@ public class StoreController{
     @Operation(summary = "북마크 추가")
     @PutMapping("/store/{id}/bookmark")
     @PreAuthorize("hasRole('USER')")
+    @CacheEvict(cacheNames = "mainPage")
     public ResponseEntity<BookmarkResponse> addBookmark(@PathVariable Long id, @CurrentUser User user)
     {
         BookmarkResponseDto bookmarkResponseDto = bookmarkService.addBookmark(user, id);
@@ -101,6 +103,7 @@ public class StoreController{
     @Operation(summary = "북마크 삭제")
     @DeleteMapping("/store/{id}/bookmark")
     @PreAuthorize("hasRole('USER')")
+    @CacheEvict(cacheNames = "mainPage")
     public ResponseEntity<BookmarkResponse> removeBookmark(@PathVariable Long id,@CurrentUser User user)
     {
         BookmarkResponseDto bookmarkResponseDto = bookmarkService.removeBookmark(user, id);
