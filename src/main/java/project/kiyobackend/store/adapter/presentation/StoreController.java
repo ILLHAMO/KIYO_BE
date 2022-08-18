@@ -37,9 +37,9 @@ public class StoreController{
     @Operation(summary = "가게 목록 페이징 조회")
     @PreAuthorize("hasRole('USER') or isAnonymous()")
     @GetMapping("/stores")
-    public ResponseEntity<Slice<StoreResponse>> getStoreBySlice(@CurrentUser User currentUser , @RequestParam(name = "lastStoreId", required = false)  Long lastStoreId, Pageable pageable, StoreSearchCond storeSearchCond)
+    public ResponseEntity<Slice<StoreResponse>> getStoreBySlice(@CurrentUser User currentUser , @RequestParam(name = "lastStoreId", required = false)  Long lastStoreId,String address, Pageable pageable, StoreSearchCond storeSearchCond)
     {
-        Slice<Store> search = storeService.getStore(currentUser,lastStoreId,storeSearchCond,pageable);
+        Slice<Store> search = storeService.getStore(currentUser,lastStoreId,storeSearchCond,pageable,address);
         System.out.println("체크");
         return ResponseEntity.ok(StoreAssembler.storeResponseDto(search));
     }

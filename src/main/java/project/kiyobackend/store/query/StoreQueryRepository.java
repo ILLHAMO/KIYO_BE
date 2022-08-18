@@ -31,12 +31,13 @@ public class StoreQueryRepository {
     /**
      * 메인 페이지 조회 기능
      */
-    public Slice<Store> searchBySlice(Long lastStoreId, StoreSearchCond condition, Pageable pageable)
+    public Slice<Store> searchBySlice(Long lastStoreId, StoreSearchCond condition, Pageable pageable,String address)
     {
         List<Store> results = query.selectFrom(store)
                 .where(
                         // 관리자가 승인한 가게만 보여야 한다.
                         store.isAssigned.eq(true),
+                        store.address.eq(address),
                         // no-offset 페이징 처리
                         ltStoreId(lastStoreId),
                         // Category 중복 필터링

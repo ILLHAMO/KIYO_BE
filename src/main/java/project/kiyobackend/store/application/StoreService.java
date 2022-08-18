@@ -57,9 +57,9 @@ public class StoreService {
     /**
      * 비로그인 유저일때는 북마크 여부 체크 안하고, 로그인 유저일때만 체크함
      */
-    public Slice<Store> getStore(User currentUser,Long lastStoreId, StoreSearchCond storeSearchCond, Pageable pageable)
+    public Slice<Store> getStore(User currentUser,Long lastStoreId, StoreSearchCond storeSearchCond, Pageable pageable,String address)
     {
-        Slice<Store> stores = storeQueryRepository.searchBySlice(lastStoreId, storeSearchCond, pageable);
+        Slice<Store> stores = storeQueryRepository.searchBySlice(lastStoreId, storeSearchCond, pageable,address);
 
         // 로그인 상태일때와 아닐때를 분기
         if(currentUser != null)
