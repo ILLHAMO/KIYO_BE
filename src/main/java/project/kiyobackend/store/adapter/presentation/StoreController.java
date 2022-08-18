@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
@@ -36,12 +37,13 @@ public class StoreController{
 
     @Operation(summary = "가게 목록 페이징 조회")
     @PreAuthorize("hasRole('USER') or isAnonymous()")
+    @Cacheable(cacheNames = "mainPage",key = "#lastStoreId == null ? 0 : #lastStoreId")
     @GetMapping("/stores")
-    public ResponseEntity<Slice<StoreResponse>> getStoreBySlice(@CurrentUser User currentUser , @RequestParam(name = "lastStoreId", required = false)  Long lastStoreId, Pageable pageable, StoreSearchCond storeSearchCond)
+    public RestSlice<StoreResponse> getStoreBySlice(@CurrentUser User currentUser , @RequestParam(name = "lastStoreId", required = false)  Long lastStoreId, Pageable pageable, StoreSearchCond storeSearchCond)
     {
         Slice<Store> search = storeService.getStore(currentUser,lastStoreId,storeSearchCond,pageable);
         System.out.println("체크");
-        return ResponseEntity.ok(StoreAssembler.storeResponseDto(search));
+        return new RestSlice<>(StoreAssembler.storeResponseDto(search));
     }
 
 

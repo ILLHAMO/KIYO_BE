@@ -2,7 +2,9 @@ package project.kiyobackend.store.adapter.presentation.dto.store;
 
 import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import project.kiyobackend.store.adapter.presentation.dto.ImageDto;
 import project.kiyobackend.store.domain.domain.store.StoreImage;
 
@@ -10,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StoreResponse {
 
     @Schema(example = "1")
