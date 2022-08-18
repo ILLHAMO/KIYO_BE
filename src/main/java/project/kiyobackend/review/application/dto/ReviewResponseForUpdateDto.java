@@ -11,6 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 public class ReviewResponseForUpdateDto {
 
+    private String storeName;
+    private String address;
     private Score score;
     private String content;
     private List<ReviewImageDto> reviewImages;

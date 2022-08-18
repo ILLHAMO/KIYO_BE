@@ -11,6 +11,7 @@ import project.kiyobackend.exception.review.NotExistReviewException;
 import project.kiyobackend.exception.store.NotExistStoreException;
 import project.kiyobackend.review.adapter.presentation.dto.ReviewAssembler;
 import project.kiyobackend.review.application.dto.ReviewRequestDto;
+import project.kiyobackend.review.application.dto.ReviewRequestForUpdateDto;
 import project.kiyobackend.review.application.dto.ReviewResponseForUpdateDto;
 import project.kiyobackend.review.domain.domain.Review;
 import project.kiyobackend.review.domain.domain.ReviewRepository;
@@ -62,7 +63,7 @@ public class ReviewService {
     }
 
     @Transactional
-    public void updateReview(Long reviewId,List<MultipartFile> multipartFiles, ReviewRequestDto reviewRequestDto)
+    public void updateReview(Long reviewId,List<MultipartFile> multipartFiles, ReviewRequestForUpdateDto reviewRequestDto)
     {
         Review review = reviewRepository.findById(reviewId).orElseThrow(NotExistReviewException::new);
 

@@ -11,6 +11,11 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class ReviewResponseForUpdate {
+
+    @Schema(example = "버거킹")
+    private String storeName;
+    @Schema(example = "성동구 왕십리")
+    private String address;
     @Schema(example = "HIGH")
     private Score score;
     @Schema(example = "생각보다 맛있었어요")
