@@ -9,7 +9,9 @@ import project.kiyobackend.user.adapter.presentation.dto.StoreImageResponseDto;
 public class StoreSearchResponse {
     private Long id;
     private String name;
+    private boolean kids;
     private String address;
+    private boolean isBooked;
     private int reviewCount;
     private int bookmarkCount;
     private StoreImageResponseDto storeImage;

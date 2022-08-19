@@ -40,7 +40,9 @@ public class StoreAssembler {
     {
         return stores.map(s-> new StoreSearchResponse(s.getId(),
                 s.getName(),
+                s.isKids(),
                 s.getAddress(),
+                s.isBooked(),
                 s.getReviewCounts(),
                 s.getBookmarkCounts(),
                 s.getStoreImages().stream().map(si -> new StoreImageResponseDto(si.getId(),si.getPath())).collect(Collectors.toList()).get(0)));
