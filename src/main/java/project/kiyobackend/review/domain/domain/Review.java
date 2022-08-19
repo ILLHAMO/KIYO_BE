@@ -26,6 +26,7 @@ public class Review extends JpaBaseEntity {
     @Enumerated(EnumType.STRING)
     private Score score;
 
+
     @OneToMany(mappedBy = "review",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<ReviewImage> reviewImages = new ArrayList<>();
 
@@ -48,6 +49,8 @@ public class Review extends JpaBaseEntity {
         this.store = store;
         store.getReviews().add(this);
     }
+
+
 
     private void setReviewImages(List<String> reviewImagesPath)
     {
