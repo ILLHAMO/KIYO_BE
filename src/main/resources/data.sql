@@ -297,3 +297,4 @@ values ( 1,20,1 ),
        (4,1,1);
 
 insert into qna (qna_id,content,user_id) values ( 1,'가게 승인이 좀 느린것 같아요!',1 );
+insert into notice (notice_id,notice_title,notice_content) values ( 1,'서비스 점검 시간 공지입니다.','9월 1일 20시부터 24시까지 시스템 점검에 들어가니 서비스 사용에 유의해주세요.' ),( 2,'이벤트 공지.','9월 2일부터 할인 이벤트 시작합니다!' );
