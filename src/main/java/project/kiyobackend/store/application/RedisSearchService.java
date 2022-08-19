@@ -12,6 +12,7 @@ import project.kiyobackend.user.domain.User;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,14 +21,12 @@ public class RedisSearchService {
 
     private final RedisTemplate<String,String> redisTemplate;
 
-    public void addKeywordToRedis(User currentUser, String keyword) {
+    public void addKeywordToRedis(String keyword) {
         try {
-            // 검색을 하면 해당검색어를 value에 저장하고, score를 1 준다
             String keyForRanking = "ranking";
-          //  String keyForRecent = "user:recent:"+currentUser.getUserId();
             redisTemplate.opsForZSet().incrementScore(keyForRanking, keyword,1);
-            // 검색을 하면 해당 겁색어를 value에 저장하고, 조회한 나노시간으로 업데이트 한다.
-        //    redisTemplate.opsForZSet().add(keyForRecent,keyword,(double) System.currentTimeMillis());
+            //redisTemplate.expire(keyForRanking, 60, TimeUnit.MINUTES);
+
         } catch (Exception e) {
             System.out.println(e.toString());
         }

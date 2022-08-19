@@ -84,9 +84,9 @@ public class StoreService {
                 List<BookMark> bookMarks = findUser.get().getBookMarks();
                 checkCurrentUserBookmarked(stores,bookMarks);
             }
-            redisSearchService.addKeywordToRedis(currentUser, keyword);
         }
-
+        System.out.println("레디스 호출 진입");
+        redisSearchService.addKeywordToRedis(keyword);
         return stores;
 
     }

@@ -10,5 +10,7 @@ public class StoreSearchResponse {
     private Long id;
     private String name;
     private String address;
+    private int reviewCount;
+    private int bookmarkCount;
     private StoreImageResponseDto storeImage;
 }
