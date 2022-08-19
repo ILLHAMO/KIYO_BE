@@ -1,4 +1,4 @@
-package project.kiyobackend.admin;
+package project.kiyobackend.admin.convenience;
 
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,7 +44,6 @@ public class AdminConvenienceController {
         return "delete success";
     }
 
-    // TODO : 카테고리 수정, 삭제 기능은 ADMIN에 구현
 
 
 }

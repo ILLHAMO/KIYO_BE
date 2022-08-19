@@ -1,4 +1,4 @@
-package project.kiyobackend.admin;
+package project.kiyobackend.admin.category;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

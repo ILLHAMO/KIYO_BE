@@ -1,4 +1,4 @@
-package project.kiyobackend.admin;
+package project.kiyobackend.admin.store;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import project.kiyobackend.user.domain.User;
 @RequestMapping("/api/admin")
 public class AdminAssignedStoreController {
 
-    private StoreService storeService;
+    private final StoreService storeService;
 
     @Operation(summary = "신규 가게 승인")
     @PutMapping("/store/{storeId}/assign")
