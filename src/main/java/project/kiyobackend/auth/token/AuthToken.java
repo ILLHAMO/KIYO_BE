@@ -39,6 +39,7 @@ public class AuthToken implements Serializable {
     }
 
     private String createAuthToken(String id, String role, Date expiry) {
+        System.out.println("authtoken 내부에서 어떻게 만들어지는지 보자" + role);
         return Jwts.builder()
                 .setSubject(id)
                 .claim(AUTHORITIES_KEY, role)

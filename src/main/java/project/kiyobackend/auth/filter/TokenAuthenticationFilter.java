@@ -34,12 +34,13 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             // 객체로 변환해준다.
             AuthToken token = tokenProvider.convertAuthToken(tokenStr);
 
+
             if (token.validate()) {
 
                 Authentication authentication = tokenProvider.getAuthentication(token);
                 // SecurityContextHolder에 값이 존재하는지 여부로 체크
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                System.out.println(authentication.getPrincipal().toString());
+                System.out.println("토큰 유효성 검사한 후" + authentication.getPrincipal().toString());
             }
         }
 
