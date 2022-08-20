@@ -1,5 +1,8 @@
 package project.kiyobackend.exception.dto;
 
+import lombok.Data;
+
+@Data
 public class ApiErrorResponse {
 
     private String errorCode;
@@ -13,7 +16,4 @@ public class ApiErrorResponse {
         this.message = message;
     }
 
-    public String getErrorCode() {
-        return errorCode;
-    }
 }

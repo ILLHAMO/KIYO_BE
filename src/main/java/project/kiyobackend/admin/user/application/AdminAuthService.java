@@ -4,14 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.kiyobackend.admin.exception.AdminLoginPasswordMismatchException;
+import project.kiyobackend.admin.exception.AdminLoginException;
 import project.kiyobackend.admin.user.application.dto.AdminResponseDto;
 import project.kiyobackend.auth.config.properties.AppProperties;
 import project.kiyobackend.auth.repository.UserRefreshTokenRepository;
 import project.kiyobackend.auth.token.AuthToken;
 import project.kiyobackend.auth.token.AuthTokenProvider;
 import project.kiyobackend.auth.token.UserRefreshToken;
-import project.kiyobackend.common.util.auth.CookieUtil;
 import project.kiyobackend.exception.user.NotExistUserException;
 import project.kiyobackend.user.domain.User;
 import project.kiyobackend.user.domain.UserRepository;
@@ -32,7 +31,7 @@ public class AdminAuthService {
     @Transactional
     public AdminResponseDto signin(String adminId, String password)
     {
-        User findUser = userRepository.findByUserId(adminId).orElseThrow(NotExistUserException::new);
+        User findUser = userRepository.findByUserId(adminId).orElseThrow(()->new AdminLoginException("관리자 아이디가 틀렸습니다."));
         System.out.println(findUser.getRoleType().getCode());
         System.out.println(findUser.getPassword());
         System.out.println(password);
@@ -73,7 +72,7 @@ public class AdminAuthService {
 
         }
         else {
-            throw new AdminLoginPasswordMismatchException("관리자 비밀번호가 틀렸습니다.");
+            throw new AdminLoginException("관리자 비밀번호가 틀렸습니다.");
         }
 
     }
