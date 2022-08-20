@@ -282,19 +282,21 @@ values ( 1,'https://kiyoimage.s3.ap-northeast-2.amazonaws.com/%EC%9A%B0%EB%8F%99
 
 
 insert into review (review_id,content,score,user_seq,store_id,last_modified_date)
-values ( 1,"맛있어요","HIGH",1,1,'2022-08-06 12:06:01'),
-       ( 2,"맛없어요","LOW",1,1 ,'2022-08-02 12:06:01'),
-       ( 3,"음","LOW",1,1,'2022-08-03 12:06:01');
+values ( 1,"맛있어요","HIGH",2,1,'2022-08-06 12:06:01'),
+       ( 2,"맛없어요","LOW",2,1 ,'2022-08-02 12:06:01'),
+       ( 3,"음","LOW",2,1,'2022-08-03 12:06:01');
 
 -- INSERT INTO review_image (review_image_id,image_path,review_id)
 -- values ( 1,"www.s3.host",1 ),
 --        (2,"www.s3.host",1);
 
 insert into bookmark_table (id,store_id,user_seq)
-values ( 1,20,1 ),
-       ( 2,19,1),
-       ( 3,18,1),
-       (4,1,1);
+values ( 1,20,2 ),
+       ( 2,19,2),
+       ( 3,18,2),
+       (4,1,2);
 
-insert into qna (qna_id,content,user_id) values ( 1,'가게 승인이 좀 느린것 같아요!',1 );
+insert into qna (qna_id,content,user_id) values ( 1,'가게 승인이 좀 느린것 같아요!',2 );
 insert into notice (notice_id,notice_title,notice_content) values ( 1,'서비스 점검 시간 공지입니다.','9월 1일 20시부터 24시까지 시스템 점검에 들어가니 서비스 사용에 유의해주세요.' ),( 2,'이벤트 공지.','9월 2일부터 할인 이벤트 시작합니다!' );
+
+insert into user (user_seq,user_id,password,role_type) values ( 1,'jemin','$2a$10$faHkJWi3lJ8ROZ3jNeuoDe1tUlykVc5rKxhxGfL5vJ4rcO2K/aaKe','ADMIN' );

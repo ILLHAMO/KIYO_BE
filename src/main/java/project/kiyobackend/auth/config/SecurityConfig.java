@@ -100,7 +100,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api-docs",
                         "/api/store/search",
                         "/api/search/keyword/rank",
-                        "/api/search/keyword/recent"
+                        "/api/search/keyword/recent",
+                        "/api/admin/auth/login"
                 )
                 .permitAll()
                 /**
@@ -109,8 +110,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/api/stores","/api/store/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/category","/api/convenience").permitAll()
                 // 나머지는 USER 권한이 있는 사용자만 가능
-                .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode(),RoleType.ADMIN.getCode())
                 .antMatchers("/api/admin/**").hasAnyAuthority(RoleType.ADMIN.getCode())
+                .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode(),RoleType.ADMIN.getCode())
+
                 .anyRequest().authenticated()
                 .and()
                 /**

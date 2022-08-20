@@ -32,7 +32,7 @@ public class UserPrincipal implements UserDetails, OAuth2User, OidcUser {
     public static UserPrincipal create(User user) {
         return new UserPrincipal(
                 user,
-                Collections.singletonList(new SimpleGrantedAuthority(RoleType.USER.getCode()))
+                Collections.singletonList(new SimpleGrantedAuthority(user.getRoleType().getCode()))
         );
     }
     public static UserPrincipal create(User user, Map<String, Object> attributes) {
