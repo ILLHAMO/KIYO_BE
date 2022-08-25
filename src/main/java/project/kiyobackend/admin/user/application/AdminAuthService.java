@@ -1,34 +1,43 @@
 package project.kiyobackend.admin.user.application;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.kiyobackend.admin.exception.AdminLoginException;
 import project.kiyobackend.admin.user.application.dto.AdminResponseDto;
+import project.kiyobackend.auth.common.LogoutDto;
 import project.kiyobackend.auth.config.properties.AppProperties;
 import project.kiyobackend.auth.repository.UserRefreshTokenRepository;
 import project.kiyobackend.auth.token.AuthToken;
 import project.kiyobackend.auth.token.AuthTokenProvider;
 import project.kiyobackend.auth.token.UserRefreshToken;
+import project.kiyobackend.common.util.auth.CookieUtil;
 import project.kiyobackend.exception.user.NotExistUserException;
 import project.kiyobackend.user.domain.User;
 import project.kiyobackend.user.domain.UserRepository;
 
+import javax.servlet.http.Cookie;
 import java.util.Date;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AdminAuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthTokenProvider tokenProvider;
+    private final RedisTemplate redisTemplate;
     private final AppProperties appProperties;
     private final UserRefreshTokenRepository userRefreshTokenRepository;
 
-    @Transactional
+
     public AdminResponseDto signin(String adminId, String password)
     {
         User findUser = userRepository.findByUserId(adminId).orElseThrow(()->new AdminLoginException("관리자 아이디가 틀렸습니다."));
@@ -75,5 +84,17 @@ public class AdminAuthService {
             throw new AdminLoginException("관리자 비밀번호가 틀렸습니다.");
         }
 
+    }
+
+    public String logout(String accessToken, String refreshToken) {
+
+        Optional<UserRefreshToken> userRefreshToken = userRefreshTokenRepository.findByRefreshToken(refreshToken);
+        if(userRefreshToken.isPresent())
+        {
+            userRefreshTokenRepository.delete(userRefreshToken.get());
+        }
+        redisTemplate.opsForValue().set(accessToken,"blackList");
+        redisTemplate.expire(accessToken,10*6*10000, TimeUnit.MILLISECONDS);
+        return "로그아웃 성공";
     }
 }
