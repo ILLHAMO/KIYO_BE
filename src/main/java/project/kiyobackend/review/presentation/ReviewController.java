@@ -1,4 +1,4 @@
-package project.kiyobackend.review.adapter.presentation;
+package project.kiyobackend.review.presentation;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import project.kiyobackend.auth.entity.CurrentUser;
 import project.kiyobackend.common.SuccessResponseDto;
-import project.kiyobackend.review.adapter.presentation.dto.*;
+import project.kiyobackend.review.presentation.dto.*;
 import project.kiyobackend.review.application.ReviewService;
 import project.kiyobackend.review.application.dto.ReviewResponseForUpdateDto;
 import project.kiyobackend.user.domain.User;

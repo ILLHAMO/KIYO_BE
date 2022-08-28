@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import project.kiyobackend.exception.review.NotExistReviewException;
 import project.kiyobackend.exception.store.NotExistStoreException;
-import project.kiyobackend.review.adapter.presentation.dto.ReviewAssembler;
+import project.kiyobackend.review.presentation.dto.ReviewAssembler;
 import project.kiyobackend.review.application.dto.ReviewRequestDto;
 import project.kiyobackend.review.application.dto.ReviewRequestForUpdateDto;
 import project.kiyobackend.review.application.dto.ReviewResponseForUpdateDto;
@@ -63,12 +63,13 @@ public class ReviewService {
     }
 
 
+    // TODO : 리뷰 수정 했을때 아무 사진 추가 안해도 예외가 발생하면 안된다.
     @Transactional
     public void updateReview(Long reviewId,List<MultipartFile> multipartFiles, ReviewRequestForUpdateDto reviewRequestDto)
     {
         Review review = reviewRepository.findById(reviewId).orElseThrow(NotExistReviewException::new);
 
-            List<String> fileNameList = getMultipartFileNames(multipartFiles);
+        List<String> fileNameList = getMultipartFileNames(multipartFiles);
 
 
         if(!reviewRequestDto.getDeleteIds().isEmpty())
@@ -83,7 +84,8 @@ public class ReviewService {
 
     private List<String> getMultipartFileNames(List<MultipartFile> multipartFiles) {
 
-        if(!multipartFiles.get(0).getOriginalFilename().isEmpty())
+        // TODO : 아예 리스트 안보내는거 가정하고 체크
+        if(!multipartFiles.get(0).getOriginalFilename().isEmpty() || multipartFiles != null)
         {
             List<String> fileNameList = new ArrayList<>();
             multipartFiles.forEach(file->{
