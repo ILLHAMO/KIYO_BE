@@ -29,7 +29,6 @@ public class ReviewController {
             @CurrentUser User user,
             @PathVariable Long storeId)
     {
-
         Long result = reviewService.saveReview(user.getUserId(), storeId, multipartFiles, ReviewAssembler.reviewRequestDto(reviewRequest));
         return ResponseEntity.ok(new ReviewResponse(true,result));
     }

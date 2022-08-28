@@ -52,7 +52,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 System.out.println("로그아웃된 액세스 토큰입니다!");
             }
         }
-
         filterChain.doFilter(request, response);
     }
 
