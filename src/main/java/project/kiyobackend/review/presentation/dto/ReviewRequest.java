@@ -1,13 +1,10 @@
-package project.kiyobackend.review.adapter.presentation.dto;
+package project.kiyobackend.review.presentation.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import project.kiyobackend.review.domain.domain.Score;
-
-import java.util.List;
-import java.util.Scanner;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

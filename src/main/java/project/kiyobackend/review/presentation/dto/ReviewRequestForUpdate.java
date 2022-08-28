@@ -1,4 +1,4 @@
-package project.kiyobackend.review.adapter.presentation.dto;
+package project.kiyobackend.review.presentation.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;

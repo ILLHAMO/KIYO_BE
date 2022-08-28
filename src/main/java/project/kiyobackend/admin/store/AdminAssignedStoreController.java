@@ -23,4 +23,6 @@ public class AdminAssignedStoreController {
         return ResponseEntity.ok(storeService.assignStore(storeId));
 
     }
+
+
 }

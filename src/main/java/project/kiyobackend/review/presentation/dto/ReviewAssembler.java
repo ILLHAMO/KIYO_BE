@@ -1,4 +1,4 @@
-package project.kiyobackend.review.adapter.presentation.dto;
+package project.kiyobackend.review.presentation.dto;
 
 import project.kiyobackend.review.application.dto.ReviewRequestDto;
 import project.kiyobackend.review.application.dto.ReviewRequestForUpdateDto;
