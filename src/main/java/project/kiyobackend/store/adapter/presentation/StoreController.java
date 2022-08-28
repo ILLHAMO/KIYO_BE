@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -61,7 +62,7 @@ public class StoreController{
     public ResponseEntity<SuccessResponseDto> saveStore(
             @CurrentUser User user,
             @RequestPart(name = "meta_data") StoreRequestDto storeRequestDto,
-            @RequestPart(name = "multipartFiles") List<MultipartFile> multipartFiles )
+            @RequestPart(name = "multipartFiles") @Nullable List<MultipartFile> multipartFiles )
     {
         System.out.println("들어옴! ");
         return ResponseEntity.ok(new SuccessResponseDto(true,storeService.saveStore(user,multipartFiles,storeRequestDto)));

@@ -172,22 +172,27 @@ public class StoreService {
 
 
     private List<String> getMultipartFileNames(List<MultipartFile> multipartFiles) {
-        List<String> fileNameList = new ArrayList<>();
 
-        multipartFiles.forEach(file->{
-            String fileName = createFileName(file.getOriginalFilename());
-            ObjectMetadata objectMetadata = new ObjectMetadata();
-            objectMetadata.setContentLength(file.getSize());
-            objectMetadata.setContentType(file.getContentType());
+        if(multipartFiles != null)
+        {
+            List<String> fileNameList = new ArrayList<>();
 
-            try(InputStream inputStream = file.getInputStream()) {
-                uploadService.uploadFile(inputStream,objectMetadata,fileName);
-            } catch(IOException e) {
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다.");
-            }
-            fileNameList.add(uploadService.getFileUrl(fileName));
-        });
-        return fileNameList;
+            multipartFiles.forEach(file->{
+                String fileName = createFileName(file.getOriginalFilename());
+                ObjectMetadata objectMetadata = new ObjectMetadata();
+                objectMetadata.setContentLength(file.getSize());
+                objectMetadata.setContentType(file.getContentType());
+
+                try(InputStream inputStream = file.getInputStream()) {
+                    uploadService.uploadFile(inputStream,objectMetadata,fileName);
+                } catch(IOException e) {
+                    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다.");
+                }
+                fileNameList.add(uploadService.getFileUrl(fileName));
+            });
+            return fileNameList;
+        }
+        return null;
     }
 
     private String createFileName(String fileName) {

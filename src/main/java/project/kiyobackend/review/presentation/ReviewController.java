@@ -26,7 +26,7 @@ public class ReviewController {
     @PostMapping(value = "/review/store/{storeId}")
     public ResponseEntity<ReviewResponse> saveReview(
             @RequestPart(name = "meta_data") ReviewRequest reviewRequest,
-            @RequestPart(name = "multipartFiles") List<MultipartFile> multipartFiles,
+            @RequestPart(name = "multipartFiles") @Nullable List<MultipartFile> multipartFiles,
             @CurrentUser User user,
             @PathVariable Long storeId)
     {
