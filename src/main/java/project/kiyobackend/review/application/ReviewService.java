@@ -85,7 +85,7 @@ public class ReviewService {
     private List<String> getMultipartFileNames(List<MultipartFile> multipartFiles) {
 
         // TODO : 아예 리스트 안보내는거 가정하고 체크
-        if(!multipartFiles.get(0).getOriginalFilename().isEmpty() || multipartFiles != null)
+        if(multipartFiles != null)
         {
             List<String> fileNameList = new ArrayList<>();
             multipartFiles.forEach(file->{

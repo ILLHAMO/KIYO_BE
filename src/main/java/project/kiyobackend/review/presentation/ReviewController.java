@@ -3,6 +3,7 @@ package project.kiyobackend.review.presentation;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import project.kiyobackend.auth.entity.CurrentUser;
@@ -37,7 +38,7 @@ public class ReviewController {
     @PutMapping("/review/{reviewId}")
     public ResponseEntity<SuccessResponseDto> updateReview(@PathVariable Long reviewId,
                                                            @RequestPart(name = "meta_data") ReviewRequestForUpdate reviewRequestForUpdate,
-                                                           @RequestPart(name = "multipartFiles") List<MultipartFile> multipartFiles)
+                                                           @RequestPart(name = "multipartFiles") @Nullable List<MultipartFile> multipartFiles)
     {
                reviewService.updateReview(reviewId, multipartFiles,ReviewAssembler.reviewRequestDtoForUpdate(reviewRequestForUpdate));
                return ResponseEntity.ok(new SuccessResponseDto(true,reviewId));
