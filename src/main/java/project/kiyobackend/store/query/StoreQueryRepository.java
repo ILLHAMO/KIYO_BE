@@ -37,7 +37,7 @@ public class StoreQueryRepository {
                 .where(
                         // 관리자가 승인한 가게만 보여야 한다.
                         ltStoreId(lastStoreId),
-                        store.address.eq(address),
+                        store.address.eq("성동구 왕십리"),
                         store.isAssigned.eq(true),
                         // no-offset 페이징 처리
                         // Category 중복 필터링
