@@ -2,27 +2,30 @@ package project.kiyobackend.admin.store.presentation;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import project.kiyobackend.admin.store.application.StoreAdminService;
 import project.kiyobackend.admin.store.presentation.dto.StoreQueryDto;
 import project.kiyobackend.auth.entity.CurrentUser;
 import project.kiyobackend.store.application.StoreService;
 import project.kiyobackend.store.domain.domain.store.Store;
+import project.kiyobackend.store.query.dto.StorePaginationDto;
 import project.kiyobackend.user.domain.User;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/admin")
-public class AdminAssignedStoreController {
+public class AdminStoreController {
 
-    private final StoreService storeService;
+    private final StoreAdminService storeAdminService;
 
     @Operation(summary = "신규 가게 승인")
     @PutMapping("/store/{storeId}/assign")
     public ResponseEntity<Boolean> assignStore(@CurrentUser User adminUser, @RequestParam Long storeId)
     {
-        return ResponseEntity.ok(storeService.assignStore(storeId));
+        return ResponseEntity.ok(storeAdminService.assignStore(storeId));
     }
 
     @Operation(summary = "가게 정보 수정을 위한 데이터 조회")
@@ -34,9 +37,9 @@ public class AdminAssignedStoreController {
 
     @Operation(summary = "관리자를 위한 가게 목록 페이징")
     @GetMapping("/store")
-    public void getStore(@CurrentUser User adminUser, StoreQueryDto storeQueryDto, Pageable pageable)
+    public Page<StorePaginationDto> getStore(StoreQueryDto storeQueryDto, Pageable pageable)
     {
-
+           return storeAdminService.getStore(storeQueryDto,pageable);
     }
 
 

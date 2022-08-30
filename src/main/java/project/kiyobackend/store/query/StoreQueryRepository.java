@@ -1,12 +1,17 @@
 package project.kiyobackend.store.query;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
+import project.kiyobackend.admin.store.presentation.dto.StoreQueryDto;
 import project.kiyobackend.store.domain.domain.bookmark.QBookMark;
 import project.kiyobackend.store.domain.domain.store.Store;
+import project.kiyobackend.store.query.dto.StorePaginationDto;
+
 import javax.persistence.EntityManager;
 import java.util.List;
 
@@ -50,6 +55,27 @@ public class StoreQueryRepository {
                 .fetch();
 
         return checkLastPage(pageable, results);
+    }
+
+    public Page<StorePaginationDto> searchByPage(Pageable pageable,boolean isAssigned, String search)
+    {
+        QueryResults<StorePaginationDto> result = query.select(Projections.fields(StorePaginationDto.class,
+                store.id,
+                store.name))
+                .from(store)
+                .where(
+                        store.isAssigned.eq(isAssigned),
+                        findByName(search)
+                )
+                .orderBy(store.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+
+        return new PageImpl<StorePaginationDto>(result.getResults(),pageable, result.getTotal());
+
+
     }
 
 
@@ -167,6 +193,14 @@ public class StoreQueryRepository {
         }
 
         return store.id.lt(storeId);
+    }
+
+    private BooleanExpression findByName(String name) {
+        if (name == null) {
+            return null;
+        }
+
+        return store.name.contains(name);
     }
 
     private Slice<Store> checkLastPage(Pageable pageable, List<Store> results) {
