@@ -1,20 +1,19 @@
-package project.kiyobackend.store.adapter.presentation.dto.store;
+package project.kiyobackend.store.presentation.dto.store;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import project.kiyobackend.review.domain.domain.Review;
-import project.kiyobackend.store.adapter.presentation.dto.ImageDto;
-import project.kiyobackend.store.adapter.presentation.dto.menu.MenuOptionResponseDto;
-import project.kiyobackend.store.adapter.presentation.dto.menu.MenuResponseDto;
-import project.kiyobackend.store.adapter.presentation.dto.review.ReviewImageDto;
-import project.kiyobackend.store.adapter.presentation.dto.review.ReviewResponseDto;
+import project.kiyobackend.store.presentation.dto.ImageDto;
+import project.kiyobackend.store.presentation.dto.menu.MenuOptionResponseDto;
+import project.kiyobackend.store.presentation.dto.menu.MenuResponseDto;
+import project.kiyobackend.store.presentation.dto.review.ReviewImageDto;
+import project.kiyobackend.store.presentation.dto.review.ReviewResponseDto;
 import project.kiyobackend.store.domain.domain.menu.Menu;
 import project.kiyobackend.store.domain.domain.store.StoreImage;
 import project.kiyobackend.store.domain.domain.tag.Tag;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

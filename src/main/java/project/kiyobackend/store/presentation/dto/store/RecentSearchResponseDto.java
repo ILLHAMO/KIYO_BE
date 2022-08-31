@@ -1,9 +1,7 @@
-package project.kiyobackend.store.adapter.presentation.dto.store;
+package project.kiyobackend.store.presentation.dto.store;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor

@@ -1,4 +1,4 @@
-package project.kiyobackend.store.adapter.presentation.dto.review;
+package project.kiyobackend.store.presentation.dto.review;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AccessLevel;

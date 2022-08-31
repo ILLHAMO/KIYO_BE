@@ -8,4 +8,5 @@ import lombok.NoArgsConstructor;
 public class StorePaginationDto {
     private Long id;
     private String name;
+    private boolean isAssigned;
 }

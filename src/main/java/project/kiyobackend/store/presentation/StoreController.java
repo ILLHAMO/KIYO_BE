@@ -1,4 +1,4 @@
-package project.kiyobackend.store.adapter.presentation;
+package project.kiyobackend.store.presentation;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import project.kiyobackend.auth.entity.CurrentUser;
 import project.kiyobackend.common.SuccessResponseDto;
-import project.kiyobackend.store.adapter.presentation.dto.*;
-import project.kiyobackend.store.adapter.presentation.dto.store.*;
+import project.kiyobackend.store.presentation.dto.*;
+import project.kiyobackend.store.presentation.dto.store.*;
 import project.kiyobackend.store.application.BookmarkService;
 import project.kiyobackend.store.application.dto.BookmarkResponseDto;
 import project.kiyobackend.store.application.StoreService;

@@ -1,17 +1,12 @@
-package project.kiyobackend.store.adapter.presentation.dto.store;
+package project.kiyobackend.store.presentation.dto.store;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
-import project.kiyobackend.review.domain.domain.Review;
-import project.kiyobackend.store.adapter.presentation.dto.ImageDto;
-import project.kiyobackend.store.adapter.presentation.dto.TagResponseDto;
-import project.kiyobackend.store.adapter.presentation.dto.review.ReviewImageDto;
-import project.kiyobackend.store.adapter.presentation.dto.review.ReviewResponseDto;
-import project.kiyobackend.store.adapter.presentation.dto.menu.MenuOptionResponseDto;
-import project.kiyobackend.store.adapter.presentation.dto.menu.MenuResponseDto;
-import project.kiyobackend.store.domain.domain.menu.Menu;
-import project.kiyobackend.store.domain.domain.store.StoreImage;
+import project.kiyobackend.store.presentation.dto.ImageDto;
+import project.kiyobackend.store.presentation.dto.TagResponseDto;
+import project.kiyobackend.store.presentation.dto.review.ReviewResponseDto;
+import project.kiyobackend.store.presentation.dto.menu.MenuResponseDto;
 import project.kiyobackend.store.domain.domain.tag.Tag;
 
 import java.util.ArrayList;

@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import project.kiyobackend.exception.user.NotExistUserException;
 import project.kiyobackend.review.domain.domain.Review;
-import project.kiyobackend.store.adapter.infrastructure.AWSS3UploadService;
+import project.kiyobackend.store.infrastructure.AWSS3UploadService;
 import project.kiyobackend.user.application.dto.*;
 import project.kiyobackend.user.domain.User;
 import project.kiyobackend.user.domain.UserRepository;

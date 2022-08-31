@@ -1,9 +1,9 @@
-package project.kiyobackend.store.adapter.presentation.dto.store;
+package project.kiyobackend.store.presentation.dto.store;
 
 import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import project.kiyobackend.store.adapter.presentation.dto.ImageDto;
+import project.kiyobackend.store.presentation.dto.ImageDto;
 import project.kiyobackend.store.domain.domain.store.StoreImage;
 
 import java.util.List;

@@ -1,18 +1,20 @@
-package project.kiyobackend.store.adapter.presentation.dto;
+package project.kiyobackend.store.presentation.dto;
 
 import org.springframework.data.domain.Slice;
-import project.kiyobackend.store.adapter.presentation.dto.review.ReviewResponseDto;
-import project.kiyobackend.store.adapter.presentation.dto.store.StoreDetailResponse;
-import project.kiyobackend.store.adapter.presentation.dto.store.StoreDetailResponseDto;
-import project.kiyobackend.store.adapter.presentation.dto.store.StoreResponse;
-import project.kiyobackend.store.adapter.presentation.dto.store.UserBookmarkResponse;
+import project.kiyobackend.admin.store.presentation.dto.StoreDetailResponseForUpdate;
+import project.kiyobackend.store.presentation.dto.menu.MenuOptionResponseDto;
+import project.kiyobackend.store.presentation.dto.menu.MenuResponseDto;
+import project.kiyobackend.store.presentation.dto.review.ReviewResponseDto;
+import project.kiyobackend.store.presentation.dto.store.StoreDetailResponse;
+import project.kiyobackend.store.presentation.dto.store.StoreDetailResponseDto;
+import project.kiyobackend.store.presentation.dto.store.StoreResponse;
+import project.kiyobackend.store.presentation.dto.store.UserBookmarkResponse;
 import project.kiyobackend.store.application.dto.BookmarkResponseDto;
 import project.kiyobackend.store.application.dto.UserBookmarkResponseDto;
 import project.kiyobackend.store.domain.domain.store.Store;
 import project.kiyobackend.user.adapter.presentation.dto.StoreImageResponseDto;
 
 import java.util.Comparator;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class StoreAssembler {
@@ -82,6 +84,25 @@ public class StoreAssembler {
                 .reviews(findStore.getReviews())
                 .build();
     }
+
+    public static StoreDetailResponseForUpdate storeDetailResponseForUpdate(Store findStore)
+    {
+        return StoreDetailResponseForUpdate.builder().name(findStore.getName()).kids(findStore.isKids())
+                .isBooked(findStore.isBooked())
+                .simpleComment(findStore.getComment().getSimpleComment())
+                .tags(findStore.getTagStores().stream().map(ts -> ts.getTag()).collect(Collectors.toList()))
+                .address(findStore.getAddress())
+                .time(findStore.getTime().stream().map(t -> t.getTime()).collect(Collectors.toList()))
+                .detailComment(findStore.getComment().getDetailComment())
+                .addressMap(findStore.getAddressMap())
+                .images(findStore.getStoreImages().stream().map(si -> new ImageDto(si.getId(),si.getPath())).collect(Collectors.toList()))
+                .convenienceIds(findStore.getConvenienceIds())
+                .menus(findStore.getMenus().stream().map(m-> new MenuResponseDto(m.getId(),m.getName(),m.getMenuOptions().stream().map(mo->new MenuOptionResponseDto(mo.getId(),mo.getName())).collect(Collectors.toList())
+                )).collect(Collectors.toList()))
+                .build();
+
+    }
+
 
     public static Slice<UserBookmarkResponseDto> userBookmarkResponseDto(Slice<Store> store)
     {

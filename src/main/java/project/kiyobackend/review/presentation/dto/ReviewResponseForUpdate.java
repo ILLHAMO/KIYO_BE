@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import project.kiyobackend.review.domain.domain.Score;
-import project.kiyobackend.store.adapter.presentation.dto.review.ReviewImageDto;
+import project.kiyobackend.store.presentation.dto.review.ReviewImageDto;
 
 import java.util.List;
 

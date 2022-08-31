@@ -1,7 +1,6 @@
-package project.kiyobackend.store.adapter.presentation.dto.store;
+package project.kiyobackend.store.presentation.dto.store;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

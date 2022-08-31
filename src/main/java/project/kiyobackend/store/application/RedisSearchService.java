@@ -1,18 +1,16 @@
 package project.kiyobackend.store.application;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
-import project.kiyobackend.store.adapter.presentation.dto.SearchRankingResponseDto;
-import project.kiyobackend.store.adapter.presentation.dto.store.RecentKeywordRequest;
-import project.kiyobackend.store.adapter.presentation.dto.store.RecentSearchResponseDto;
+import project.kiyobackend.store.presentation.dto.SearchRankingResponseDto;
+import project.kiyobackend.store.presentation.dto.store.RecentKeywordRequest;
+import project.kiyobackend.store.presentation.dto.store.RecentSearchResponseDto;
 import project.kiyobackend.user.domain.User;
 
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service

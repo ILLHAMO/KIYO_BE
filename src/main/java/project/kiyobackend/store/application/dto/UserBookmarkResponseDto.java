@@ -1,10 +1,9 @@
 package project.kiyobackend.store.application.dto;
 
-import com.querydsl.core.annotations.QueryProjection;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import project.kiyobackend.store.adapter.presentation.dto.ImageDto;
+import project.kiyobackend.store.presentation.dto.ImageDto;
 import project.kiyobackend.store.domain.domain.store.StoreImage;
 
 import java.util.List;

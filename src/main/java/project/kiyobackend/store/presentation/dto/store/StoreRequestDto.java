@@ -1,11 +1,9 @@
-package project.kiyobackend.store.adapter.presentation.dto.store;
+package project.kiyobackend.store.presentation.dto.store;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import project.kiyobackend.store.adapter.presentation.dto.menu.MenuRequestDto;
-import project.kiyobackend.store.domain.domain.store.Comment;
 
 import java.io.Serializable;
 import java.util.List;

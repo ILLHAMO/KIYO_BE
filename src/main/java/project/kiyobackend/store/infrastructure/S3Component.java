@@ -1,4 +1,4 @@
-package project.kiyobackend.store.adapter.infrastructure;
+package project.kiyobackend.store.infrastructure;
 
 import lombok.Getter;
 import lombok.Setter;

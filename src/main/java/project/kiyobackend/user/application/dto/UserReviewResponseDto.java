@@ -4,12 +4,9 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.w3c.dom.stylesheets.LinkStyle;
 import project.kiyobackend.review.domain.domain.ReviewImage;
 import project.kiyobackend.review.domain.domain.Score;
-import project.kiyobackend.store.adapter.presentation.dto.review.ReviewImageDto;
 import project.kiyobackend.store.domain.domain.store.StoreImage;
-import project.kiyobackend.user.adapter.presentation.dto.StoreImageResponseDto;
 
 import java.time.LocalDateTime;
 import java.util.List;

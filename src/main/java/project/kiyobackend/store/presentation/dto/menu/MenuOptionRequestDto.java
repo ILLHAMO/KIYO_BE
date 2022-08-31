@@ -1,4 +1,4 @@
-package project.kiyobackend.store.adapter.presentation.dto.menu;
+package project.kiyobackend.store.presentation.dto.menu;
 
 import lombok.AccessLevel;
 import lombok.Data;

@@ -1,14 +1,11 @@
-package project.kiyobackend.store.adapter.presentation.dto.store;
+package project.kiyobackend.store.presentation.dto.store;
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import project.kiyobackend.store.adapter.presentation.dto.ImageDto;
-import project.kiyobackend.store.domain.domain.store.StoreImage;
+import project.kiyobackend.store.presentation.dto.ImageDto;
 
-import java.awt.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

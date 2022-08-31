@@ -4,7 +4,7 @@ import project.kiyobackend.review.application.dto.ReviewRequestDto;
 import project.kiyobackend.review.application.dto.ReviewRequestForUpdateDto;
 import project.kiyobackend.review.application.dto.ReviewResponseForUpdateDto;
 import project.kiyobackend.review.domain.domain.Review;
-import project.kiyobackend.store.adapter.presentation.dto.review.ReviewImageDto;
+import project.kiyobackend.store.presentation.dto.review.ReviewImageDto;
 
 import java.util.stream.Collectors;
 

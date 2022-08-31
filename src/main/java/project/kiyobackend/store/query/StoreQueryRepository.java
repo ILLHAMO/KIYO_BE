@@ -61,7 +61,9 @@ public class StoreQueryRepository {
     {
         QueryResults<StorePaginationDto> result = query.select(Projections.fields(StorePaginationDto.class,
                 store.id,
-                store.name))
+                store.name,
+                store.isAssigned
+        ))
                 .from(store)
                 .where(
                         store.isAssigned.eq(isAssigned),
