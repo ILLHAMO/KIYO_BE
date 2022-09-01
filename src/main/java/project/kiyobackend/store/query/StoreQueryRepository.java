@@ -98,7 +98,11 @@ public class StoreQueryRepository {
                         // Category 중복 필터링
                         eqCategory(condition.getCategoryIds()),
                         // Convenience 중복 필터링
-                        eqConvenience(condition.getConvenienceIds())
+                        eqConvenience(condition.getConvenienceIds()),
+                        // 키즈존 여부 검색
+                        isKidZone(condition.getIsKids()),
+                        // 지역 필터링
+                        eqAddress(condition.getAddress())
                 )
                 .orderBy(store.id.desc())
                 .limit(pageable.getPageSize()+1) // 나는 5개 요청해도 쿼리상 +시켜서 6개 들고 오게 함
@@ -186,6 +190,29 @@ public class StoreQueryRepository {
             booleanBuilder.and(store.convenienceIds.contains(convenienceId));
         }
         return booleanBuilder;
+    }
+
+    private BooleanBuilder eqAddress(List<String> addresses)
+    {
+        if(addresses == null || addresses.isEmpty())
+        {
+            return null;
+        }
+
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+
+        for (String address : addresses) {
+            booleanBuilder.or(store.address.eq(address));
+        }
+        return booleanBuilder;
+    }
+
+    private BooleanExpression isKidZone(Boolean isKids) {
+        if (isKids == null) {
+            return null;
+        }
+
+        return store.isKids.eq(isKids);
     }
 
     // 무한 스크롤 구현 시 첫페이지는 null로 조건이 들어오는 케이스

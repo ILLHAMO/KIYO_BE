@@ -9,11 +9,12 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StoreSearchCond {
 
     private List<Long> categoryIds;
     private List<Long> convenienceIds;
+    private Boolean isKids;
+    private List<String> address;
 
 }
