@@ -1,0 +1,18 @@
+package project.kiyobackend.store.presentation.dto.menu;
+
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+@Data
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class MenuRequestDto {
+
+    private String name;
+
+    private List<MenuOptionRequestDto> menuOptions;
+
+
+}

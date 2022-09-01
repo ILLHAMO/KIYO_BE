@@ -1,6 +1,6 @@
 package project.kiyobackend.user.adapter.presentation.dto;
 
-import project.kiyobackend.store.adapter.presentation.dto.review.ReviewImageDto;
+import project.kiyobackend.store.presentation.dto.review.ReviewImageDto;
 import project.kiyobackend.store.domain.domain.store.Store;
 import project.kiyobackend.user.application.dto.*;
 

@@ -7,10 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import project.kiyobackend.review.domain.domain.Score;
-import project.kiyobackend.store.adapter.presentation.dto.review.ReviewImageDto;
-import project.kiyobackend.store.adapter.presentation.dto.review.ReviewResponseDto;
+import project.kiyobackend.store.presentation.dto.review.ReviewImageDto;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

@@ -15,7 +15,7 @@ import project.kiyobackend.review.application.dto.ReviewRequestForUpdateDto;
 import project.kiyobackend.review.application.dto.ReviewResponseForUpdateDto;
 import project.kiyobackend.review.domain.domain.Review;
 import project.kiyobackend.review.domain.domain.ReviewRepository;
-import project.kiyobackend.store.adapter.infrastructure.AWSS3UploadService;
+import project.kiyobackend.store.infrastructure.AWSS3UploadService;
 import project.kiyobackend.store.domain.domain.store.Store;
 import project.kiyobackend.store.domain.domain.store.StoreRepository;
 import project.kiyobackend.user.application.UserService;

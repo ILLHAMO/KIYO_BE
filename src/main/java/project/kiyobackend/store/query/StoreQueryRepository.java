@@ -1,12 +1,17 @@
 package project.kiyobackend.store.query;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
+import project.kiyobackend.admin.store.presentation.dto.StoreQueryDto;
 import project.kiyobackend.store.domain.domain.bookmark.QBookMark;
 import project.kiyobackend.store.domain.domain.store.Store;
+import project.kiyobackend.store.query.dto.StorePaginationDto;
+
 import javax.persistence.EntityManager;
 import java.util.List;
 
@@ -52,6 +57,29 @@ public class StoreQueryRepository {
         return checkLastPage(pageable, results);
     }
 
+    public Page<StorePaginationDto> searchByPage(Pageable pageable,boolean isAssigned, String search)
+    {
+        QueryResults<StorePaginationDto> result = query.select(Projections.fields(StorePaginationDto.class,
+                store.id,
+                store.name,
+                store.isAssigned
+        ))
+                .from(store)
+                .where(
+                        store.isAssigned.eq(isAssigned),
+                        findByName(search)
+                )
+                .orderBy(store.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+
+        return new PageImpl<StorePaginationDto>(result.getResults(),pageable, result.getTotal());
+
+
+    }
+
 
     /**
      * 가게 검색 기능
@@ -70,7 +98,11 @@ public class StoreQueryRepository {
                         // Category 중복 필터링
                         eqCategory(condition.getCategoryIds()),
                         // Convenience 중복 필터링
-                        eqConvenience(condition.getConvenienceIds())
+                        eqConvenience(condition.getConvenienceIds()),
+                        // 키즈존 여부 검색
+                        isKidZone(condition.getIsKids()),
+                        // 지역 필터링
+                        eqAddress(condition.getAddress())
                 )
                 .orderBy(store.id.desc())
                 .limit(pageable.getPageSize()+1) // 나는 5개 요청해도 쿼리상 +시켜서 6개 들고 오게 함
@@ -160,6 +192,29 @@ public class StoreQueryRepository {
         return booleanBuilder;
     }
 
+    private BooleanBuilder eqAddress(List<String> addresses)
+    {
+        if(addresses == null || addresses.isEmpty())
+        {
+            return null;
+        }
+
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+
+        for (String address : addresses) {
+            booleanBuilder.or(store.address.eq(address));
+        }
+        return booleanBuilder;
+    }
+
+    private BooleanExpression isKidZone(Boolean isKids) {
+        if (isKids == null) {
+            return null;
+        }
+
+        return store.isKids.eq(isKids);
+    }
+
     // 무한 스크롤 구현 시 첫페이지는 null로 조건이 들어오는 케이스
     private BooleanExpression ltStoreId(Long storeId) {
         if (storeId == null) {
@@ -167,6 +222,14 @@ public class StoreQueryRepository {
         }
 
         return store.id.lt(storeId);
+    }
+
+    private BooleanExpression findByName(String name) {
+        if (name == null) {
+            return null;
+        }
+
+        return store.name.contains(name);
     }
 
     private Slice<Store> checkLastPage(Pageable pageable, List<Store> results) {
