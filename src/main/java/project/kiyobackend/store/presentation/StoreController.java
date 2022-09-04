@@ -68,24 +68,6 @@ public class StoreController{
         return ResponseEntity.ok(new SuccessResponseDto(true,storeService.saveStore(user,multipartFiles,storeRequestDto)));
     }
 
-    @Operation(summary = "가게 삭제")
-    @DeleteMapping("/store/{storeId}")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<SuccessResponseDto> removeStore(@PathVariable Long storeId)
-    {
-        storeService.deleteStore(storeId);
-        return ResponseEntity.ok(new SuccessResponseDto(true,storeId));
-    }
-
-    @Operation(summary = "현재 사용자가 북마크한 가게 조회")
-    @GetMapping("/store/bookmark")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Slice<UserBookmarkResponse>> getBookmarkedStore(@CurrentUser User currentUser, @RequestParam(name = "lastStoreId",required = false) Long lastStoreId,Pageable pageable)
-    {
-        Slice<UserBookmarkResponseDto> bookmarkedStore = storeService.getBookmarkedStore(currentUser, lastStoreId, pageable);
-        return ResponseEntity.ok(StoreAssembler.userBookmarkResponse(bookmarkedStore));
-    }
-
     @Operation(summary = "북마크 추가")
     @PutMapping("/store/{id}/bookmark")
     @PreAuthorize("hasRole('USER')")
@@ -106,6 +88,26 @@ public class StoreController{
         BookmarkResponse bookmarkResponse = StoreAssembler.bookmarkResponse(bookmarkResponseDto);
         return ResponseEntity.ok(bookmarkResponse);
     }
+
+    @Operation(summary = "가게 삭제")
+    @DeleteMapping("/store/{storeId}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<SuccessResponseDto> removeStore(@PathVariable Long storeId)
+    {
+        storeService.deleteStore(storeId);
+        return ResponseEntity.ok(new SuccessResponseDto(true,storeId));
+    }
+
+    @Operation(summary = "현재 사용자가 북마크한 가게 조회")
+    @GetMapping("/store/bookmark")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Slice<UserBookmarkResponse>> getBookmarkedStore(@CurrentUser User currentUser, @RequestParam(name = "lastStoreId",required = false) Long lastStoreId,Pageable pageable)
+    {
+        Slice<UserBookmarkResponseDto> bookmarkedStore = storeService.getBookmarkedStore(currentUser, lastStoreId, pageable);
+        return ResponseEntity.ok(StoreAssembler.userBookmarkResponse(bookmarkedStore));
+    }
+
+
 
     @Operation(summary = "가게 검색")
     @PreAuthorize("isAnonymous() or hasRole('USER')")
