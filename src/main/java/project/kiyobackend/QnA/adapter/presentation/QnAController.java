@@ -7,6 +7,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.kiyobackend.QnA.adapter.presentation.dto.QnASaveRequest;
+import project.kiyobackend.QnA.adapter.presentation.dto.QnAUpdateRequest;
 import project.kiyobackend.QnA.application.QnAService;
 import project.kiyobackend.QnA.application.dto.QnAResponseDto;
 import project.kiyobackend.QnA.application.dto.QnaRequestDto;

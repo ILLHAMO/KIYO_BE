@@ -1,4 +1,4 @@
-package project.kiyobackend.QnA.adapter.presentation;
+package project.kiyobackend.QnA.adapter.presentation.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
