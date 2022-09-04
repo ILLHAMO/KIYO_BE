@@ -20,6 +20,7 @@ public class StoreDetailResponse {
     private String name;
     private boolean kids;
     private boolean isBooked;
+    private String call;
     @Schema(example = "장지역 5분 거리에 있습니다.")
     private String simpleComment;
     private List<TagResponseDto> tag = new ArrayList<>();
@@ -37,10 +38,11 @@ public class StoreDetailResponse {
     private List<ReviewResponseDto> reviewResponses;
 
     @Builder
-    public StoreDetailResponse(String name, boolean kids, boolean isBooked, String simpleComment, List<Tag> tags, String address, List<String> time, String detailComment, String addressMap, List<ImageDto> images, List<Long> convenienceIds, List<MenuResponseDto> menus, List<ReviewResponseDto> reviews) {
+    public StoreDetailResponse(String name, boolean kids,String call, boolean isBooked, String simpleComment, List<Tag> tags, String address, List<String> time, String detailComment, String addressMap, List<ImageDto> images, List<Long> convenienceIds, List<MenuResponseDto> menus, List<ReviewResponseDto> reviews) {
         this.name = name;
         this.kids = kids;
         this.isBooked = isBooked;
+        this.call = call;
         this.simpleComment = simpleComment;
         this.tag = tags.stream().map(t -> new TagResponseDto(t.getName())).collect(Collectors.toList());
         this.address = address;
