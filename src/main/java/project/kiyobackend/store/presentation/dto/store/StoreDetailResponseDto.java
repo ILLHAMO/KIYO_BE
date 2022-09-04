@@ -24,6 +24,7 @@ public class StoreDetailResponseDto {
     private String name;
     private boolean kids;
     private boolean isBooked;
+    private String call;
     private String simpleComment;
     private List<Tag> tag = new ArrayList<>();
     private String address;
@@ -36,10 +37,11 @@ public class StoreDetailResponseDto {
     private List<ReviewResponseDto> reviewResponses;
 
     @Builder
-    public StoreDetailResponseDto(String name, boolean kids, boolean isBooked, String simpleComment, List<Tag> tags, String address, List<String> time, String detailComment, String addressMap, List<StoreImage> images, List<Long> convenienceIds, List<Menu> menus, List<Review> reviews) {
+    public StoreDetailResponseDto(String name, boolean kids, boolean isBooked,String call, String simpleComment, List<Tag> tags, String address, List<String> time, String detailComment, String addressMap, List<StoreImage> images, List<Long> convenienceIds, List<Menu> menus, List<Review> reviews) {
         this.name = name;
         this.kids = kids;
         this.isBooked = isBooked;
+        this.call = call;
         this.simpleComment = simpleComment;
         this.tag = tags;
         this.address = address;

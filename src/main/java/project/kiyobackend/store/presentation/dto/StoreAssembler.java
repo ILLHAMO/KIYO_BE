@@ -54,6 +54,7 @@ public class StoreAssembler {
     {
         return StoreDetailResponse.builder().name(storeDetailResponseDto.getName()).kids(storeDetailResponseDto.isKids())
                 .isBooked(storeDetailResponseDto.isBooked())
+                .call(storeDetailResponseDto.getCall())
                 .simpleComment(storeDetailResponseDto.getSimpleComment())
                 .tags(storeDetailResponseDto.getTag())
                 .address(storeDetailResponseDto.getAddress())
@@ -72,6 +73,7 @@ public class StoreAssembler {
     {
         return StoreDetailResponseDto.builder().name(findStore.getName()).kids(findStore.isKids())
                 .isBooked(findStore.isBooked())
+                .call(findStore.getCall())
                 .simpleComment(findStore.getComment().getSimpleComment())
                 .tags(findStore.getTagStores().stream().map(ts -> ts.getTag()).collect(Collectors.toList()))
                 .address(findStore.getAddress())

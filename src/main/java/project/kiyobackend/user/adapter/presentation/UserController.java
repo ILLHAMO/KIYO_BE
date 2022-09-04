@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import project.kiyobackend.auth.entity.CurrentUser;
@@ -51,7 +52,7 @@ public class UserController {
     @PutMapping("/profile")
     public ResponseEntity<ChangeUserProfileResponse> changeUserProfile(@CurrentUser User user,
                                                                        @RequestPart(name = "meta_data") ChangeUserProfileRequest changeUserProfileRequest,
-                                                                       @RequestPart(name = "profileImage") MultipartFile profileImage )
+                                                                       @RequestPart(name = "profileImage") @Nullable MultipartFile profileImage )
     {
         ChangeUserProfileResponseDto changeUserProfileResponseDto = userService.changeUserProfile(user, changeUserProfileRequest.getNickname(), profileImage);
         return ResponseEntity.ok(UserAssembler.changeUserProfileResponse(changeUserProfileResponseDto));
