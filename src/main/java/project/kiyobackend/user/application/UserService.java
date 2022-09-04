@@ -57,7 +57,7 @@ public class UserService {
     {
         // transaction 내에 있으므로 영속 상태로 관리, dirty checking 먹힘
         User user = userRepository.findByUserId(currentUser.getUserId()).orElseThrow(NotExistUserException::new);
-        String profileImageUrl = getMultipartFileNames(List.of(profileImage)).get(0);
+        String profileImageUrl = getMultipartFileName(profileImage);
         user.changeUserProfile(nickname,profileImageUrl);
         return new ChangeUserProfileResponseDto(user.getNickname(),user.getProfileImageUrl());
     }
@@ -77,23 +77,27 @@ public class UserService {
         return new UserProfileResponseDto(currentUser.getProfileImageUrl(), currentUser.getNickname());
     }
 
-    private List<String> getMultipartFileNames(List<MultipartFile> multipartFiles) {
-        List<String> fileNameList = new ArrayList<>();
+    private String getMultipartFileName(MultipartFile multipartFile) {
 
-        multipartFiles.forEach(file->{
-            String fileName = createFileName(file.getOriginalFilename());
-            ObjectMetadata objectMetadata = new ObjectMetadata();
-            objectMetadata.setContentLength(file.getSize());
-            objectMetadata.setContentType(file.getContentType());
 
-            try(InputStream inputStream = file.getInputStream()) {
-                uploadService.uploadFile(inputStream,objectMetadata,fileName);
-            } catch(IOException e) {
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다.");
-            }
-            fileNameList.add(uploadService.getFileUrl(fileName));
-        });
-        return fileNameList;
+           if(multipartFile != null)
+           {
+               String fileName = createFileName(multipartFile.getOriginalFilename());
+               ObjectMetadata objectMetadata = new ObjectMetadata();
+               objectMetadata.setContentLength(multipartFile.getSize());
+               objectMetadata.setContentType(multipartFile.getContentType());
+
+               try(InputStream inputStream = multipartFile.getInputStream()) {
+                   uploadService.uploadFile(inputStream,objectMetadata,fileName);
+               } catch(IOException e) {
+                   throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다.");
+               }
+               String fileNameResult = uploadService.getFileUrl(fileName);
+               return fileNameResult;
+           }
+           return null;
+
+
     }
 
     private String createFileName(String fileName) {

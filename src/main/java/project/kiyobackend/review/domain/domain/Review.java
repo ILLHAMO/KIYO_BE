@@ -2,7 +2,6 @@ package project.kiyobackend.review.domain.domain;
 
 import lombok.*;
 import project.kiyobackend.store.domain.domain.store.Store;
-import project.kiyobackend.store.domain.domain.store.StoreImage;
 import project.kiyobackend.user.domain.User;
 import project.kiyobackend.common.util.jpa.JpaBaseEntity;
 

@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import project.kiyobackend.store.domain.domain.tag.Tag;
 import project.kiyobackend.store.presentation.dto.ImageDto;
+import project.kiyobackend.store.presentation.dto.TagRequestDto;
 import project.kiyobackend.store.presentation.dto.TagResponseDto;
 import project.kiyobackend.store.presentation.dto.menu.MenuResponseDto;
 import project.kiyobackend.store.presentation.dto.review.ReviewResponseDto;

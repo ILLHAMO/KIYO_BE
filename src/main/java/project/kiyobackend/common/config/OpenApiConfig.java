@@ -23,11 +23,14 @@ public class OpenApiConfig {
         SecurityScheme securityScheme = new SecurityScheme()
                 .type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")
                 .in(SecurityScheme.In.HEADER).name("Authorization");
+
         SecurityRequirement securityRequirement = new SecurityRequirement().addList("bearerAuth");
+
         Server server1 = new Server();
         server1.setUrl("https://www.jmsteady.net");
         Server server2 = new Server();
         server2.setUrl("http://localhost:8080");
+
         return new OpenAPI()
                 .components(new Components().addSecuritySchemes("bearerAuth",securityScheme))
                 .security(Arrays.asList(securityRequirement))
