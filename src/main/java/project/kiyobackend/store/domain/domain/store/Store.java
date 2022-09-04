@@ -7,11 +7,16 @@ import project.kiyobackend.store.domain.domain.menu.Menu;
 import project.kiyobackend.common.util.jpa.JpaBaseEntity;
 import project.kiyobackend.store.domain.domain.tag.Tag;
 import project.kiyobackend.store.domain.domain.tag.TagStore;
+import project.kiyobackend.store.presentation.dto.ImageDto;
+import project.kiyobackend.store.presentation.dto.TagResponseDto;
+import project.kiyobackend.store.presentation.dto.menu.MenuResponseDto;
 import project.kiyobackend.user.domain.User;
 
 import javax.persistence.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -56,7 +61,7 @@ public class Store extends JpaBaseEntity {
     @OneToMany(mappedBy = "store",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Menu> menus = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY,cascade = CascadeType.REMOVE,orphanRemoval = true)
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
     // cascadeType.All 하면 개별 repository가 전혀 필요없다.
@@ -151,6 +156,15 @@ public class Store extends JpaBaseEntity {
         }
     }
 
+    public void changeStoreImages(List<String> storeImages)
+    {
+        List<StoreImage> result = storeImages.stream().map(si -> new StoreImage(si)).collect(Collectors.toList());
+        for (StoreImage storeImage : result) {
+            this.storeImages.add(storeImage);
+        }
+
+    }
+
     public void setIsBooked(boolean check)
     {
         this.isBooked = check;
@@ -187,6 +201,25 @@ public class Store extends JpaBaseEntity {
         categoryIds.forEach(c->this.getCategoryIds().add(c));
         convenienceIds.forEach(cv->this.getConvenienceIds().add(cv));
     }
+
+    public void updateStore(String name, boolean kids, String simpleComment, List<Tag> tags, String address, List<String> time, String detailComment, String addressMap, List<String> fileNameList, List<Long> convenienceIds, List<Long> categoryIds, List<Menu> menuList)
+    {
+       this.name = name;
+       this.isKids = kids;
+       this.comment  = new Comment(simpleComment,detailComment);
+       this.address = address;
+       this.addressMap = addressMap;
+       // 그냥 변경된 리스트는 새로 끼워넣는걸로 할까? 아예 교체
+       this.time = time.stream().map(t -> new Opentime(t)).collect(Collectors.toList());
+       // 이미지도 다 날려버리기?
+       // 수정 안해도 날리면 비효율인데...
+       this.convenienceIds  = convenienceIds;
+       this.categoryIds = categoryIds;
+       this.setStoreImages(fileNameList);
+       setMenus(menuList);
+    }
+    // TODO : 1. 메뉴를 추가만 하기 2. 삭제만 하기 3. 추가와 삭제 같이 4. 기존 데이터 변경만
+    // 경우의 수가 많을때는 그냥 대체 해버리는 걸로?
 
     public static Store createStore(String name, String call, Comment comment, List<Opentime> time,String address, String addressMap,boolean isKids,  List<Long> categoryIds, List<Long> convenienceIds, List<Menu> menus, List<String> storeImages,Long userSeq)
     {

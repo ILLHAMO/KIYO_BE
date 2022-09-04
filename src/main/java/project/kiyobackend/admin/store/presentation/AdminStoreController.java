@@ -5,15 +5,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import project.kiyobackend.admin.store.application.StoreAdminService;
+import project.kiyobackend.admin.store.presentation.dto.StoreDetailRequestForUpdate;
 import project.kiyobackend.admin.store.presentation.dto.StoreDetailResponseForUpdate;
 import project.kiyobackend.admin.store.presentation.dto.StoreQueryDto;
 import project.kiyobackend.auth.entity.CurrentUser;
+import project.kiyobackend.common.SuccessResponseDto;
+import project.kiyobackend.review.presentation.dto.ReviewRequestForUpdate;
 import project.kiyobackend.store.presentation.dto.store.StoreDetailResponse;
 import project.kiyobackend.store.presentation.dto.store.StoreDetailResponseDto;
 import project.kiyobackend.store.query.dto.StorePaginationDto;
 import project.kiyobackend.user.domain.User;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,10 +43,15 @@ public class AdminStoreController {
         return ResponseEntity.ok(storeAdminService.getStoreDetailForUpdate(storeId));
     }
 
+
     @Operation(summary = "가게 정보 업데이트")
     @PutMapping("/store/{storeId}")
-    public void updateStoreInfo(@PathVariable Long storeId)
+    public ResponseEntity<SuccessResponseDto> updateStoreInfo(@PathVariable Long storeId,
+                                                              @RequestPart(name = "meta_data")  StoreDetailRequestForUpdate storeDetailRequestForUpdate,
+                                                              @RequestPart(name = "multipartFiles") @Nullable List<MultipartFile> multipartFiles)
     {
+        Long result = storeAdminService.updateStore(storeId, storeDetailRequestForUpdate,multipartFiles);
+        return ResponseEntity.ok(new SuccessResponseDto(true,result));
 
     }
 
