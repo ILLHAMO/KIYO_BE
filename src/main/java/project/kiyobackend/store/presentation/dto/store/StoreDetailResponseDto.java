@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import project.kiyobackend.review.domain.domain.Review;
+import project.kiyobackend.store.application.dto.ConvenienceDto;
 import project.kiyobackend.store.presentation.dto.ImageDto;
 import project.kiyobackend.store.presentation.dto.menu.MenuOptionResponseDto;
 import project.kiyobackend.store.presentation.dto.menu.MenuResponseDto;
@@ -32,7 +33,7 @@ public class StoreDetailResponseDto {
     private String detailComment;
     private String addressMap;
     private List<ImageDto> images;
-    private List<Long> convenienceIds;
+    private List<ConvenienceDto> convenienceIds;
     private List<MenuResponseDto> menuResponses;
     private List<ReviewResponseDto> reviewResponses;
 
@@ -49,7 +50,7 @@ public class StoreDetailResponseDto {
         this.detailComment = detailComment;
         this.addressMap = addressMap;
         this.images = images.stream().map(i -> new ImageDto(i.getId(),i.getPath())).collect(Collectors.toList());
-        this.convenienceIds = convenienceIds;
+//        this.convenienceIds = convenienceIds;
         this.menuResponses = menus.stream().map(m-> new MenuResponseDto(m.getId(),m.getName(),m.getMenuOptions().stream().map(mo->new MenuOptionResponseDto(mo.getId(),mo.getName())).collect(Collectors.toList())
         )).collect(Collectors.toList());
         // TODO : UserId => User Nickname으로 변경

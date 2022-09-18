@@ -1,5 +1,7 @@
 package project.kiyobackend.store.application;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -9,8 +11,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import project.kiyobackend.category.domain.Category;
+import project.kiyobackend.category.domain.CategoryRepository;
+import project.kiyobackend.convenience.domain.Convenience;
+import project.kiyobackend.convenience.domain.ConvenienceRepository;
 import project.kiyobackend.exception.store.NotExistStoreException;
 import project.kiyobackend.exception.user.NotExistUserException;
+import project.kiyobackend.store.application.dto.ConvenienceDto;
 import project.kiyobackend.store.infrastructure.AWSS3UploadService;
 import project.kiyobackend.store.presentation.dto.SearchRankingResponseDto;
 import project.kiyobackend.store.presentation.dto.StoreAssembler;
@@ -29,6 +36,7 @@ import project.kiyobackend.user.domain.UserRepository;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -41,16 +49,22 @@ public class StoreService {
 
     private final AWSS3UploadService uploadService;
 
+    private final AmazonS3Client amazonS3Client;
+
     private final UserRepository userRepository;
 
     private final RedisSearchService redisSearchService;
 
-
+    private final ConvenienceRepository convenienceRepository;
     /**
      * 비로그인 유저일때는 북마크 여부 체크 안하고, 로그인 유저일때만 체크함
      */
     public Slice<Store> getStore(User currentUser,Long lastStoreId, StoreSearchCond storeSearchCond, Pageable pageable,String address)
     {
+        ObjectListing kiyoimage = amazonS3Client.listObjects("kiyoimage","user1/");
+        Double sum = kiyoimage.getObjectSummaries().stream().mapToDouble(s -> s.getSize()).sum();
+        Double result =  Math.round((sum / (1000 * 1000)) * 100) /100.0;
+        System.out.println(result+"mb");
         Slice<Store> stores = storeQueryRepository.searchBySlice(lastStoreId, storeSearchCond, pageable,address);
 
         // 로그인 상태일때와 아닐때를 분기
@@ -114,7 +128,13 @@ public class StoreService {
         }
         // 익명 사용자
         else{
+            List<ConvenienceDto> convenienceDtos = store.getConvenienceIds().stream().map(c -> {
+                Convenience convenience = convenienceRepository.findById(c).get();
+                return new ConvenienceDto(convenience.getId(), convenience.getName());
+
+            }).collect(Collectors.toList());
             StoreDetailResponseDto storeDetailResponseDto = StoreAssembler.storeDetailResponseDto(store);
+            storeDetailResponseDto.setConvenienceIds(convenienceDtos);
             return storeDetailResponseDto;
         }
     }
@@ -188,7 +208,7 @@ public class StoreService {
     }
 
     private String createFileName(String fileName) {
-        return UUID.randomUUID().toString().concat(getFileExtension(fileName));
+        return "user1/" + UUID.randomUUID().toString().concat(getFileExtension(fileName));
     }
 
     // file 형식이 잘못된 경우를 확인하기 위해 만들어진 로직이며, 파일 타입과 상관없이 업로드할 수 있게 하기 위해 .의 존재 유무만 판단하였습니다.

@@ -25,7 +25,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
 
-
     /**
      * userRequest 내부에는 access Token, 리다이렉트 uri 등등 각종 정보들이 들어있음
      */

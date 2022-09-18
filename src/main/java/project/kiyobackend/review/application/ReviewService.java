@@ -74,6 +74,7 @@ public class ReviewService {
 
         if(!reviewRequestDto.getDeleteIds().isEmpty())
         {
+            System.out.println("리뷰를 삭제할꺼야");
             for(Long deleteId : reviewRequestDto.getDeleteIds())
             {
                 review.getReviewImages().removeIf(ri->ri.getId().equals(deleteId));

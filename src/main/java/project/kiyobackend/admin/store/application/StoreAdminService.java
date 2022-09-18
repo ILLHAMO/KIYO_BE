@@ -69,18 +69,17 @@ public class StoreAdminService {
     @Transactional
     public Long updateStore(Long storeId, StoreDetailRequestForUpdate storeDetailRequestForUpdate,List<MultipartFile> multipartFiles) {
 
-        // 기존의 가게 가져옴
+        // 1. 트랜잭션 내부에서 기존의 가게 가져옴 영속 상태
         Store store1 = storeRepository.findById(storeId).orElseThrow(NotExistStoreException::new);
-        List<String> fileNameList = getMultipartFileNames(multipartFiles);
-        store1.getStoreImages().clear();
-        System.out.println("클리어");
-        store1.getMenus().clear();
-        storeRepository.flush();
-        System.out.println("새로 시작");
-        Store store = storeRepository.findById(storeId).orElseThrow(NotExistStoreException::new);
-        System.out.println("store_id : " + store.getId());
 
-        store.updateStore(storeDetailRequestForUpdate.getName(),
+        // 2. 파일 이름 빼옴
+        List<String> fileNameList = getMultipartFileNames(multipartFiles);
+
+        // 3. 아예 storeImage 다 날려버림, orphanRemoval에 따라서 다 삭제되야 함
+        store1.getStoreImages().clear();
+        store1.getMenus().clear();
+
+        store1.updateStore(storeDetailRequestForUpdate.getName(),
                 storeDetailRequestForUpdate.isKids(),
                 storeDetailRequestForUpdate.getSimpleComment(),
                 storeDetailRequestForUpdate.getTag().stream().map(t -> new Tag(t.getName())).collect(Collectors.toList()),
@@ -90,15 +89,13 @@ public class StoreAdminService {
                 storeDetailRequestForUpdate.getAddressMap(),
                 fileNameList,
                 storeDetailRequestForUpdate.getConvenienceIds(),
-                storeDetailRequestForUpdate.getCategoryIds(),
-                storeDetailRequestForUpdate.getMenuRequests().stream()
-                        .map(mr -> new Menu(mr.getName(),mr.getMenuOptions()
-                                .stream().map(mo -> new MenuOption(mo.getName()))
-                                .collect(Collectors.toList())))
-                        .collect(Collectors.toList())
+                storeDetailRequestForUpdate.getCategoryIds()
                 );
-        Store store2 = storeRepository.saveAndFlush(store);
-        return store2.getId();
+        store1.setMenus(storeDetailRequestForUpdate.getMenuRequests().stream().map(m -> new Menu(m.getName(),m.getMenuOptions().stream().map(mo -> new MenuOption(mo.getName())).collect(Collectors.toList())
+                )).collect(Collectors.toList()));
+
+        return store1.getId();
+
 
     }
 

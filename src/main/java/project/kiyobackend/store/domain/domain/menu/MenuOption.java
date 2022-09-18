@@ -24,6 +24,11 @@ public class MenuOption extends JpaBaseEntity {
     @JoinColumn(name = "menu_id")
     private Menu menu;
 
+    public void setMenu(Menu menu)
+    {
+        this.menu = menu;
+    }
+
     public MenuOption(String name)
     {
         this.name = name;

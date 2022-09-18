@@ -3,6 +3,7 @@ package project.kiyobackend.store.domain.domain.menu;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import project.kiyobackend.store.domain.domain.store.Store;
 import project.kiyobackend.common.util.jpa.JpaBaseEntity;
 
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Menu extends JpaBaseEntity {
 
@@ -32,9 +34,14 @@ public class Menu extends JpaBaseEntity {
 
     public void setMenuOptions(List<MenuOption> menuOptions)
     {
-        for (MenuOption menuOption : menuOptions) {
-            this.menuOptions.add(menuOption);
+        if(menuOptions != null)
+        {
+            for (MenuOption menuOption : menuOptions) {
+                this.menuOptions.add(menuOption);
+                menuOption.setMenu(this);
+            }
         }
+
     }
 
     public Menu(String name,List<MenuOption> menuOptions)

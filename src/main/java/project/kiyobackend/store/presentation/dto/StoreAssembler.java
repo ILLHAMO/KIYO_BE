@@ -62,7 +62,7 @@ public class StoreAssembler {
                 .detailComment(storeDetailResponseDto.getDetailComment())
                 .addressMap(storeDetailResponseDto.getAddressMap())
                 .images(storeDetailResponseDto.getImages())
-                .convenienceIds(storeDetailResponseDto.getConvenienceIds())
+                .conveniences(storeDetailResponseDto.getConvenienceIds())
                 .menus(storeDetailResponseDto.getMenuResponses())
                 .reviews(storeDetailResponseDto.getReviewResponses().stream().sorted(Comparator.comparing(ReviewResponseDto::getUpdatedDate).reversed()).collect(Collectors.toList()))
                 .build();
@@ -81,7 +81,6 @@ public class StoreAssembler {
                 .detailComment(findStore.getComment().getDetailComment())
                 .addressMap(findStore.getAddressMap())
                 .images(findStore.getStoreImages())
-                .convenienceIds(findStore.getConvenienceIds())
                 .menus(findStore.getMenus())
                 .reviews(findStore.getReviews())
                 .build();

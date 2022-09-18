@@ -143,8 +143,11 @@ public class Store extends JpaBaseEntity {
     {
         for (Menu menu : menus) {
             this.menus.add(menu);
+            menu.setStore(this);
         }
     }
+
+
 
     public void setStoreImages(List<String> storeImages)
     {
@@ -202,7 +205,7 @@ public class Store extends JpaBaseEntity {
         convenienceIds.forEach(cv->this.getConvenienceIds().add(cv));
     }
 
-    public void updateStore(String name, boolean kids, String simpleComment, List<Tag> tags, String address, List<String> time, String detailComment, String addressMap, List<String> fileNameList, List<Long> convenienceIds, List<Long> categoryIds, List<Menu> menuList)
+    public void updateStore(String name, boolean kids, String simpleComment, List<Tag> tags, String address, List<String> time, String detailComment, String addressMap, List<String> fileNameList, List<Long> convenienceIds, List<Long> categoryIds)
     {
        this.name = name;
        this.isKids = kids;
@@ -216,7 +219,7 @@ public class Store extends JpaBaseEntity {
        this.convenienceIds  = convenienceIds;
        this.categoryIds = categoryIds;
        this.setStoreImages(fileNameList);
-       setMenus(menuList);
+
     }
     // TODO : 1. 메뉴를 추가만 하기 2. 삭제만 하기 3. 추가와 삭제 같이 4. 기존 데이터 변경만
     // 경우의 수가 많을때는 그냥 대체 해버리는 걸로?

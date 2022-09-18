@@ -3,6 +3,7 @@ package project.kiyobackend.store.presentation.dto.store;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
+import project.kiyobackend.store.application.dto.ConvenienceDto;
 import project.kiyobackend.store.presentation.dto.ImageDto;
 import project.kiyobackend.store.presentation.dto.TagResponseDto;
 import project.kiyobackend.store.presentation.dto.review.ReviewResponseDto;
@@ -33,12 +34,12 @@ public class StoreDetailResponse {
     @Schema(example = "서울 송파구 위례중앙로 43")
     private String addressMap;
     private List<ImageDto> images;
-    private List<Long> convenienceIds;
+    private List<ConvenienceDto> conveniences;
     private List<MenuResponseDto> menuResponses;
     private List<ReviewResponseDto> reviewResponses;
 
     @Builder
-    public StoreDetailResponse(String name, boolean kids,String call, boolean isBooked, String simpleComment, List<Tag> tags, String address, List<String> time, String detailComment, String addressMap, List<ImageDto> images, List<Long> convenienceIds, List<MenuResponseDto> menus, List<ReviewResponseDto> reviews) {
+    public StoreDetailResponse(String name, boolean kids,String call, boolean isBooked, String simpleComment, List<Tag> tags, String address, List<String> time, String detailComment, String addressMap, List<ImageDto> images, List<ConvenienceDto> conveniences, List<MenuResponseDto> menus, List<ReviewResponseDto> reviews) {
         this.name = name;
         this.kids = kids;
         this.isBooked = isBooked;
@@ -50,7 +51,7 @@ public class StoreDetailResponse {
         this.detailComment = detailComment;
         this.addressMap = addressMap;
         this.images = images;
-        this.convenienceIds = convenienceIds;
+        this.conveniences = conveniences;
         this.menuResponses = menus;
         this.reviewResponses = reviews;
     }
